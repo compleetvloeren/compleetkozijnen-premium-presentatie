@@ -14,6 +14,7 @@ import { Calculator, Clock, Shield, Users, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { FormSuccess } from '@/components/ui/form-success';
 import { validateEmail, validateDutchPhone, validateDutchPostalCode, validateName } from '@/lib/formValidation';
+import { AddressSearch } from '@/components/AddressSearch';
 
 const Offerte = () => {
   const { toast } = useToast();
@@ -334,9 +335,61 @@ const Offerte = () => {
                 {/* Address Information */}
                 <div>
                   <h3 className="text-title mb-4">Projectadres</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="md:col-span-2">
-                      <Label htmlFor="address">Adres *</Label>
+                  <div className="grid grid-cols-1 gap-4">
+                    <AddressSearch
+                      onAddressSelect={(address) => {
+                        setFormData(prev => ({
+                          ...prev,
+                          address: address.address,
+                          postalCode: address.postalCode,
+                          city: address.city
+                        }));
+                        // Clear any existing errors for these fields
+                        setErrors(prev => ({
+                          ...prev,
+                          address: '',
+                          postalCode: '',
+                          city: ''
+                        }));
+                      }}
+                      errors={errors}
+                    />
+                    
+                    {/* Display the auto-filled fields */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                      <div>
+                        <Label htmlFor="postalCode">Postcode *</Label>
+                        <Input
+                          id="postalCode"
+                          value={formData.postalCode}
+                          onChange={(e) => handleInputChange('postalCode', e.target.value)}
+                          required
+                          className={`mt-1 ${errors.postalCode ? 'border-red-500' : ''}`}
+                          placeholder="1234 AB"
+                          readOnly
+                        />
+                        {errors.postalCode && (
+                          <p className="text-sm text-red-500 mt-1">{errors.postalCode}</p>
+                        )}
+                      </div>
+                      <div>
+                        <Label htmlFor="city">Plaats *</Label>
+                        <Input
+                          id="city"
+                          value={formData.city}
+                          onChange={(e) => handleInputChange('city', e.target.value)}
+                          required
+                          className={`mt-1 ${errors.city ? 'border-red-500' : ''}`}
+                          readOnly
+                        />
+                        {errors.city && (
+                          <p className="text-sm text-red-500 mt-1">{errors.city}</p>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="address">Volledig adres *</Label>
                       <Input
                         id="address"
                         value={formData.address}
@@ -344,36 +397,10 @@ const Offerte = () => {
                         required
                         className={`mt-1 ${errors.address ? 'border-red-500' : ''}`}
                         placeholder="Straatnaam en huisnummer"
+                        readOnly
                       />
                       {errors.address && (
                         <p className="text-sm text-red-500 mt-1">{errors.address}</p>
-                      )}
-                    </div>
-                    <div>
-                      <Label htmlFor="postalCode">Postcode *</Label>
-                      <Input
-                        id="postalCode"
-                        value={formData.postalCode}
-                        onChange={(e) => handleInputChange('postalCode', e.target.value)}
-                        required
-                        className={`mt-1 ${errors.postalCode ? 'border-red-500' : ''}`}
-                        placeholder="1234 AB"
-                      />
-                      {errors.postalCode && (
-                        <p className="text-sm text-red-500 mt-1">{errors.postalCode}</p>
-                      )}
-                    </div>
-                    <div className="md:col-span-3">
-                      <Label htmlFor="city">Plaats *</Label>
-                      <Input
-                        id="city"
-                        value={formData.city}
-                        onChange={(e) => handleInputChange('city', e.target.value)}
-                        required
-                        className={`mt-1 ${errors.city ? 'border-red-500' : ''}`}
-                      />
-                      {errors.city && (
-                        <p className="text-sm text-red-500 mt-1">{errors.city}</p>
                       )}
                     </div>
                   </div>
