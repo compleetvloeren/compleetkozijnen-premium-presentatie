@@ -55,6 +55,7 @@ export const AddressSearch: React.FC<AddressSearchProps> = ({
       if (response.ok) {
         const data = await response.json();
         const addressSuggestions: AddressSuggestion[] = data.response?.docs?.map((doc: any) => {
+          console.log('API doc:', doc); // Debug log
           const parts = doc.weergavenaam.split(', ');
           const addressPart = parts[0] || '';
           const cityPart = parts[1] || '';
@@ -64,10 +65,13 @@ export const AddressSearch: React.FC<AddressSearchProps> = ({
           const street = addressMatch ? addressMatch[1].trim() : addressPart;
           const houseNumber = addressMatch ? addressMatch[2].trim() : '';
           
+          // Get postal code from the API response
+          const postalCode = doc.postcode || doc.postalcode || '';
+          
           return {
             display: doc.weergavenaam,
             address: addressPart,
-            postalCode: doc.postcode || '',
+            postalCode: postalCode,
             city: cityPart,
             houseNumber,
             street
