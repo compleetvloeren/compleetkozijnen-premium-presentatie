@@ -8,6 +8,9 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Maximize2, Sun, Wind, Layers } from 'lucide-react';
 import heroImage from '@/assets/schueco-schuif-hero-real.jpg';
 import voorbeeldImage from '@/assets/schueco-schuif-voorbeeld.jpg';
+import ase80CardImage from '@/assets/schueco-ase-80-card.jpg';
+import ass77CardImage from '@/assets/schueco-ass-77-card.jpg';
+import ase67CardImage from '@/assets/schueco-ase-67-card.jpg';
 
 const SchuecoSchuifdeuren = () => {
   const ase80Specs = [
@@ -89,7 +92,7 @@ const SchuecoSchuifdeuren = () => {
             <div className="group relative h-96 rounded-2xl overflow-hidden cursor-pointer">
               <div 
                 className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 group-hover:scale-110"
-                style={{ backgroundImage: `url(${require('@/assets/schueco-ase-80-card.jpg')})` }}
+                style={{ backgroundImage: `url(${ase80CardImage})` }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
               
@@ -141,7 +144,7 @@ const SchuecoSchuifdeuren = () => {
             <div className="group relative h-96 rounded-2xl overflow-hidden cursor-pointer">
               <div 
                 className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 group-hover:scale-110"
-                style={{ backgroundImage: `url(${require('@/assets/schueco-ass-77-card.jpg')})` }}
+                style={{ backgroundImage: `url(${ass77CardImage})` }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
               
@@ -190,7 +193,7 @@ const SchuecoSchuifdeuren = () => {
             <div className="group relative h-96 rounded-2xl overflow-hidden cursor-pointer">
               <div 
                 className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 group-hover:scale-110"
-                style={{ backgroundImage: `url(${require('@/assets/schueco-ase-67-card.jpg')})` }}
+                style={{ backgroundImage: `url(${ase67CardImage})` }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
               
