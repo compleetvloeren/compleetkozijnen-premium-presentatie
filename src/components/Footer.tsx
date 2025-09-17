@@ -102,28 +102,6 @@ const Footer = () => {
               </div>
             </div>
 
-            {/* Links Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {footerSections.map((section) => (
-                <div key={section.title}>
-                  <h3 className="text-lg font-semibold mb-4 text-white">
-                    {section.title}
-                  </h3>
-                  <ul className="space-y-2">
-                    {section.links.map((link) => (
-                      <li key={link.name}>
-                        <Link 
-                          to={link.path}
-                          className="text-slate-300 hover:text-primary transition-colors text-sm"
-                        >
-                          {link.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
 
