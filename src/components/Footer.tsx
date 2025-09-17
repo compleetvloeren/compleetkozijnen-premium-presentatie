@@ -46,12 +46,8 @@ const Footer = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Company Info */}
             <div className="space-y-6">
-              <div className="flex items-center space-x-3">
-                <img 
-                  src={logo} 
-                  alt="CompleetKozijnen.nl"
-                  className="h-16 w-auto"
-                />
+              <div>
+                <h2 className="text-2xl font-bold text-white mb-2">Compleet Kozijnen B.V.</h2>
               </div>
               
               <p className="text-lg text-slate-200 max-w-md">
