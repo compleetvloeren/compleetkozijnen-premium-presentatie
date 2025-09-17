@@ -245,23 +245,18 @@ const Dashboard: React.FC = () => {
         throw new Error('Niet geautoriseerd');
       }
 
-      const response = await fetch(`https://odebqftzxdpfdwcyvfnx.supabase.co/functions/v1/leads-crud?id=${leadId}`, {
-        method: 'DELETE',
+      const response = await supabase.functions.invoke('leads-crud', {
+        body: { 
+          leadId: leadId,
+          password: password 
+        },
         headers: {
           'Authorization': `Bearer ${session.access_token}`,
-          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ password }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Verwijderen mislukt');
-      }
-
-      const result = await response.json();
-      if (!response.ok) {
-        throw new Error(result.error || 'Verwijderen mislukt');
+      if (response.error) {
+        throw new Error(response.error.message || 'Verwijderen mislukt');
       }
 
       // Remove the lead from local state

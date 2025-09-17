@@ -59,6 +59,20 @@ serve(async (req) => {
 
     const url = new URL(req.url);
     const leadId = url.searchParams.get('id');
+    
+    // For DELETE requests, also check body for leadId
+    let bodyData = null;
+    if (req.method === 'DELETE' || req.method === 'PUT') {
+      try {
+        bodyData = await req.json();
+        if (!leadId && bodyData.leadId) {
+          // Use leadId from body if not in URL
+          url.searchParams.set('id', bodyData.leadId);
+        }
+      } catch (e) {
+        // Body parsing failed, continue with URL params only
+      }
+    }
 
     switch (req.method) {
       case 'GET':
@@ -122,7 +136,7 @@ serve(async (req) => {
           });
         }
 
-        const updateData = await req.json();
+        const updateData = bodyData || await req.json();
         console.log('Updating lead:', leadId, updateData);
 
         const { data: updatedLead, error: updateError } = await supabase
@@ -150,7 +164,8 @@ serve(async (req) => {
         });
 
       case 'DELETE':
-        if (!leadId) {
+        const finalLeadId = leadId || url.searchParams.get('id');
+        if (!finalLeadId) {
           return new Response(JSON.stringify({ error: 'Lead ID required for deletion' }), {
             status: 400,
             headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -158,7 +173,7 @@ serve(async (req) => {
         }
 
         // Verify delete password
-        const deleteData = await req.json();
+        const deleteData = bodyData || await req.json();
         const REQUIRED_PASSWORD = 'Slavenvoedsel';
         
         if (!deleteData.password || deleteData.password !== REQUIRED_PASSWORD) {
@@ -168,12 +183,12 @@ serve(async (req) => {
           });
         }
 
-        console.log('Delete password verified for lead:', leadId);
+        console.log('Delete password verified for lead:', finalLeadId);
 
         const { error: deleteError } = await supabase
           .from('leads')
           .delete()
-          .eq('id', leadId);
+          .eq('id', finalLeadId);
 
         if (deleteError) {
           console.error('Database error:', deleteError);
@@ -183,7 +198,7 @@ serve(async (req) => {
           });
         }
 
-        console.log('Lead deleted successfully:', leadId);
+        console.log('Lead deleted successfully:', finalLeadId);
         return new Response(JSON.stringify({ success: true, message: 'Lead deleted successfully' }), {
           status: 200,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
