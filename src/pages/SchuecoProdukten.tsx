@@ -175,15 +175,15 @@ const SchuecoProdukten = () => {
               
               {/* Content */}
               <div className="absolute top-6 left-6 z-10">
-                <h3 className="text-3xl font-bold text-white mb-2">Schuifdeuren</h3>
-                <p className="text-white/80 text-sm">ASE/ASS Sliding Systems</p>
+                <h3 className="text-3xl font-bold text-white mb-2">Schuifdeuren en Vouwwanden</h3>
+                <p className="text-white/80 text-sm">ASE/ASS & AWS Folding Systems</p>
               </div>
               
               {/* Hover Content */}
               <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-8">
                 <div className="text-center text-white transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
                   <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-                    <h4 className="text-xl font-semibold mb-4">Maximale Ruimte</h4>
+                    <h4 className="text-xl font-semibold mb-4">Flexibele Oplossingen</h4>
                     <ul className="space-y-2 text-sm mb-6">
                       <li className="flex items-center justify-center">
                         <div className="w-2 h-2 bg-white rounded-full mr-3" />
@@ -191,11 +191,11 @@ const SchuecoProdukten = () => {
                       </li>
                       <li className="flex items-center justify-center">
                         <div className="w-2 h-2 bg-white rounded-full mr-3" />
-                        <span>Grote glasoppervlakken</span>
+                        <span>AWS Vouwwand systemen</span>
                       </li>
                       <li className="flex items-center justify-center">
                         <div className="w-2 h-2 bg-white rounded-full mr-3" />
-                        <span>Soepele bediening</span>
+                        <span>Maximale ruimte-opening</span>
                       </li>
                     </ul>
                     <Link to="/producten/schueco/schuifdeuren">
