@@ -346,7 +346,7 @@ const Dashboard: React.FC = () => {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8 space-y-8">/
+      <main className="container mx-auto px-4 py-8 space-y-8">
 
         {/* Export Options Popup */}
         {showExportOptions && (
@@ -539,6 +539,7 @@ const Dashboard: React.FC = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
+                {contacts.length > 0 ? (
                   <div className="space-y-4">
                     {contacts.map((contact) => (
                       <div key={contact.id} className="flex items-center justify-between p-4 border rounded-lg">
