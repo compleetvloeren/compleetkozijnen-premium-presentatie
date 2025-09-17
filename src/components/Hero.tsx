@@ -19,31 +19,31 @@ const Hero = () => {
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
         <div className="max-w-4xl mx-auto animate-fade-in">
-          <h1 className="text-display-large mb-6">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 md:mb-6 leading-tight">
             Premium Kozijnen
             <span className="block text-transparent bg-gradient-to-r from-red-400 to-red-600 bg-clip-text">
               Compleet Geïnstalleerd
             </span>
           </h1>
           
-          <p className="text-xl md:text-2xl font-light mb-8 text-white/90 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-light mb-6 md:mb-8 text-white/90 max-w-3xl mx-auto leading-relaxed px-4">
             Ontdek onze GEALAN S-9000 kozijnsystemen met 3-dichting technologie. 
             Superieure isolatie, moderne designs en volledige montageservice.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <Link to="/offerte">
-              <Button size="lg" className="btn-hero text-base px-8 py-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-8 md:mb-12 px-4">
+            <Link to="/offerte" className="w-full sm:w-auto">
+              <Button size="lg" className="btn-hero text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
                 Gratis Offerte Aanvragen
-                <ArrowRight className="ml-2 h-5 w-5" />
+                <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
               </Button>
             </Link>
             
-            <Link to="/producten">
+            <Link to="/producten" className="w-full sm:w-auto">
               <Button 
                 variant="outline" 
                 size="lg" 
-                className="text-base px-8 py-4 bg-white/10 border-white/30 text-white hover:bg-white/20 hover:text-white backdrop-blur-sm"
+                className="text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-4 bg-white/10 border-white/30 text-white hover:bg-white/20 hover:text-white backdrop-blur-sm w-full sm:w-auto"
               >
                 Bekijk Producten
               </Button>
@@ -51,29 +51,29 @@ const Hero = () => {
           </div>
 
           {/* Trust Indicators */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
-            <div className="flex flex-col items-center space-y-2">
-              <div className="glass rounded-full p-3 mb-2">
-                <Shield className="h-6 w-6 text-red-400" />
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 md:gap-8 max-w-2xl mx-auto px-4">
+            <div className="flex flex-col items-center space-y-1 sm:space-y-2">
+              <div className="glass rounded-full p-2 sm:p-3 mb-1 sm:mb-2">
+                <Shield className="h-5 w-5 sm:h-6 sm:w-6 text-red-400" />
               </div>
-              <h3 className="font-semibold text-sm">25+ Jaar Ervaring</h3>
-              <p className="text-xs text-white/70">Bewezen expertise</p>
+              <h3 className="font-semibold text-xs sm:text-sm text-center">25+ Jaar Ervaring</h3>
+              <p className="text-xs text-white/70 text-center">Bewezen expertise</p>
             </div>
             
-            <div className="flex flex-col items-center space-y-2">
-              <div className="glass rounded-full p-3 mb-2">
-                <Award className="h-6 w-6 text-red-400" />
+            <div className="flex flex-col items-center space-y-1 sm:space-y-2">
+              <div className="glass rounded-full p-2 sm:p-3 mb-1 sm:mb-2">
+                <Award className="h-5 w-5 sm:h-6 sm:w-6 text-red-400" />
               </div>
-              <h3 className="font-semibold text-sm">Premium Kwaliteit</h3>
-              <p className="text-xs text-white/70">GEALAN certificering</p>
+              <h3 className="font-semibold text-xs sm:text-sm text-center">Premium Kwaliteit</h3>
+              <p className="text-xs text-white/70 text-center">GEALAN certificering</p>
             </div>
             
-            <div className="flex flex-col items-center space-y-2">
-              <div className="glass rounded-full p-3 mb-2">
-                <Users className="h-6 w-6 text-red-400" />
+            <div className="flex flex-col items-center space-y-1 sm:space-y-2">
+              <div className="glass rounded-full p-2 sm:p-3 mb-1 sm:mb-2">
+                <Users className="h-5 w-5 sm:h-6 sm:w-6 text-red-400" />
               </div>
-              <h3 className="font-semibold text-sm">1000+ Tevreden Klanten</h3>
-              <p className="text-xs text-white/70">Waarom wij de beste keuze zijn</p>
+              <h3 className="font-semibold text-xs sm:text-sm text-center">1000+ Tevreden Klanten</h3>
+              <p className="text-xs text-white/70 text-center">Waarom wij de beste keuze zijn</p>
             </div>
           </div>
         </div>

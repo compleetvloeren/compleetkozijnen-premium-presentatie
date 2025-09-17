@@ -66,32 +66,32 @@ const FeaturesSection = () => {
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-br from-background to-muted/30">
+    <section className="py-12 md:py-20 bg-gradient-to-br from-background to-muted/30">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-display mb-6">
+        <div className="text-center mb-12 md:mb-16 animate-fade-in">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 leading-tight">
             Waarom Kiezen voor
             <span className="text-transparent bg-gradient-to-r from-primary to-accent bg-clip-text"> CompleetKozijnen?</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
             Ontdek de voordelen van onze premium GEALAN S-9000 kozijnsystemen en complete service.
           </p>
         </div>
 
         {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mb-12 md:mb-20">
           {features.map((feature, index) => (
             <Card key={feature.title} className="card-tesla group">
-              <CardContent className="p-6">
-                <div className="flex items-start space-x-4">
-                  <div className="bg-gradient-to-br from-primary to-accent p-3 rounded-xl shadow-[var(--shadow-brand)] group-hover:scale-110 transition-[var(--transition-spring)]">
-                    <feature.icon className="h-6 w-6 text-white" />
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex items-start space-x-3 sm:space-x-4">
+                  <div className="bg-gradient-to-br from-primary to-accent p-2 sm:p-3 rounded-xl shadow-[var(--shadow-brand)] group-hover:scale-110 transition-[var(--transition-spring)] flex-shrink-0">
+                    <feature.icon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                   </div>
-                  <div className="flex-1">
-                    <h3 className="text-title mb-2">{feature.title}</h3>
-                    <p className="text-body text-muted-foreground mb-3">{feature.description}</p>
-                    <div className="text-sm font-semibold text-primary">{feature.specs}</div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-base sm:text-lg font-semibold mb-2">{feature.title}</h3>
+                    <p className="text-sm sm:text-base text-muted-foreground mb-3 leading-relaxed">{feature.description}</p>
+                    <div className="text-xs sm:text-sm font-semibold text-primary">{feature.specs}</div>
                   </div>
                 </div>
               </CardContent>
@@ -100,7 +100,7 @@ const FeaturesSection = () => {
         </div>
 
         {/* Product Showcase Cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
           {productCards.map((card, index) => (
             <Card key={card.title} className="card-tesla-hero overflow-hidden group">
               <div className="aspect-video overflow-hidden">
@@ -110,13 +110,13 @@ const FeaturesSection = () => {
                   className="w-full h-full object-cover group-hover:scale-105 transition-[var(--transition-spring)]"
                 />
               </div>
-              <CardContent className="p-6">
-                <h3 className="text-title mb-3">{card.title}</h3>
-                <p className="text-body text-muted-foreground mb-4">{card.description}</p>
-                <div className="space-y-2">
+              <CardContent className="p-4 sm:p-6">
+                <h3 className="text-base sm:text-lg font-semibold mb-2 sm:mb-3">{card.title}</h3>
+                <p className="text-sm sm:text-base text-muted-foreground mb-3 sm:mb-4 leading-relaxed">{card.description}</p>
+                <div className="space-y-1 sm:space-y-2">
                   {card.specs.map((spec, specIndex) => (
-                    <div key={specIndex} className="flex items-center text-sm">
-                      <div className="w-2 h-2 bg-primary rounded-full mr-3" />
+                    <div key={specIndex} className="flex items-center text-xs sm:text-sm">
+                      <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-primary rounded-full mr-2 sm:mr-3 flex-shrink-0" />
                       <span>{spec}</span>
                     </div>
                   ))}
