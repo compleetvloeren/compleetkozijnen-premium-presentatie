@@ -1,6 +1,7 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Navigation from '@/components/Navigation';
+import ResponsiveBreadcrumb from '@/components/ResponsiveBreadcrumb';
 import Footer from '@/components/Footer';
 import TechnicalSpecDropdown from '@/components/TechnicalSpecDropdown';
 import TechnicalTooltip from '@/components/TechnicalTooltip';
@@ -40,6 +41,7 @@ const SchuecoDeuren = () => {
   return (
     <div className="min-h-screen">
       <Navigation />
+      <ResponsiveBreadcrumb />
       
       {/* Hero Section */}
       <section className="relative min-h-[70vh] overflow-hidden">

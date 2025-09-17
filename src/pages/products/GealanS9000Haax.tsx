@@ -1,6 +1,7 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Navigation from '@/components/Navigation';
+import ResponsiveBreadcrumb from '@/components/ResponsiveBreadcrumb';
 import Footer from '@/components/Footer';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Download, CheckCircle, Thermometer, Shield, Droplets, Wind } from 'lucide-react';
@@ -65,6 +66,7 @@ De 4° schuinte geeft het kozijn een klassieke uitstraling, terwijl de verstevig
   return (
     <div className="min-h-screen">
       <Navigation />
+      <ResponsiveBreadcrumb />
       
       {/* Video Hero Section */}
       <section className="relative min-h-[70vh] overflow-hidden pt-16 md:pt-20">

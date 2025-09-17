@@ -1,6 +1,7 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Navigation from '@/components/Navigation';
+import ResponsiveBreadcrumb from '@/components/ResponsiveBreadcrumb';
 import Footer from '@/components/Footer';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Thermometer, Shield, Droplets, Wind, Eye, Settings, Zap, Award } from 'lucide-react';
@@ -184,6 +185,7 @@ const Producten = () => {
   return (
     <div className="min-h-screen">
       <Navigation />
+      <ResponsiveBreadcrumb />
       
       {/* Video Hero Section */}
       <section className="relative min-h-[70vh] overflow-hidden pt-16 md:pt-20">

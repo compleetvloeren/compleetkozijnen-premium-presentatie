@@ -1,6 +1,7 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Navigation from '@/components/Navigation';
+import ResponsiveBreadcrumb from '@/components/ResponsiveBreadcrumb';
 import Footer from '@/components/Footer';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Shield, Home, Maximize2, Building, Eye } from 'lucide-react';
@@ -13,6 +14,7 @@ const SchuecoProdukten = () => {
   return (
     <div className="min-h-screen">
       <Navigation />
+      <ResponsiveBreadcrumb />
       
       {/* Hero Section */}
       <section className="relative min-h-[70vh] overflow-hidden">
