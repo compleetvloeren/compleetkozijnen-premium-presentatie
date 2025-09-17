@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Download, CheckCircle, Thermometer, Shield, Droplets, Wind } from 'lucide-react';
 import TechnicalTooltip from '@/components/TechnicalTooltip';
 import { getTechnicalTerm } from '@/lib/technicalGlossary';
-import gealanBaseImage from '@/assets/gealan-s9000-base.png';
+import gealanBaseImage from '@/assets/gealan-s9000-base-original.png';
 
 const GealanS9000Base = () => {
   const productData = {
