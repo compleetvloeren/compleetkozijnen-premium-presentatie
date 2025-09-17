@@ -88,181 +88,172 @@ const SchuecoDeuren = () => {
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* ADS 90.SI Premium */}
-            <Card className="card-tesla-hero border-2 border-primary/20">
-              <CardContent className="p-8">
-                <div className="bg-gradient-to-br from-primary to-primary-variant p-4 rounded-xl inline-flex mb-6">
-                  <Shield className="h-8 w-8 text-white" />
-                </div>
-                <div className="flex items-center gap-2 mb-4">
-                  <h3 className="text-2xl font-semibold">ADS 90.SI</h3>
+            <div className="group relative h-96 rounded-2xl overflow-hidden cursor-pointer">
+              <div 
+                className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 group-hover:scale-110"
+                style={{ backgroundImage: `url(${heroImage})` }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              
+              {/* Title */}
+              <div className="absolute top-6 left-6 z-10">
+                <div className="flex items-center gap-2 mb-2">
+                  <h3 className="text-3xl font-bold text-white">ADS 90.SI</h3>
                   <span className="bg-primary text-primary-foreground text-xs px-2 py-1 rounded-full">PREMIUM</span>
                 </div>
-                <p className="text-lg font-medium text-primary mb-2">Ultra Premium Entrance</p>
-                <p className="text-muted-foreground mb-6">
-                  Het topmodel voor maximale veiligheid en energie-efficiëntie. RC4 geschikt 
-                  voor de hoogste beveiligingseisen.
-                </p>
-                
-                <div className="space-y-4 mb-6">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Profieldiepte:</span>
-                    <span className="font-medium">90 mm</span>
+                <p className="text-lg font-medium text-primary-light">Ultra Premium Entrance</p>
+              </div>
+              
+              {/* Hover Content */}
+              <div className="absolute inset-x-6 bottom-6 z-10 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
+                  <div className="space-y-3 mb-6">
+                    <div className="flex items-center gap-2">
+                      <Shield className="h-4 w-4 text-primary-light" />
+                      <span className="text-white text-sm font-medium">RC2/RC3/RC4 Inbraakwering</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Lock className="h-4 w-4 text-primary-light" />
+                      <span className="text-white text-sm font-medium">90mm Profieldiepte</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Star className="h-4 w-4 text-primary-light" />
+                      <span className="text-white text-sm font-medium">Ud-waarde: 0,9 W/m²K</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Home className="h-4 w-4 text-primary-light" />
+                      <span className="text-white text-sm font-medium">Maximale veiligheid</span>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">
-                      <TechnicalTooltip 
-                        term="Ud-waarde" 
-                        definition="Warmtedoorgangscoëfficiënt van de complete deur - hoe lager, hoe beter geïsoleerd"
-                      >
-                        Ud-waarde:
-                      </TechnicalTooltip>
-                    </span>
-                    <span className="font-medium text-primary">0,9 W/m²K</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">
-                      <TechnicalTooltip 
-                        term="RC-klasse" 
-                        definition="Resistance Class - inbraakweringsniveau waarbij RC4 de hoogste woningbeveiliging is"
-                      >
-                        Inbraakwering:
-                      </TechnicalTooltip>
-                    </span>
-                    <span className="font-medium text-primary">RC2/RC3/RC4</span>
+                  
+                  <TechnicalSpecDropdown 
+                    title="Volledige Specificaties ADS 90.SI"
+                    specs={ads90Specs}
+                  />
+                  
+                  <div className="flex gap-3 mt-4">
+                    <Link to="/offerte" className="flex-1">
+                      <Button className="w-full text-sm">Offerte</Button>
+                    </Link>
+                    <Link to="/contact" className="flex-1">
+                      <Button variant="outline" className="w-full text-sm bg-white/10 border-white/30 text-white hover:bg-white/20">Info</Button>
+                    </Link>
                   </div>
                 </div>
-
-                <TechnicalSpecDropdown 
-                  title="Volledige Specificaties ADS 90.SI"
-                  specs={ads90Specs}
-                />
-                
-                <div className="flex gap-3 mt-6">
-                  <Link to="/offerte" className="flex-1">
-                    <Button className="w-full">Offerte Aanvragen</Button>
-                  </Link>
-                  <Link to="/contact" className="flex-1">
-                    <Button variant="outline" className="w-full">Info</Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
             {/* ADS 75.SI Standard */}
-            <Card className="card-tesla-hero">
-              <CardContent className="p-8">
-                <div className="bg-gradient-to-br from-accent to-accent-variant p-4 rounded-xl inline-flex mb-6">
-                  <Lock className="h-8 w-8 text-white" />
+            <div className="group relative h-96 rounded-2xl overflow-hidden cursor-pointer">
+              <div 
+                className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 group-hover:scale-110"
+                style={{ backgroundImage: `url(${designImage})` }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              
+              {/* Title */}
+              <div className="absolute top-6 left-6 z-10">
+                <div className="flex items-center gap-2 mb-2">
+                  <h3 className="text-3xl font-bold text-white">ADS 75.SI</h3>
+                  <span className="bg-accent text-accent-foreground text-xs px-2 py-1 rounded-full">STANDARD</span>
                 </div>
-                <h3 className="text-2xl font-semibold mb-4">ADS 75.SI</h3>
-                <p className="text-lg font-medium text-accent mb-2">Premium Standard</p>
-                <p className="text-muted-foreground mb-6">
-                  Uitstekende balans tussen prestaties en prijs. Ideaal voor nieuwbouw 
-                  en renovatie met hoge eisen aan comfort en veiligheid.
-                </p>
-                
-                <div className="space-y-4 mb-6">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Profieldiepte:</span>
-                    <span className="font-medium">75 mm</span>
+                <p className="text-lg font-medium text-accent-light">Premium Standard</p>
+              </div>
+              
+              {/* Hover Content */}
+              <div className="absolute inset-x-6 bottom-6 z-10 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
+                  <div className="space-y-3 mb-6">
+                    <div className="flex items-center gap-2">
+                      <Shield className="h-4 w-4 text-accent-light" />
+                      <span className="text-white text-sm font-medium">RC2/RC3 Beveiliging</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Lock className="h-4 w-4 text-accent-light" />
+                      <span className="text-white text-sm font-medium">75mm Profieldiepte</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Star className="h-4 w-4 text-accent-light" />
+                      <span className="text-white text-sm font-medium">Ud-waarde: 1,2 W/m²K</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Home className="h-4 w-4 text-accent-light" />
+                      <span className="text-white text-sm font-medium">Uitstekende balans</span>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">
-                      <TechnicalTooltip 
-                        term="Ud-waarde" 
-                        definition="Warmtedoorgangscoëfficiënt van de complete deur - hoe lager, hoe beter geïsoleerd"
-                      >
-                        Ud-waarde:
-                      </TechnicalTooltip>
-                    </span>
-                    <span className="font-medium text-accent">1,2 W/m²K</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">
-                      <TechnicalTooltip 
-                        term="RC-klasse" 
-                        definition="Resistance Class - inbraakweringsniveau waarbij RC3 uitstekende woningbeveiliging biedt"
-                      >
-                        Inbraakwering:
-                      </TechnicalTooltip>
-                    </span>
-                    <span className="font-medium text-accent">RC2/RC3</span>
+                  
+                  <TechnicalSpecDropdown 
+                    title="Volledige Specificaties ADS 75.SI"
+                    specs={ads75Specs}
+                  />
+                  
+                  <div className="flex gap-3 mt-4">
+                    <Link to="/offerte" className="flex-1">
+                      <Button className="w-full text-sm">Offerte</Button>
+                    </Link>
+                    <Link to="/contact" className="flex-1">
+                      <Button variant="outline" className="w-full text-sm bg-white/10 border-white/30 text-white hover:bg-white/20">Info</Button>
+                    </Link>
                   </div>
                 </div>
-
-                <TechnicalSpecDropdown 
-                  title="Volledige Specificaties ADS 75.SI"
-                  specs={ads75Specs}
-                />
-                
-                <div className="flex gap-3 mt-6">
-                  <Link to="/offerte" className="flex-1">
-                    <Button className="w-full" variant="outline">Offerte Aanvragen</Button>
-                  </Link>
-                  <Link to="/contact" className="flex-1">
-                    <Button variant="secondary" className="w-full">Info</Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
             {/* ADS 65 Basic */}
-            <Card className="card-tesla-hero">
-              <CardContent className="p-8">
-                <div className="bg-gradient-to-br from-secondary to-secondary-variant p-4 rounded-xl inline-flex mb-6">
-                  <Home className="h-8 w-8 text-white" />
+            <div className="group relative h-96 rounded-2xl overflow-hidden cursor-pointer">
+              <div 
+                className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 group-hover:scale-110"
+                style={{ backgroundImage: `url(${heroImage})` }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              
+              {/* Title */}
+              <div className="absolute top-6 left-6 z-10">
+                <div className="flex items-center gap-2 mb-2">
+                  <h3 className="text-3xl font-bold text-white">ADS 65</h3>
+                  <span className="bg-secondary text-secondary-foreground text-xs px-2 py-1 rounded-full">BASIS</span>
                 </div>
-                <h3 className="text-2xl font-semibold mb-4">ADS 65</h3>
-                <p className="text-lg font-medium text-secondary mb-2">Basis Kwaliteit</p>
-                <p className="text-muted-foreground mb-6">
-                  Betrouwbaar basissysteem dat alle essentiële eisen vervult. 
-                  Goede kwaliteit voor een aantrekkelijke prijs.
-                </p>
-                
-                <div className="space-y-4 mb-6">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Profieldiepte:</span>
-                    <span className="font-medium">65 mm</span>
+                <p className="text-lg font-medium text-secondary-light">Betrouwbare Basis</p>
+              </div>
+              
+              {/* Hover Content */}
+              <div className="absolute inset-x-6 bottom-6 z-10 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
+                  <div className="space-y-3 mb-6">
+                    <div className="flex items-center gap-2">
+                      <Shield className="h-4 w-4 text-secondary-light" />
+                      <span className="text-white text-sm font-medium">RC2 Standaard beveiliging</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Lock className="h-4 w-4 text-secondary-light" />
+                      <span className="text-white text-sm font-medium">65mm Profieldiepte</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Star className="h-4 w-4 text-secondary-light" />
+                      <span className="text-white text-sm font-medium">Ud-waarde: 1,6 W/m²K</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Home className="h-4 w-4 text-secondary-light" />
+                      <span className="text-white text-sm font-medium">Aantrekkelijke prijs</span>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">
-                      <TechnicalTooltip 
-                        term="Ud-waarde" 
-                        definition="Warmtedoorgangscoëfficiënt van de complete deur - hoe lager, hoe beter geïsoleerd"
-                      >
-                        Ud-waarde:
-                      </TechnicalTooltip>
-                    </span>
-                    <span className="font-medium text-secondary">1,6 W/m²K</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">
-                      <TechnicalTooltip 
-                        term="RC-klasse" 
-                        definition="Resistance Class - inbraakweringsniveau waarbij RC2 standaard woningbeveiliging biedt"
-                      >
-                        Inbraakwering:
-                      </TechnicalTooltip>
-                    </span>
-                    <span className="font-medium text-secondary">RC2</span>
+                  
+                  <TechnicalSpecDropdown 
+                    title="Volledige Specificaties ADS 65"
+                    specs={ads65Specs}
+                  />
+                  
+                  <div className="flex gap-3 mt-4">
+                    <Link to="/offerte" className="flex-1">
+                      <Button className="w-full text-sm">Offerte</Button>
+                    </Link>
+                    <Link to="/contact" className="flex-1">
+                      <Button variant="outline" className="w-full text-sm bg-white/10 border-white/30 text-white hover:bg-white/20">Info</Button>
+                    </Link>
                   </div>
                 </div>
-
-                <TechnicalSpecDropdown 
-                  title="Volledige Specificaties ADS 65"
-                  specs={ads65Specs}
-                />
-                
-                <div className="flex gap-3 mt-6">
-                  <Link to="/offerte" className="flex-1">
-                    <Button className="w-full" variant="secondary">Offerte Aanvragen</Button>
-                  </Link>
-                  <Link to="/contact" className="flex-1">
-                    <Button variant="outline" className="w-full">Info</Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
         </div>
       </section>
