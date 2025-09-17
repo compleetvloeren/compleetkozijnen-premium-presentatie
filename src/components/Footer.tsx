@@ -39,7 +39,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-gradient-to-br from-brand-black to-foreground text-white">
+    <footer className="bg-slate-900 text-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Footer Content */}
         <div className="py-16">
@@ -54,7 +54,7 @@ const Footer = () => {
                 />
               </div>
               
-              <p className="text-lg text-white/80 max-w-md">
+              <p className="text-lg text-slate-200 max-w-md">
                 Specialist in premium GEALAN kozijnsystemen. Van advies tot installatie, 
                 wij verzorgen het complete proces voor uw droomkozijnen.
               </p>
@@ -62,38 +62,38 @@ const Footer = () => {
               {/* Contact Info */}
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
-                  <MapPin className="h-5 w-5 text-red-400 mt-1 flex-shrink-0" />
+                  <MapPin className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
                   <div>
-                    <p className="font-medium">CompleetKozijnen B.V.</p>
-                    <p className="text-white/70">Voorbeeldstraat 123</p>
-                    <p className="text-white/70">1234 AB Voorbeeldstad</p>
+                    <p className="font-medium text-white">CompleetKozijnen B.V.</p>
+                    <p className="text-slate-300">Voorbeeldstraat 123</p>
+                    <p className="text-slate-300">1234 AB Voorbeeldstad</p>
                   </div>
                 </div>
 
                 <div className="flex items-center space-x-3">
-                  <Phone className="h-5 w-5 text-red-400" />
-                  <a href="tel:0851234567" className="hover:text-red-400 transition-colors">
+                  <Phone className="h-5 w-5 text-primary" />
+                  <a href="tel:0851234567" className="text-white hover:text-primary transition-colors">
                     085-123 4567
                   </a>
                 </div>
 
                 <div className="flex items-center space-x-3">
-                  <Mail className="h-5 w-5 text-red-400" />
+                  <Mail className="h-5 w-5 text-primary" />
                   <a 
                     href="mailto:info@compleetkozijnen.nl" 
-                    className="hover:text-red-400 transition-colors"
+                    className="text-white hover:text-primary transition-colors"
                   >
                     info@compleetkozijnen.nl
                   </a>
                 </div>
 
                 <div className="flex items-start space-x-3">
-                  <Clock className="h-5 w-5 text-red-400 mt-1" />
+                  <Clock className="h-5 w-5 text-primary mt-1" />
                   <div>
-                    <p className="font-medium">Openingstijden</p>
-                    <p className="text-white/70">Ma-Vr: 08:00 - 18:00</p>
-                    <p className="text-white/70">Za: 09:00 - 17:00</p>
-                    <p className="text-white/70">Zo: Gesloten</p>
+                    <p className="font-medium text-white">Openingstijden</p>
+                    <p className="text-slate-300">Ma-Vr: 08:00 - 18:00</p>
+                    <p className="text-slate-300">Za: 09:00 - 17:00</p>
+                    <p className="text-slate-300">Zo: Gesloten</p>
                   </div>
                 </div>
               </div>
@@ -111,7 +111,7 @@ const Footer = () => {
                       <li key={link.name}>
                         <Link 
                           to={link.path}
-                          className="text-white/70 hover:text-red-400 transition-colors text-sm"
+                          className="text-slate-300 hover:text-primary transition-colors text-sm"
                         >
                           {link.name}
                         </Link>
@@ -125,28 +125,28 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-white/10 py-8">
+        <div className="border-t border-slate-700 py-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="text-sm text-white/60">
+            <div className="text-sm text-slate-400">
               © {currentYear} CompleetKozijnen.nl. Alle rechten voorbehouden.
             </div>
             
             <div className="flex flex-wrap justify-center md:justify-end space-x-6 text-sm">
               <Link 
                 to="/privacy" 
-                className="text-white/60 hover:text-red-400 transition-colors"
+                className="text-slate-400 hover:text-primary transition-colors"
               >
                 Privacybeleid
               </Link>
               <Link 
                 to="/algemene-voorwaarden" 
-                className="text-white/60 hover:text-red-400 transition-colors"
+                className="text-slate-400 hover:text-primary transition-colors"
               >
                 Algemene Voorwaarden
               </Link>
               <Link 
                 to="/cookies" 
-                className="text-white/60 hover:text-red-400 transition-colors"
+                className="text-slate-400 hover:text-primary transition-colors"
               >
                 Cookiebeleid
               </Link>
@@ -154,22 +154,22 @@ const Footer = () => {
           </div>
 
           {/* Trust Badges */}
-          <div className="mt-8 pt-8 border-t border-white/10">
-            <div className="flex flex-wrap justify-center items-center gap-6 text-xs text-white/50">
+          <div className="mt-8 pt-8 border-t border-slate-700">
+            <div className="flex flex-wrap justify-center items-center gap-6 text-xs text-slate-400">
               <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-green-400 rounded-full" />
+                <div className="w-2 h-2 bg-primary rounded-full" />
                 <span>GEALAN Gecertificeerd Partner</span>
               </div>
               <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-green-400 rounded-full" />
+                <div className="w-2 h-2 bg-primary rounded-full" />
                 <span>KvK: 12345678</span>
               </div>
               <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-green-400 rounded-full" />
+                <div className="w-2 h-2 bg-primary rounded-full" />
                 <span>BTW: NL123456789B01</span>
               </div>
               <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-green-400 rounded-full" />
+                <div className="w-2 h-2 bg-primary rounded-full" />
                 <span>ISO 9001 Gecertificeerd</span>
               </div>
             </div>
