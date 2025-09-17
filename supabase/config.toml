@@ -1,1 +1,13 @@
 project_id = "odebqftzxdpfdwcyvfnx"
+
+[functions.submit-lead]
+verify_jwt = false
+
+[functions.submit-contact]
+verify_jwt = false
+
+[functions.dashboard-data]
+verify_jwt = true
+
+[functions.leads-crud]
+verify_jwt = true
