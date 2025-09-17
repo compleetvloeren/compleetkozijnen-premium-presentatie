@@ -94,10 +94,14 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     fetchData();
-    // Poll for new data every 30 seconds
-    const interval = setInterval(fetchData, 30000);
+    // Poll for new data every 30 seconds - but not after delete operations
+    const interval = setInterval(() => {
+      if (!isDeleting) {
+        fetchData(true);
+      }
+    }, 30000);
     return () => clearInterval(interval);
-  }, []);
+  }, [isDeleting]);
 
   const fetchData = async (isRefresh = false) => {
     try {

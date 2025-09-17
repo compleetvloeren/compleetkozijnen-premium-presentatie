@@ -16,6 +16,7 @@ serve(async (req) => {
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
+    const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     
     // Get JWT token from Authorization header
     const authHeader = req.headers.get('Authorization');
@@ -26,6 +27,7 @@ serve(async (req) => {
       });
     }
 
+    // Client with user JWT
     const supabase = createClient(supabaseUrl, supabaseAnonKey, {
       global: {
         headers: {
@@ -33,6 +35,9 @@ serve(async (req) => {
         },
       },
     });
+
+    // Admin client (bypasses RLS) - used only after explicit admin check
+    const adminClient = createClient(supabaseUrl, serviceRoleKey);
 
     // Verify user is authenticated and is admin
     const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -184,7 +189,7 @@ serve(async (req) => {
 
         console.log('Delete password verified for lead:', finalLeadId);
 
-        const { error: deleteError } = await supabase
+        const { error: deleteError } = await adminClient
           .from('leads')
           .delete()
           .eq('id', finalLeadId);
@@ -197,7 +202,7 @@ serve(async (req) => {
           });
         }
 
-        console.log('Lead deleted successfully:', finalLeadId);
+        console.log('Lead deleted successfully via DELETE:', finalLeadId);
         return new Response(JSON.stringify({ success: true, message: 'Lead deleted successfully' }), {
           status: 200,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -220,7 +225,7 @@ serve(async (req) => {
             headers: { ...corsHeaders, 'Content-Type': 'application/json' },
           });
         }
-        const { error: delErr } = await supabase
+        const { error: delErr } = await adminClient
           .from('leads')
           .delete()
           .eq('id', postLeadId);
@@ -231,6 +236,7 @@ serve(async (req) => {
             headers: { ...corsHeaders, 'Content-Type': 'application/json' },
           });
         }
+        console.log('Lead deleted successfully via POST:', postLeadId);
         return new Response(JSON.stringify({ success: true, message: 'Lead deleted successfully' }), {
           status: 200,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
