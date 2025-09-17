@@ -116,7 +116,7 @@ const ResponsiveBreadcrumb: React.FC<ResponsiveBreadcrumbProps> = ({
   const ellipsisPosition = needsEllipsis ? 1 : -1; // Position after Home
 
   return (
-    <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border/40 sticky top-0 z-40">
+    <div className="bg-background border-b border-border/40 relative z-30 mt-16 md:mt-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3">
         <Breadcrumb>
           <BreadcrumbList>
