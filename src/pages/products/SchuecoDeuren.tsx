@@ -6,8 +6,8 @@ import TechnicalSpecDropdown from '@/components/TechnicalSpecDropdown';
 import TechnicalTooltip from '@/components/TechnicalTooltip';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Shield, Lock, Home, Star } from 'lucide-react';
-import heroImage from '@/assets/schueco-doors-hero.jpg';
-import ads90Image from '@/assets/schueco-ads-90.jpg';
+import heroImage from '@/assets/schueco-deuren-hero-real.jpg';
+import designImage from '@/assets/schueco-deuren-design.jpg';
 
 const SchuecoDeuren = () => {
   const ads90Specs = [
@@ -265,12 +265,54 @@ const SchuecoDeuren = () => {
         </div>
       </section>
 
-      {/* Design Options */}
+      {/* Design showcase met echte Schüco afbeelding */}
       <section className="py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center mb-16">
-            <h2 className="text-display mb-6">Onbeperkte Designmogelijkheden</h2>
-            <p className="text-xl text-muted-foreground">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+            <div className="relative">
+              <img 
+                src={designImage} 
+                alt="Schüco Design Edition deur" 
+                className="rounded-xl shadow-2xl w-full h-auto"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-xl" />
+            </div>
+            
+            <div>
+              <h2 className="text-display mb-6">Design Edition</h2>
+              <p className="text-xl text-muted-foreground mb-8">
+                De Schüco Design Edition-deur voldoet aan hoge esthetische eisen met een verlichte, 
+                vlakke deurgreep in de deurvleugel. Energiebesparende LED-verlichting accentueert het discrete design.
+              </p>
+              <div className="space-y-4">
+                <div className="flex items-start">
+                  <div className="w-3 h-3 bg-primary rounded-full mt-2 mr-4 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-semibold mb-1">Verlichte deurgreep</h4>
+                    <p className="text-muted-foreground text-sm">Geïntegreerde LED-verlichting voor modern design</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="w-3 h-3 bg-primary rounded-full mt-2 mr-4 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-semibold mb-1">Vlakke deurvulling</h4>
+                    <p className="text-muted-foreground text-sm">Strak uiterlijk met uitstekende thermische isolatie</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="w-3 h-3 bg-primary rounded-full mt-2 mr-4 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-semibold mb-1">Superieure stabiliteit</h4>
+                    <p className="text-muted-foreground text-sm">Robuuste constructie voor lange levensduur</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="max-w-4xl mx-auto text-center">
+            <h3 className="text-2xl font-semibold mb-6">Onbeperkte Designmogelijkheden</h3>
+            <p className="text-xl text-muted-foreground mb-8">
               Van klassiek tot ultra-modern - SCHÜCO deursystemen passen bij elke architectuurstijl
             </p>
           </div>

@@ -6,7 +6,8 @@ import TechnicalSpecDropdown from '@/components/TechnicalSpecDropdown';
 import TechnicalTooltip from '@/components/TechnicalTooltip';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Maximize2, Sun, Wind, Layers } from 'lucide-react';
-import heroImage from '@/assets/schueco-sliding-hero.jpg';
+import heroImage from '@/assets/schueco-schuif-hero-real.jpg';
+import voorbeeldImage from '@/assets/schueco-schuif-voorbeeld.jpg';
 
 const SchuecoSchuifdeuren = () => {
   const ase80Specs = [
@@ -243,13 +244,55 @@ const SchuecoSchuifdeuren = () => {
         </div>
       </section>
 
-      {/* Features Section */}
+      {/* Voorbeeld showcase met echte Schüco afbeelding */}
       <section className="py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center mb-16">
-            <h2 className="text-display mb-6">Innovatieve Technologie voor Maximaal Comfort</h2>
-            <p className="text-xl text-muted-foreground">
-              SCHÜCO schuifsystemen combineren elegantie met geavanceerde techniek voor ultiem gebruiksgemak
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+            <div>
+              <h2 className="text-display mb-6">Innovatieve Technologie voor Maximaal Comfort</h2>
+              <p className="text-xl text-muted-foreground mb-8">
+                SCHÜCO schuifsystemen combineren elegantie met geavanceerde techniek voor ultiem gebruiksgemak. 
+                Grote glasoppervlakken zorgen voor een naadloze verbinding tussen binnen en buiten.
+              </p>
+              <div className="space-y-4">
+                <div className="flex items-start">
+                  <div className="w-3 h-3 bg-primary rounded-full mt-2 mr-4 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-semibold mb-1">Schuifdeuren vs Vouwwanden</h4>
+                    <p className="text-muted-foreground text-sm">Schuifdeuren bestaan uit grote delen die horizontaal schuiven</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="w-3 h-3 bg-primary rounded-full mt-2 mr-4 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-semibold mb-1">Vouwwanden</h4>
+                    <p className="text-muted-foreground text-sm">Vouwen als harmonica in elkaar voor volledige opening</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="w-3 h-3 bg-primary rounded-full mt-2 mr-4 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-semibold mb-1">Hydraulische ondersteuning</h4>
+                    <p className="text-muted-foreground text-sm">Moeiteloze bediening ook bij zware glaspartijen</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="relative">
+              <img 
+                src={voorbeeldImage} 
+                alt="Schüco schuifdeuren voorbeeld" 
+                className="rounded-xl shadow-2xl w-full h-auto"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-xl" />
+            </div>
+          </div>
+          
+          <div className="max-w-4xl mx-auto text-center">
+            <h3 className="text-2xl font-semibold mb-6">Innovatieve Features</h3>
+            <p className="text-xl text-muted-foreground mb-8">
+              Geavanceerde technologie voor optimaal gebruiksgemak en comfort
             </p>
           </div>
           

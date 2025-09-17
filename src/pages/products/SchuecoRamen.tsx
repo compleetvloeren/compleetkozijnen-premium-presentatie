@@ -6,8 +6,8 @@ import TechnicalSpecDropdown from '@/components/TechnicalSpecDropdown';
 import TechnicalTooltip from '@/components/TechnicalTooltip';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Thermometer, Shield, Eye, Zap } from 'lucide-react';
-import heroImage from '@/assets/schueco-windows-hero.jpg';
-import aws75Image from '@/assets/schueco-aws-75.jpg';
+import heroImage from '@/assets/schueco-ramen-hero-real.jpg';
+import woningImage from '@/assets/schueco-ramen-woning.jpg';
 
 const SchuecoRamen = () => {
   const aws75Specs = [
@@ -244,12 +244,54 @@ const SchuecoRamen = () => {
         </div>
       </section>
 
-      {/* Features Section */}
+      {/* Features met echte Schüco afbeelding */}
       <section className="py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center mb-16">
-            <h2 className="text-display mb-6">Waarom SCHÜCO Raamsystemen?</h2>
-            <p className="text-xl text-muted-foreground">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+            <div>
+              <h2 className="text-display mb-6">De Perfecte Basis</h2>
+              <p className="text-xl text-muted-foreground mb-8">
+                Aluminium als de perfecte basis. Met een hoge mate van stabiliteit, energiezuinig, 
+                met een scala aan kleuren en oppervlakteafwerkingen en smalle aanzichten.
+              </p>
+              <div className="space-y-4">
+                <div className="flex items-start">
+                  <div className="w-3 h-3 bg-primary rounded-full mt-2 mr-4 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-semibold mb-1">Eigen beslagsysteem Schüco SimplySmart</h4>
+                    <p className="text-muted-foreground text-sm">Voldoet aan de hoogste kwaliteitseisen</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="w-3 h-3 bg-primary rounded-full mt-2 mr-4 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-semibold mb-1">Verlijmde hoekoverbrengingen</h4>
+                    <p className="text-muted-foreground text-sm">Voor de meest perfecte en stabiele hoekverbindingen</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="w-3 h-3 bg-primary rounded-full mt-2 mr-4 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-semibold mb-1">Asymmetrische profielopbouw</h4>
+                    <p className="text-muted-foreground text-sm">Thermische scheiding exact in het midden van de isolatoren</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="relative">
+              <img 
+                src={woningImage} 
+                alt="Schüco ramen in moderne woning" 
+                className="rounded-xl shadow-2xl w-full h-auto"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-xl" />
+            </div>
+          </div>
+          
+          <div className="max-w-4xl mx-auto text-center">
+            <h3 className="text-2xl font-semibold mb-6">Waarom SCHÜCO Raamsystemen?</h3>
+            <p className="text-xl text-muted-foreground mb-8">
               Geavanceerde technologie en Duitse precisie voor maximaal wooncomfort
             </p>
           </div>
