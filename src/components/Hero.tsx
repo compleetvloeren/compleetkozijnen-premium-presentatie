@@ -6,23 +6,14 @@ import heroImage from '@/assets/hero-home.jpg';
 const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 md:pt-20">
-      {/* Background Video */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        <iframe
-          src="https://player.vimeo.com/video/1119535890?autoplay=1&loop=1&muted=1&controls=0&title=0&byline=0&portrait=0&background=1"
-          className="absolute top-1/2 left-1/2 w-full h-full min-w-full min-h-full border-0"
-          style={{ 
-            width: '177.77777778vh',
-            height: '56.25vw',
-            minWidth: '100%',
-            minHeight: '100%',
-            transform: 'translate(-50%, -50%)'
-          }}
-          frameBorder="0"
-          allow="autoplay; fullscreen"
-          title="Premium kozijnen video"
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src={heroImage} 
+          alt="Moderne luxe woning met premium kozijnen"
+          className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/20 to-black/50" />
+        <div className="absolute inset-0 bg-gradient-to-br from-black/50 via-black/30 to-black/60" />
       </div>
 
       {/* Content */}

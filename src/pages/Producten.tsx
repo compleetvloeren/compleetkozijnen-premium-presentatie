@@ -177,19 +177,50 @@ const Producten = () => {
     <div className="min-h-screen">
       <Navigation />
       
-      {/* Hero Section */}
-      <section className="pt-24 pb-16 bg-gradient-to-br from-background to-muted/30">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center animate-fade-in">
-            <h1 className="text-display-large mb-6">
+      {/* Video Hero Section */}
+      <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden pt-16 md:pt-20">
+        {/* Background Video */}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <iframe
+            src="https://player.vimeo.com/video/1119535890?autoplay=1&loop=1&muted=1&controls=0&title=0&byline=0&portrait=0&background=1"
+            className="absolute top-1/2 left-1/2 w-full h-full min-w-full min-h-full border-0"
+            style={{ 
+              width: '177.77777778vh',
+              height: '56.25vw',
+              minWidth: '100%',
+              minHeight: '100%',
+              transform: 'translate(-50%, -50%)'
+            }}
+            frameBorder="0"
+            allow="autoplay; fullscreen"
+            title="GEALAN S-9000 kozijnsystemen video"
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/20 to-black/50" />
+        </div>
+
+        {/* Content */}
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+          <div className="max-w-4xl mx-auto animate-fade-in">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 md:mb-6 leading-tight">
               GEALAN S-9000
-              <span className="block text-transparent bg-gradient-to-r from-primary to-accent bg-clip-text">
+              <span className="block text-transparent bg-gradient-to-r from-red-400 to-red-600 bg-clip-text">
                 Kozijnsystemen
               </span>
             </h1>
-            <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-light mb-6 md:mb-8 text-white/90 max-w-3xl mx-auto leading-relaxed px-4">
               Ontdek onze complete range GEALAN S-9000 kozijnsystemen. Van slank en modern tot robuust en klassiek - 
-              er is altijd een perfecte match voor uw woning. Speciaal ontwikkeld voor de Nederlandse markt met 
+              er is altijd een perfecte match voor uw woning.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Text Section */}
+      <section className="py-16 bg-gradient-to-br from-background to-muted/30">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto text-center animate-fade-in">
+            <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
+              Speciaal ontwikkeld voor de Nederlandse markt met 
               <TechnicalTooltip {...getTechnicalTerm('3-dichting-systeem')}>
                 <span className="font-semibold"> 3-dichting systeem</span>
               </TechnicalTooltip> en 
