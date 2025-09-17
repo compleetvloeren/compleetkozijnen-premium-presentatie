@@ -27,7 +27,7 @@ const Navigation = () => {
             <img 
               src={logo} 
               alt="CompleetKozijnen.nl"
-              className="h-12 w-auto md:h-14 object-contain"
+              className="h-24 w-auto md:h-28 object-contain"
             />
           </Link>
 
