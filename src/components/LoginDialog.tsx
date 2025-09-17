@@ -73,7 +73,7 @@ export const LoginDialog: React.FC = () => {
           className="text-slate-400 hover:text-primary transition-colors"
         >
           <User className="h-4 w-4 mr-2" />
-          Dashboard
+          Login
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
