@@ -137,7 +137,7 @@ const Producten = () => {
                     ))}
                   </div>
 
-                  <div className="flex flex-col gap-3">
+                  <div className="flex flex-col gap-3 min-h-[120px] justify-end">
                     <Link to={brand.route} className="w-full">
                       <Button 
                         className={`btn-hero w-full ${brand.status !== 'Beschikbaar' ? 'opacity-75' : ''}`}
