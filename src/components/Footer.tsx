@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 import logo from '@/assets/compleet-kozijnen-logo.png';
+import { LoginDialog } from './LoginDialog';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -112,7 +113,7 @@ const Footer = () => {
               © {currentYear} Compleet Kozijnen B.V. Alle rechten voorbehouden.
             </div>
             
-            <div className="flex flex-wrap justify-center md:justify-end space-x-6 text-sm">
+            <div className="flex flex-wrap justify-center md:justify-end items-center space-x-6 text-sm">
               <Link 
                 to="/privacy" 
                 className="text-slate-400 hover:text-primary transition-colors"
@@ -131,6 +132,7 @@ const Footer = () => {
               >
                 Cookiebeleid
               </Link>
+              <LoginDialog />
             </div>
           </div>
 
