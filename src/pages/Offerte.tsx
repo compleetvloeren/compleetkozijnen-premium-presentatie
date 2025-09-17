@@ -103,7 +103,7 @@ const Offerte = () => {
         name: `${formData.firstName} ${formData.lastName}`.trim(),
         email: formData.email,
         phone: formData.phone,
-        projectType: formData.projectType,
+        projectType: mapProjectTypeToDbFormat(formData.projectType),
         budgetRange: mapBudgetToDbFormat(formData.budget),
         timeline: formData.timeline,
         location: `${formData.address}, ${formData.postalCode} ${formData.city}`.trim(),
@@ -167,6 +167,19 @@ const Offerte = () => {
       case '25000-50000': return '25000-50000';
       case '50000-plus': return '50000+';
       default: return 'onbekend';
+    }
+  };
+
+  const mapProjectTypeToDbFormat = (projectType: string) => {
+    switch (projectType) {
+      case 'nieuwbouw': return 'nieuwbouw';
+      case 'renovatie': return 'renovatie';
+      case 'vervanging': return 'kozijnen'; // Map vervanging to kozijnen
+      case 'uitbreiding': return 'renovatie'; // Map uitbreiding to renovatie
+      case 'ramen': return 'ramen';
+      case 'deuren': return 'deuren';
+      case 'schuifdeuren': return 'schuifdeuren';
+      default: return 'kozijnen';
     }
   };
 
