@@ -3,8 +3,11 @@ import { Button } from '@/components/ui/button';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Shield, Home, Maximize2, Building } from 'lucide-react';
-import heroImage from '@/assets/schueco-main-hero.jpg';
+import { ArrowRight, Shield, Home, Maximize2, Building, Eye } from 'lucide-react';
+import heroImage from '@/assets/schueco-hero-new.jpg';
+import windowsImage from '@/assets/schueco-windows-modern.jpg';
+import doorsImage from '@/assets/schueco-doors-modern.jpg';
+import slidingImage from '@/assets/schueco-sliding-premium.jpg';
 
 const SchuecoProdukten = () => {
   return (
@@ -49,7 +52,7 @@ const SchuecoProdukten = () => {
       </section>
 
       {/* Product Categories */}
-      <section className="py-20 bg-gradient-to-br from-background via-muted/20 to-background">
+      <section className="py-20 bg-background">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-display mb-4">Onze SCHÜCO Productcategorieën</h2>
@@ -59,108 +62,159 @@ const SchuecoProdukten = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             {/* Raamsystemen */}
-            <Card className="card-tesla-hero group hover:scale-105 transition-all duration-300">
-              <CardContent className="p-8 text-center">
-                <div className="bg-gradient-to-br from-primary to-primary-variant p-6 rounded-xl inline-flex mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <Home className="h-12 w-12 text-white" />
+            <div className="group relative overflow-hidden rounded-2xl h-[500px] cursor-pointer">
+              <div 
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                style={{ backgroundImage: `url(${windowsImage})` }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              
+              {/* Content */}
+              <div className="absolute top-6 left-6 z-10">
+                <h3 className="text-3xl font-bold text-white mb-2">Raamsystemen</h3>
+                <p className="text-white/80 text-sm">AWS Serie Premium</p>
+              </div>
+              
+              {/* Hover Content */}
+              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-8">
+                <div className="text-center text-white transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                    <h4 className="text-xl font-semibold mb-4">Premium Features</h4>
+                    <ul className="space-y-2 text-sm mb-6">
+                      <li className="flex items-center justify-center">
+                        <div className="w-2 h-2 bg-white rounded-full mr-3" />
+                        <span>AWS 75.SI+ Premium systeem</span>
+                      </li>
+                      <li className="flex items-center justify-center">
+                        <div className="w-2 h-2 bg-white rounded-full mr-3" />
+                        <span>Uitstekende isolatiewaarden</span>
+                      </li>
+                      <li className="flex items-center justify-center">
+                        <div className="w-2 h-2 bg-white rounded-full mr-3" />
+                        <span>Moderne designopties</span>
+                      </li>
+                    </ul>
+                    <Link to="/producten/schueco/ramen">
+                      <Button className="w-full bg-white text-black hover:bg-white/90">
+                        Bekijk Raamsystemen
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
-                <h3 className="text-2xl font-semibold mb-4">Raamsystemen</h3>
-                <p className="text-muted-foreground mb-6 leading-relaxed">
-                  AWS serie aluminium raamsystemen met superieure isolatie en moderne esthetiek. 
-                  Perfect voor nieuwbouw en renovatie.
-                </p>
-                <ul className="text-sm space-y-2 mb-6 text-left">
-                  <li className="flex items-center">
-                    <div className="w-2 h-2 bg-primary rounded-full mr-3" />
-                    <span>AWS 75.SI+ Premium systeem</span>
-                  </li>
-                  <li className="flex items-center">
-                    <div className="w-2 h-2 bg-primary rounded-full mr-3" />
-                    <span>Uitstekende isolatiewaarden</span>
-                  </li>
-                  <li className="flex items-center">
-                    <div className="w-2 h-2 bg-primary rounded-full mr-3" />
-                    <span>Moderne designopties</span>
-                  </li>
-                </ul>
-                <Link to="/producten/schueco/ramen">
-                  <Button className="w-full">
-                    Bekijk Raamsystemen
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
+              </div>
+              
+              {/* View Icon */}
+              <div className="absolute top-6 right-6 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="bg-white/20 backdrop-blur-sm rounded-full p-3">
+                  <Eye className="h-6 w-6 text-white" />
+                </div>
+              </div>
+            </div>
 
             {/* Deursystemen */}
-            <Card className="card-tesla-hero group hover:scale-105 transition-all duration-300">
-              <CardContent className="p-8 text-center">
-                <div className="bg-gradient-to-br from-accent to-accent-variant p-6 rounded-xl inline-flex mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <Shield className="h-12 w-12 text-white" />
+            <div className="group relative overflow-hidden rounded-2xl h-[500px] cursor-pointer">
+              <div 
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                style={{ backgroundImage: `url(${doorsImage})` }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              
+              {/* Content */}
+              <div className="absolute top-6 left-6 z-10">
+                <h3 className="text-3xl font-bold text-white mb-2">Deursystemen</h3>
+                <p className="text-white/80 text-sm">ADS Serie Entrance</p>
+              </div>
+              
+              {/* Hover Content */}
+              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-8">
+                <div className="text-center text-white transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                    <h4 className="text-xl font-semibold mb-4">Security & Design</h4>
+                    <ul className="space-y-2 text-sm mb-6">
+                      <li className="flex items-center justify-center">
+                        <div className="w-2 h-2 bg-white rounded-full mr-3" />
+                        <span>ADS 90.SI Entrance doors</span>
+                      </li>
+                      <li className="flex items-center justify-center">
+                        <div className="w-2 h-2 bg-white rounded-full mr-3" />
+                        <span>RC2-RC3 veiligheidscertificering</span>
+                      </li>
+                      <li className="flex items-center justify-center">
+                        <div className="w-2 h-2 bg-white rounded-full mr-3" />
+                        <span>Brede designkeuzes</span>
+                      </li>
+                    </ul>
+                    <Link to="/producten/schueco/deuren">
+                      <Button className="w-full bg-white text-black hover:bg-white/90">
+                        Bekijk Deursystemen
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
-                <h3 className="text-2xl font-semibold mb-4">Deursystemen</h3>
-                <p className="text-muted-foreground mb-6 leading-relaxed">
-                  ADS serie aluminium deursystemen die veiligheid en design perfect combineren. 
-                  Van klassiek tot ultra-modern.
-                </p>
-                <ul className="text-sm space-y-2 mb-6 text-left">
-                  <li className="flex items-center">
-                    <div className="w-2 h-2 bg-accent rounded-full mr-3" />
-                    <span>ADS 90.SI Entrance doors</span>
-                  </li>
-                  <li className="flex items-center">
-                    <div className="w-2 h-2 bg-accent rounded-full mr-3" />
-                    <span>RC2-RC3 veiligheidscertificering</span>
-                  </li>
-                  <li className="flex items-center">
-                    <div className="w-2 h-2 bg-accent rounded-full mr-3" />
-                    <span>Brede designkeuzes</span>
-                  </li>
-                </ul>
-                <Link to="/producten/schueco/deuren">
-                  <Button className="w-full" variant="outline">
-                    Bekijk Deursystemen
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
+              </div>
+              
+              {/* View Icon */}
+              <div className="absolute top-6 right-6 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="bg-white/20 backdrop-blur-sm rounded-full p-3">
+                  <Eye className="h-6 w-6 text-white" />
+                </div>
+              </div>
+            </div>
 
             {/* Schuifdeuren */}
-            <Card className="card-tesla-hero group hover:scale-105 transition-all duration-300">
-              <CardContent className="p-8 text-center">
-                <div className="bg-gradient-to-br from-secondary to-secondary-variant p-6 rounded-xl inline-flex mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <Maximize2 className="h-12 w-12 text-white" />
+            <div className="group relative overflow-hidden rounded-2xl h-[500px] cursor-pointer">
+              <div 
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                style={{ backgroundImage: `url(${slidingImage})` }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              
+              {/* Content */}
+              <div className="absolute top-6 left-6 z-10">
+                <h3 className="text-3xl font-bold text-white mb-2">Schuifdeuren</h3>
+                <p className="text-white/80 text-sm">ASE/ASS Sliding Systems</p>
+              </div>
+              
+              {/* Hover Content */}
+              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-8">
+                <div className="text-center text-white transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                    <h4 className="text-xl font-semibold mb-4">Maximale Ruimte</h4>
+                    <ul className="space-y-2 text-sm mb-6">
+                      <li className="flex items-center justify-center">
+                        <div className="w-2 h-2 bg-white rounded-full mr-3" />
+                        <span>ASE 80.HI Hef-schuifsysteem</span>
+                      </li>
+                      <li className="flex items-center justify-center">
+                        <div className="w-2 h-2 bg-white rounded-full mr-3" />
+                        <span>Grote glasoppervlakken</span>
+                      </li>
+                      <li className="flex items-center justify-center">
+                        <div className="w-2 h-2 bg-white rounded-full mr-3" />
+                        <span>Soepele bediening</span>
+                      </li>
+                    </ul>
+                    <Link to="/producten/schueco/schuifdeuren">
+                      <Button className="w-full bg-white text-black hover:bg-white/90">
+                        Bekijk Schuifdeuren
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
-                <h3 className="text-2xl font-semibold mb-4">Schuifdeuren & Vouwwanden</h3>
-                <p className="text-muted-foreground mb-6 leading-relaxed">
-                  ASE/ASS serie voor maximale glasoppervlakken en naadloze binnen-buiten overgang. 
-                  Innovatief en functioneel.
-                </p>
-                <ul className="text-sm space-y-2 mb-6 text-left">
-                  <li className="flex items-center">
-                    <div className="w-2 h-2 bg-secondary rounded-full mr-3" />
-                    <span>ASE 80.HI Hef-schuifsysteem</span>
-                  </li>
-                  <li className="flex items-center">
-                    <div className="w-2 h-2 bg-secondary rounded-full mr-3" />
-                    <span>Grote glasoppervlakken</span>
-                  </li>
-                  <li className="flex items-center">
-                    <div className="w-2 h-2 bg-secondary rounded-full mr-3" />
-                    <span>Soepele bediening</span>
-                  </li>
-                </ul>
-                <Link to="/producten/schueco/schuifdeuren">
-                  <Button className="w-full" variant="secondary">
-                    Bekijk Schuifdeuren
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
+              </div>
+              
+              {/* View Icon */}
+              <div className="absolute top-6 right-6 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="bg-white/20 backdrop-blur-sm rounded-full p-3">
+                  <Eye className="h-6 w-6 text-white" />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
