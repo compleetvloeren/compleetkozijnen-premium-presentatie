@@ -102,7 +102,7 @@ const SchuecoSchuifdeuren = () => {
                   <h3 className="text-3xl font-bold text-white">ASE 80.HI</h3>
                   <span className="bg-primary text-primary-foreground text-xs px-2 py-1 rounded-full">PREMIUM</span>
                 </div>
-                <p className="text-lg font-medium text-primary-light">Hef-schuifsysteem Ultra</p>
+                <p className="text-lg font-medium text-primary-light">Hef-schuif & Vouwwanden</p>
               </div>
               
               {/* Hover Content */}
@@ -111,7 +111,11 @@ const SchuecoSchuifdeuren = () => {
                   <div className="space-y-3 mb-6">
                     <div className="flex items-center gap-2">
                       <Maximize2 className="h-4 w-4 text-primary-light" />
-                      <span className="text-white text-sm font-medium">400kg per vleugel</span>
+                      <span className="text-white text-sm font-medium">400kg per vleugel - Schuifdeuren</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Layers className="h-4 w-4 text-primary-light" />
+                      <span className="text-white text-sm font-medium">Vouwwanden tot 7 meter breed</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Wind className="h-4 w-4 text-primary-light" />
@@ -151,7 +155,7 @@ const SchuecoSchuifdeuren = () => {
               {/* Title */}
               <div className="absolute top-6 left-6 z-10">
                 <h3 className="text-3xl font-bold text-white mb-2">ASS 77.PD</h3>
-                <p className="text-lg font-medium text-accent-light">Panorama Schuifdeuren</p>
+                <p className="text-lg font-medium text-accent-light">Schuifdeuren & Vouwwanden</p>
               </div>
               
               {/* Hover Content */}
@@ -160,7 +164,11 @@ const SchuecoSchuifdeuren = () => {
                   <div className="space-y-3 mb-6">
                     <div className="flex items-center gap-2">
                       <Sun className="h-4 w-4 text-accent-light" />
-                      <span className="text-white text-sm font-medium">Elegante schuifdeuren</span>
+                      <span className="text-white text-sm font-medium">Panoramische schuifdeuren</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Layers className="h-4 w-4 text-accent-light" />
+                      <span className="text-white text-sm font-medium">Vouwwanden 2-7 vleugels</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Maximize2 className="h-4 w-4 text-accent-light" />
@@ -200,7 +208,7 @@ const SchuecoSchuifdeuren = () => {
               {/* Title */}
               <div className="absolute top-6 left-6 z-10">
                 <h3 className="text-3xl font-bold text-white mb-2">ASE 67.PD</h3>
-                <p className="text-lg font-medium text-secondary-light">Basis Schuifsysteem</p>
+                <p className="text-lg font-medium text-secondary-light">Basis Schuif & Vouw</p>
               </div>
               
               {/* Hover Content */}
@@ -209,7 +217,11 @@ const SchuecoSchuifdeuren = () => {
                   <div className="space-y-3 mb-6">
                     <div className="flex items-center gap-2">
                       <Layers className="h-4 w-4 text-secondary-light" />
-                      <span className="text-white text-sm font-medium">Betrouwbaar basis systeem</span>
+                      <span className="text-white text-sm font-medium">Standaard schuifdeuren</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Sun className="h-4 w-4 text-secondary-light" />
+                      <span className="text-white text-sm font-medium">Compacte vouwwanden</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Maximize2 className="h-4 w-4 text-secondary-light" />
