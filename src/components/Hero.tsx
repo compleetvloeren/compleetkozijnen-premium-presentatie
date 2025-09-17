@@ -21,7 +21,7 @@ const Hero = () => {
         <div className="max-w-4xl mx-auto animate-fade-in">
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 md:mb-6 leading-tight">
             Premium Kozijnen
-            <span className="block text-transparent bg-gradient-to-r from-red-400 to-red-600 bg-clip-text">
+            <span className="block text-white">
               Compleet Geïnstalleerd
             </span>
           </h1>
