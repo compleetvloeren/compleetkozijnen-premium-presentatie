@@ -288,27 +288,37 @@ const Producten = () => {
         </div>
       </section>
 
-      {/* Technical Features */}
-      <section className="py-16 bg-gradient-to-br from-muted/30 to-background">
+      {/* Technical Excellence */}
+      <section className="py-20 bg-gradient-to-br from-background via-muted/20 to-background">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-display mb-6">Technische Specificaties</h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Alle GEALAN S-9000 systemen voldoen aan de hoogste Nederlandse normen en eisen. 
-              Ontdek waarom CompleetKozijnen uw partner is voor premium kozijnsystemen.
+          <div className="text-center mb-16">
+            <h2 className="text-display mb-6">
+              Technische 
+              <span className="block text-transparent bg-gradient-to-r from-primary to-accent bg-clip-text">
+                Excellentie
+              </span>
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Ontdek de geavanceerde technologieën die onze GEALAN S-9000 systemen tot de beste keuze maken
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {technicalFeatures.map((feature, index) => (
-              <Card key={feature.title} className="card-tesla text-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {technicalFeatures.slice(0, 6).map((feature, index) => (
+              <Card key={feature.title} className="card-tesla-hero group hover:shadow-lg transition-[var(--transition-spring)]">
                 <CardContent className="p-6">
-                  <div className="bg-gradient-to-br from-primary to-accent p-4 rounded-xl inline-flex mb-4">
-                    <feature.icon className="h-8 w-8 text-white" />
+                  <div className="flex items-start gap-4">
+                    <div className="bg-gradient-to-br from-primary to-accent p-3 rounded-lg shrink-0 group-hover:scale-105 transition-[var(--transition-spring)]">
+                      <feature.icon className="h-6 w-6 text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-title mb-2 group-hover:text-primary transition-colors">{feature.title}</h3>
+                      <p className="text-sm text-muted-foreground mb-2 leading-relaxed">{feature.description}</p>
+                      <div className="text-xs font-semibold text-primary bg-primary/10 rounded-full px-3 py-1 inline-block">
+                        {feature.specs}
+                      </div>
+                    </div>
                   </div>
-                  <h3 className="text-title mb-3">{feature.title}</h3>
-                  <p className="text-body text-muted-foreground mb-3">{feature.description}</p>
-                  <div className="text-sm font-semibold text-primary">{feature.specs}</div>
                 </CardContent>
               </Card>
             ))}
