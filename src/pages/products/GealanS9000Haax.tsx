@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Download, CheckCircle, Thermometer, Shield, Droplets, Wind } from 'lucide-react';
 import TechnicalTooltip from '@/components/TechnicalTooltip';
+import TechnicalSpecDropdown from '@/components/TechnicalSpecDropdown';
 import { getTechnicalTerm } from '@/lib/technicalGlossary';
 import gealanHaaxImage from '@/assets/gealan-s9000-haax.png';
 import gealanHaaxProfile from '@/assets/gealan-s9000-haax-profile.png';
@@ -30,17 +31,69 @@ De 4° schuinte geeft het kozijn een klassieke uitstraling, terwijl de verstevig
       'Lange levensduur door kwaliteitsmateriaal',
       'Nederlandse markt geoptimaliseerd'
     ],
-    technicalSpecs: {
-      profiel: '5-kamer blokprofiel systeem',
-      dichting: '3-dichting systeem voor optimale afdichting',
-      schuinte: '4° schuinte voor klassieke uitstraling',
-      aanzicht: 'Blokprofiel rondom 86mm voor robuuste uitstraling',
-      constructie: 'Verstevigde constructie voor maximale stabiliteit',
-      glassysteem: 'Tot 52 mm glaspakket met STV® lijmtechniek',
-      kleursysteem: 'GEALAN-ACRYLCOLOR® voor duurzame kleurechtheid',
-      isolatie: 'IKD® isolatieschuim profielen',
-      bouwdiepte: '120 mm inbouwdiepte'
-    },
+    technicalSpecs: [
+      {
+        key: '5-kamertechnologie',
+        label: 'Profiel Systeem',
+        value: '5-kamer blokprofiel systeem',
+        description: 'Robuust blokprofiel design met vijf kamers voor maximale stevigheid en isolatie.',
+        hasTooltip: true
+      },
+      {
+        key: '3-dichting-systeem',
+        label: 'Dichting',
+        value: '3-dichting systeem',
+        description: 'Drie afzonderlijke dichtingen rondom het kozijn voor optimale lucht- en waterdichtheid.',
+        hasTooltip: true
+      },
+      {
+        key: 'schuinte',
+        label: 'Schuinte',
+        value: '4° schuinte voor klassieke uitstraling',
+        description: 'De 4° schuinte biedt een robuuste, klassieke uitstraling perfect voor traditionele architectuur.',
+        hasTooltip: true
+      },
+      {
+        key: 'aanzicht',
+        label: 'Aanzichtbreedte',
+        value: 'Blokprofiel rondom 86mm',
+        description: 'Robuuste aanzichtbreedte van 86mm voor een krachtige en zichtbare kozijnuitstraling.'
+      },
+      {
+        key: 'constructie',
+        label: 'Constructie',
+        value: 'Verstevigde constructie',
+        description: 'Extra verstevigde constructie voor maximale stabiliteit en lange levensduur.'
+      },
+      {
+        key: 'stv-lijmtechniek',
+        label: 'Glassysteem',
+        value: 'Tot 52 mm met STV® lijmtechniek',
+        description: 'Statische droge verlijming waarbij glas en profiel één sterk geheel vormen.',
+        hasTooltip: true
+      },
+      {
+        key: 'gealan-acrylcolor',
+        label: 'Kleursysteem',
+        value: 'GEALAN-ACRYLCOLOR®',
+        description: 'Duurzaam kleursysteem met 40+ jaar bewezen kwaliteit en superieure weerbestendigheid.',
+        hasTooltip: true
+      },
+      {
+        key: 'ikd-isolatieschuim',
+        label: 'Isolatie',
+        value: 'IKD® isolatieschuim profielen',
+        description: 'Speciale isolatieprofielen die de thermische eigenschappen verder verbeteren.',
+        hasTooltip: true
+      },
+      {
+        key: 'inbouwdiepte',
+        label: 'Bouwdiepte',
+        value: '120 mm inbouwdiepte',
+        description: 'Standaard 120mm bouwdiepte biedt ruimte voor uitstekende isolatie.',
+        hasTooltip: true
+      }
+    ],
     applications: [
       'Traditionele woningen met robuuste uitstraling',
       'Renovatieprojecten waar stevigheid vereist is',
@@ -233,18 +286,12 @@ De 4° schuinte geeft het kozijn een klassieke uitstraling, terwijl de verstevig
             {/* Technical Specifications */}
             <div>
               <h2 className="text-display mb-6">Technische Specificaties</h2>
-              <Card className="card-tesla mb-8">
-                <CardContent className="p-6">
-                  <div className="space-y-4">
-                    {Object.entries(productData.technicalSpecs).map(([key, value]) => (
-                      <div key={key} className="flex justify-between items-start border-b border-border/50 pb-3 last:border-0 last:pb-0">
-                        <span className="text-muted-foreground capitalize font-medium">{key}</span>
-                        <span className="text-right font-semibold max-w-xs">{value}</span>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="mb-8">
+                <TechnicalSpecDropdown 
+                  title="Technische Specificaties" 
+                  specs={productData.technicalSpecs} 
+                />
+              </div>
 
               {/* Applications */}
               <div className="mb-8">

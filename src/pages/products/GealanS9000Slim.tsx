@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Download, CheckCircle, Thermometer, Shield, Droplets, Wind, Minimize2 } from 'lucide-react';
 import TechnicalTooltip from '@/components/TechnicalTooltip';
+import TechnicalSpecDropdown from '@/components/TechnicalSpecDropdown';
 import { getTechnicalTerm } from '@/lib/technicalGlossary';
 import gealanSlimImage from '@/assets/gealan-s9000-slim.png';
 import gealanSlimProfile from '@/assets/gealan-s9000-slim-profile.png';
@@ -30,18 +31,73 @@ Dit systeem is ideaal voor moderne woningen waar clean lines en een minimalistis
       'Strak lijnenspel en cleane afwerking',
       'Ook geschikt voor wisselopeningen'
     ],
-    technicalSpecs: {
-      profiel: '5-kamer slim profiel systeem',
-      dichting: '3-dichting systeem voor optimale afdichting',
-      bouwdiepte: 'Compacte 82,5 mm bouwdiepte voor slanke uitstraling',
-      design: 'Vlakke optiek voor minimalistisch karakter',
-      toepassing: 'Wisselopeningen en vaste beglazing mogelijk',
-      glassysteem: 'Tot 48 mm glaspakket optimaal voor slim profiel',
-      kleursysteem: 'GEALAN-ACRYLCOLOR® voor duurzame kleurechtheid',
-      isolatie: 'Aangepaste isolatieprofielen voor slanke bouw',
-      esthetiek: 'Clean lines en moderne uitstraling',
-      flexibiliteit: 'Geschikt voor diverse architectuurstijlen'
-    },
+    technicalSpecs: [
+      {
+        key: '5-kamertechnologie',
+        label: 'Profiel Systeem',
+        value: '5-kamer slim profiel systeem',
+        description: 'Geoptimaliseerd 5-kamer systeem voor slanke bouw zonder concessies aan isolatie.',
+        hasTooltip: true
+      },
+      {
+        key: '3-dichting-systeem',
+        label: 'Dichting',
+        value: '3-dichting systeem',
+        description: 'Drie afzonderlijke dichtingen rondom het kozijn voor optimale lucht- en waterdichtheid.',
+        hasTooltip: true
+      },
+      {
+        key: 'inbouwdiepte',
+        label: 'Bouwdiepte',
+        value: 'Compacte 82,5 mm bouwdiepte',
+        description: 'Compacte bouwdiepte voor slanke uitstraling zonder verlies van functionaliteit.',
+        hasTooltip: true
+      },
+      {
+        key: 'design',
+        label: 'Design',
+        value: 'Vlakke optiek minimalistisch',
+        description: 'Strakke, vlakke optiek voor moderne, minimalistische architectuur.'
+      },
+      {
+        key: 'toepassing',
+        label: 'Toepassing',
+        value: 'Wisselopeningen en vaste beglazing',
+        description: 'Flexibel inzetbaar voor zowel draaiende elementen als vaste beglazing.'
+      },
+      {
+        key: 'glasdikte',
+        label: 'Glassysteem',
+        value: 'Tot 48 mm glaspakket',
+        description: 'Optimaal afgestemde glasdikte voor het slanke profiel systeem.',
+        hasTooltip: true
+      },
+      {
+        key: 'gealan-acrylcolor',
+        label: 'Kleursysteem',
+        value: 'GEALAN-ACRYLCOLOR®',
+        description: 'Duurzaam kleursysteem met 40+ jaar bewezen kwaliteit en superieure weerbestendigheid.',
+        hasTooltip: true
+      },
+      {
+        key: 'isolatie',
+        label: 'Isolatie',
+        value: 'Aangepaste isolatieprofielen',
+        description: 'Speciaal ontwikkelde isolatieprofielen voor optimale prestaties in slanke bouw.'
+      },
+      {
+        key: 'esthetiek',
+        label: 'Esthetiek',
+        value: 'Clean lines moderne uitstraling',
+        description: 'Strakke lijnen en moderne uitstraling perfect voor contemporary woningen.'
+      },
+      {
+        key: 'flexibiliteit',
+        label: 'Flexibiliteit',
+        value: 'Geschikt voor diverse stijlen',
+        description: 'Veelzijdig inzetbaar voor verschillende moderne architectuurstijlen.'
+      }
+    ],
     applications: [
       'Moderne nieuwbouwprojecten met clean architecture',
       'Renovatie van contemporary woningen',
@@ -236,18 +292,12 @@ Dit systeem is ideaal voor moderne woningen waar clean lines en een minimalistis
             {/* Technical Specifications */}
             <div>
               <h2 className="text-display mb-6">Technische Specificaties</h2>
-              <Card className="card-tesla mb-8">
-                <CardContent className="p-6">
-                  <div className="space-y-4">
-                    {Object.entries(productData.technicalSpecs).map(([key, value]) => (
-                      <div key={key} className="flex justify-between items-start border-b border-border/50 pb-3 last:border-0 last:pb-0">
-                        <span className="text-muted-foreground capitalize font-medium">{key}</span>
-                        <span className="text-right font-semibold max-w-xs">{value}</span>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="mb-8">
+                <TechnicalSpecDropdown 
+                  title="Technische Specificaties" 
+                  specs={productData.technicalSpecs} 
+                />
+              </div>
 
               {/* Applications */}
               <div className="mb-8">

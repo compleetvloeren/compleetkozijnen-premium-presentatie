@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Download, CheckCircle, Thermometer, Shield, Droplets, Wind, Home } from 'lucide-react';
 import TechnicalTooltip from '@/components/TechnicalTooltip';
+import TechnicalSpecDropdown from '@/components/TechnicalSpecDropdown';
 import { getTechnicalTerm } from '@/lib/technicalGlossary';
 import gealanStylImage from '@/assets/gealan-s9000-styl.png';
 import gealanStylProfile from '@/assets/gealan-s9000-styl-profile.png';
@@ -30,18 +31,75 @@ Met zijn unieke combinatie van 4° en 15° schuintes creëert dit systeem een au
       'Moderne isolatiewaarden in klassiek jasje',
       'Bewezen kwaliteit voor Nederlandse omstandigheden'
     ],
-    technicalSpecs: {
-      profiel: '5-kamer profiel systeem',
-      dichting: '3-dichting systeem voor optimale afdichting',
-      schuinte: '4° en 15° schuinte combinatie voor Nederlands karakter',
-      design: 'Nederlandse gevel geoptimaliseerd design',
-      compatibiliteit: 'Traditionele architectuur gespecialiseerd',
-      glassysteem: 'Tot 52 mm glaspakket met STV® lijmtechniek',
-      kleursysteem: 'GEALAN-ACRYLCOLOR® voor duurzame kleurechtheid',
-      isolatie: 'IKD® isolatieschuim profielen',
-      bouwdiepte: '120 mm inbouwdiepte',
-      karakteristiek: 'Authentiek Nederlands gevelbeeld'
-    },
+    technicalSpecs: [
+      {
+        key: '5-kamertechnologie',
+        label: 'Profiel Systeem',
+        value: '5-kamer profiel systeem',
+        description: 'Vijf gescheiden kamers zorgen voor uitstekende thermische isolatie in Nederlands design.',
+        hasTooltip: true
+      },
+      {
+        key: '3-dichting-systeem',
+        label: 'Dichting',
+        value: '3-dichting systeem',
+        description: 'Drie afzonderlijke dichtingen rondom het kozijn voor optimale lucht- en waterdichtheid.',
+        hasTooltip: true
+      },
+      {
+        key: 'schuinte',
+        label: 'Schuinte',
+        value: '4° en 15° combinatie',
+        description: 'Unieke combinatie van 4° en 15° schuintes voor authentiek Nederlands karakter.',
+        hasTooltip: true
+      },
+      {
+        key: 'design',
+        label: 'Design',
+        value: 'Nederlandse gevel geoptimaliseerd',
+        description: 'Speciaal ontworpen voor perfecte integratie in traditionele Nederlandse architectuur.'
+      },
+      {
+        key: 'compatibiliteit',
+        label: 'Toepassing',
+        value: 'Traditionele architectuur',
+        description: 'Gespecialiseerd voor renovatie en nieuwbouw in traditionele Nederlandse stijl.'
+      },
+      {
+        key: 'stv-lijmtechniek',
+        label: 'Glassysteem',
+        value: 'Tot 52 mm met STV® lijmtechniek',
+        description: 'Statische droge verlijming waarbij glas en profiel één sterk geheel vormen.',
+        hasTooltip: true
+      },
+      {
+        key: 'gealan-acrylcolor',
+        label: 'Kleursysteem',
+        value: 'GEALAN-ACRYLCOLOR®',
+        description: 'Duurzaam kleursysteem met 40+ jaar bewezen kwaliteit en superieure weerbestendigheid.',
+        hasTooltip: true
+      },
+      {
+        key: 'ikd-isolatieschuim',
+        label: 'Isolatie',
+        value: 'IKD® isolatieschuim profielen',
+        description: 'Speciale isolatieprofielen die de thermische eigenschappen verder verbeteren.',
+        hasTooltip: true
+      },
+      {
+        key: 'inbouwdiepte',
+        label: 'Bouwdiepte',
+        value: '120 mm inbouwdiepte',
+        description: 'Standaard 120mm bouwdiepte biedt ruimte voor uitstekende isolatie.',
+        hasTooltip: true
+      },
+      {
+        key: 'karakteristiek',
+        label: 'Karakteristiek',
+        value: 'Authentiek Nederlands gevelbeeld',
+        description: 'Moderne isolatieprestaties gecombineerd met traditionele Nederlandse uitstraling.'
+      }
+    ],
     applications: [
       'Monumentale panden en karakteristieke woningen',
       'Renovatieprojecten in historische buurten',
@@ -235,18 +293,12 @@ Met zijn unieke combinatie van 4° en 15° schuintes creëert dit systeem een au
             {/* Technical Specifications */}
             <div>
               <h2 className="text-display mb-6">Technische Specificaties</h2>
-              <Card className="card-tesla mb-8">
-                <CardContent className="p-6">
-                  <div className="space-y-4">
-                    {Object.entries(productData.technicalSpecs).map(([key, value]) => (
-                      <div key={key} className="flex justify-between items-start border-b border-border/50 pb-3 last:border-0 last:pb-0">
-                        <span className="text-muted-foreground capitalize font-medium">{key}</span>
-                        <span className="text-right font-semibold max-w-xs">{value}</span>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="mb-8">
+                <TechnicalSpecDropdown 
+                  title="Technische Specificaties" 
+                  specs={productData.technicalSpecs} 
+                />
+              </div>
 
               {/* Applications */}
               <div className="mb-8">

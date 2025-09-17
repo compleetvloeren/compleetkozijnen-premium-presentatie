@@ -5,8 +5,9 @@ import Footer from '@/components/Footer';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Download, CheckCircle, Thermometer, Shield, Droplets, Wind } from 'lucide-react';
 import TechnicalTooltip from '@/components/TechnicalTooltip';
+import TechnicalSpecDropdown from '@/components/TechnicalSpecDropdown';
 import { getTechnicalTerm } from '@/lib/technicalGlossary';
-import gealanBaseImage from '@/assets/gealan-s9000-base-original.png';
+import gealanBaseImage from '@/assets/gealan-s9000-base.png';
 
 const GealanS9000Base = () => {
   const productData = {
@@ -28,16 +29,63 @@ De 5-kamer technologie in combinatie met het 3-dichting systeem zorgt voor uitst
       '5-kamer technologie',
       'IKD® isolatieschuim voor topkwaliteit'
     ],
-    technicalSpecs: {
-      profiel: '5-kamer profiel systeem',
-      dichting: '3-dichting systeem voor optimale afdichting',
-      schuinte: '15° schuinte onder voor dieptewerking',
-      glassysteem: 'Tot 54 mm glaspakket met STV® lijmtechniek',
-      kleursysteem: 'GEALAN-ACRYLCOLOR® voor duurzame kleurechtheid',
-      isolatie: 'IKD® isolatieschuim profielen',
-      bouwdiepte: '120 mm inbouwdiepte',
-      veiligheid: 'RC1-RC3 inbraakbeveiliging mogelijk'
-    },
+    technicalSpecs: [
+      {
+        key: '5-kamertechnologie',
+        label: 'Profiel Systeem',
+        value: '5-kamer profiel systeem',
+        description: 'Vijf gescheiden kamers zorgen voor uitstekende thermische isolatie en stabiliteit van het kozijn.',
+        hasTooltip: true
+      },
+      {
+        key: '3-dichting-systeem',
+        label: 'Dichting',
+        value: '3-dichting systeem',
+        description: 'Drie afzonderlijke dichtingen rondom het kozijn voor optimale lucht- en waterdichtheid.',
+        hasTooltip: true
+      },
+      {
+        key: 'schuinte',
+        label: 'Schuinte',
+        value: '15° schuinte onder',
+        description: 'De 15° schuinte creëert een moderne dieptewerking en verbetert de waterafvoer.',
+        hasTooltip: true
+      },
+      {
+        key: 'stv-lijmtechniek',
+        label: 'Glassysteem',
+        value: 'Tot 54 mm met STV® lijmtechniek',
+        description: 'Statische droge verlijming waarbij glas en profiel één sterk geheel vormen voor levenslange stabiliteit.',
+        hasTooltip: true
+      },
+      {
+        key: 'gealan-acrylcolor',
+        label: 'Kleursysteem',
+        value: 'GEALAN-ACRYLCOLOR®',
+        description: 'Duurzaam kleursysteem met 40+ jaar bewezen kwaliteit en superieure weerbestendigheid.',
+        hasTooltip: true
+      },
+      {
+        key: 'ikd-isolatieschuim',
+        label: 'Isolatie',
+        value: 'IKD® isolatieschuim profielen',
+        description: 'Speciale isolatieprofielen die de thermische eigenschappen verder verbeteren.',
+        hasTooltip: true
+      },
+      {
+        key: 'inbouwdiepte',
+        label: 'Bouwdiepte',
+        value: '120 mm inbouwdiepte',
+        description: 'Grotere inbouwdiepte biedt ruimte voor dikkere isolatie en glaspakketten.',
+        hasTooltip: true
+      },
+      {
+        key: 'veiligheid',
+        label: 'Veiligheid',
+        value: 'RC1-RC3 inbraakbeveiliging mogelijk',
+        description: 'Verschillende beveiligingsniveaus conform Nederlandse en Europese normen.'
+      }
+    ],
     applications: [
       'Moderne nieuwbouwwoningen',
       'Renovatieprojecten met hedendaagse uitstraling',
@@ -220,18 +268,12 @@ De 5-kamer technologie in combinatie met het 3-dichting systeem zorgt voor uitst
             {/* Technical Specifications */}
             <div>
               <h2 className="text-display mb-6">Technische Specificaties</h2>
-              <Card className="card-tesla mb-8">
-                <CardContent className="p-6">
-                  <div className="space-y-4">
-                    {Object.entries(productData.technicalSpecs).map(([key, value]) => (
-                      <div key={key} className="flex justify-between items-start border-b border-border/50 pb-3 last:border-0 last:pb-0">
-                        <span className="text-muted-foreground capitalize font-medium">{key}</span>
-                        <span className="text-right font-semibold max-w-xs">{value}</span>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="mb-8">
+                <TechnicalSpecDropdown 
+                  title="Technische Specificaties" 
+                  specs={productData.technicalSpecs} 
+                />
+              </div>
 
               {/* Applications */}
               <div className="mb-8">
