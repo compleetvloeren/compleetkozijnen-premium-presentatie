@@ -11,6 +11,7 @@ import GealanS9000Base from "./pages/products/GealanS9000Base";
 import GealanS9000Haax from "./pages/products/GealanS9000Haax";
 import GealanS9000Styl from "./pages/products/GealanS9000Styl";
 import GealanS9000Slim from "./pages/products/GealanS9000Slim";
+import OverOns from "./pages/OverOns";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/producten/s9000-haax" element={<GealanS9000Haax />} />
           <Route path="/producten/s9000-styl" element={<GealanS9000Styl />} />
           <Route path="/producten/s9000-slim" element={<GealanS9000Slim />} />
+          <Route path="/over-ons" element={<OverOns />} />
           <Route path="/offerte" element={<Offerte />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
