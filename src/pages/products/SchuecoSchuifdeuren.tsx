@@ -99,10 +99,10 @@ const SchuecoSchuifdeuren = () => {
               {/* Title */}
               <div className="absolute top-6 left-6 z-10">
                 <div className="flex items-center gap-2 mb-2">
-                  <h3 className="text-3xl font-bold text-white">ASE 80.HI</h3>
+                  <h3 className="text-3xl font-bold text-white">Schuifdeuren</h3>
                   <span className="bg-primary text-primary-foreground text-xs px-2 py-1 rounded-full">PREMIUM</span>
                 </div>
-                <p className="text-lg font-medium text-primary-light">Hef-schuif & Vouwwanden</p>
+                <p className="text-lg font-medium text-primary-light">ASE 80.HI Sliding Systems</p>
               </div>
               
               {/* Hover Content */}
@@ -154,8 +154,8 @@ const SchuecoSchuifdeuren = () => {
               
               {/* Title */}
               <div className="absolute top-6 left-6 z-10">
-                <h3 className="text-3xl font-bold text-white mb-2">ASS 77.PD</h3>
-                <p className="text-lg font-medium text-accent-light">Schuifdeuren & Vouwwanden</p>
+                <h3 className="text-3xl font-bold text-white mb-2">Schuifdeuren</h3>
+                <p className="text-lg font-medium text-accent-light">ASS 77.PD Sliding Systems</p>
               </div>
               
               {/* Hover Content */}
@@ -207,8 +207,8 @@ const SchuecoSchuifdeuren = () => {
               
               {/* Title */}
               <div className="absolute top-6 left-6 z-10">
-                <h3 className="text-3xl font-bold text-white mb-2">ASE 67.PD</h3>
-                <p className="text-lg font-medium text-secondary-light">Basis Schuif & Vouw</p>
+                <h3 className="text-3xl font-bold text-white mb-2">Schuifdeuren</h3>
+                <p className="text-lg font-medium text-secondary-light">ASE 67.PD Sliding Systems</p>
               </div>
               
               {/* Hover Content */}
