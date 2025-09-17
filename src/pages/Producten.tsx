@@ -182,7 +182,7 @@ const Producten = () => {
         {/* Background Video */}
         <div className="absolute inset-0 z-0 overflow-hidden">
           <iframe
-            src="https://player.vimeo.com/video/1119535890?autoplay=1&loop=1&muted=1&controls=0&title=0&byline=0&portrait=0&background=1"
+            src="https://player.vimeo.com/video/1119543342?autoplay=1&loop=1&muted=1&controls=0&title=0&byline=0&portrait=0&background=1"
             className="absolute top-1/2 left-1/2 w-full h-full min-w-full min-h-full border-0"
             style={{ 
               width: '177.77777778vh',
