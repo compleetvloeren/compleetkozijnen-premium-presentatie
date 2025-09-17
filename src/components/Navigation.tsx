@@ -19,7 +19,7 @@ const Navigation = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass backdrop-blur-xl border-b border-border/50">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-b border-border/50 shadow-sm">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-18">
           {/* Logo */}
@@ -37,13 +37,16 @@ const Navigation = () => {
               <Link
                 key={item.name}
                 to={item.path}
-                className={`text-body font-medium transition-[var(--transition-smooth)] hover:text-primary ${
+                className={`text-body font-medium transition-[var(--transition-smooth)] hover:text-primary relative ${
                   isActive(item.path) 
-                    ? 'text-primary' 
-                    : 'text-foreground/80'
+                    ? 'text-primary font-semibold' 
+                    : 'text-foreground hover:text-primary'
                 }`}
               >
                 {item.name}
+                {isActive(item.path) && (
+                  <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary rounded-full" />
+                )}
               </Link>
             ))}
           </div>
@@ -59,7 +62,7 @@ const Navigation = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2"
+            className="md:hidden p-2 text-foreground hover:text-primary transition-colors"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -81,8 +84,8 @@ const Navigation = () => {
                   to={item.path}
                   className={`block px-4 py-3 rounded-2xl text-body font-medium transition-[var(--transition-smooth)] animate-fade-in ${
                     isActive(item.path)
-                      ? 'text-primary bg-primary/10 shadow-sm'
-                      : 'text-foreground/80 hover:text-primary hover:bg-muted/30 hover:scale-[1.02]'
+                      ? 'text-primary bg-primary/10 shadow-sm font-semibold'
+                      : 'text-foreground hover:text-primary hover:bg-muted/30 hover:scale-[1.02]'
                   }`}
                   style={{ animationDelay: `${index * 50}ms` }}
                   onClick={() => setIsMenuOpen(false)}
