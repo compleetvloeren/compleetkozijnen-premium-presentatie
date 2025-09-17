@@ -139,9 +139,9 @@ const Producten = () => {
                 </div>
                 
                 {/* Hover Content */}
-                <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-8">
-                  <div className="text-center text-white transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300 max-w-md">
-                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                <div className="absolute inset-0 bg-black/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-8 z-50">
+                  <div className="text-center text-white transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300 max-w-md z-50">
+                    <div className="bg-black/80 backdrop-blur-sm rounded-xl p-6 border border-white/30 shadow-2xl">
                       <h4 className="text-xl font-semibold mb-4">Kenmerken & Specificaties</h4>
                       
                       {/* All Technical Specs */}
@@ -189,7 +189,7 @@ const Producten = () => {
                 </div>
                 
                 {/* View Icon */}
-                <div className="absolute top-6 right-6 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="absolute top-6 right-6 z-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <div className="bg-white/20 backdrop-blur-sm rounded-full p-3">
                     <Eye className="h-6 w-6 text-white" />
                   </div>
