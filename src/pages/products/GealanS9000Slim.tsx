@@ -344,10 +344,12 @@ Dit systeem is ideaal voor moderne woningen waar clean lines en een minimalistis
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-              <Download className="mr-2 h-5 w-5" />
-              Brochure Downloaden
-            </Button>
+            <a href="/brochures/S-9000-NL-algemeen.pdf" download>
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                <Download className="mr-2 h-5 w-5" />
+                Brochure Downloaden
+              </Button>
+            </a>
           </div>
         </div>
       </section>

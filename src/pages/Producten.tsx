@@ -297,12 +297,24 @@ const Producten = () => {
                     ))}
                   </div>
 
-                  <Link to={`/producten/${product.slug}`}>
-                    <Button className="btn-hero w-full">
-                      Meer Informatie
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
+                  
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Link to={`/producten/${product.slug}`} className="flex-1">
+                      <Button className="btn-hero w-full">
+                        Meer Informatie
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </Link>
+                    <a 
+                      href="/brochures/S-9000-NL-algemeen.pdf" 
+                      download 
+                      className="flex-1"
+                    >
+                      <Button variant="outline" className="w-full">
+                        📄 Brochure Downloaden
+                      </Button>
+                    </a>
+                  </div>
                 </CardContent>
               </Card>
             ))}
@@ -402,12 +414,19 @@ const Producten = () => {
 
           {/* CTA */}
           <div className="text-center mt-12">
-            <Link to="/offerte">
-              <Button size="lg" className="btn-hero px-8 py-4">
-                Vraag een Offerte Aan
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+              <Link to="/offerte">
+                <Button size="lg" className="btn-hero px-8 py-4">
+                  Vraag een Offerte Aan
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
+              <a href="/brochures/Gealan-S9000-NL-technisch.pdf" download>
+                <Button size="lg" variant="outline" className="px-8 py-4">
+                  📄 Technische Brochure
+                </Button>
+              </a>
+            </div>
           </div>
         </div>
       </section>
