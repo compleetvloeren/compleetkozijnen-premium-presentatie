@@ -73,25 +73,26 @@ const Navigation = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden animate-slide-up">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-background/95 backdrop-blur-xl rounded-2xl mt-2 border border-border/50 shadow-[var(--shadow-large)]">
-              {navItems.map((item) => (
+          <div className="md:hidden animate-fade-in">
+            <div className="px-4 pt-4 pb-6 space-y-3 bg-background/98 backdrop-blur-xl rounded-3xl mt-4 border border-border/30 shadow-[var(--shadow-elegant)] mx-2">
+              {navItems.map((item, index) => (
                 <Link
                   key={item.name}
                   to={item.path}
-                  className={`block px-3 py-2 rounded-lg text-body font-medium transition-[var(--transition-smooth)] ${
+                  className={`block px-4 py-3 rounded-2xl text-body font-medium transition-[var(--transition-smooth)] animate-fade-in ${
                     isActive(item.path)
-                      ? 'text-primary bg-primary/10'
-                      : 'text-foreground/80 hover:text-primary hover:bg-muted/50'
+                      ? 'text-primary bg-primary/10 shadow-sm'
+                      : 'text-foreground/80 hover:text-primary hover:bg-muted/30 hover:scale-[1.02]'
                   }`}
+                  style={{ animationDelay: `${index * 50}ms` }}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}
                 </Link>
               ))}
-              <div className="px-3 pt-2">
+              <div className="pt-4 border-t border-border/20">
                 <Link to="/offerte" onClick={() => setIsMenuOpen(false)}>
-                  <Button className="btn-hero w-full text-sm">
+                  <Button className="btn-hero w-full text-base py-4 rounded-2xl hover:scale-[1.02] transition-transform">
                     Gratis Offerte
                   </Button>
                 </Link>
