@@ -9,7 +9,7 @@ import { ArrowLeft, ArrowRight, Maximize2, Sun, Wind, Layers } from 'lucide-reac
 import heroImage from '@/assets/schueco-schuif-hero-real.jpg';
 import voorbeeldImage from '@/assets/schueco-schuif-voorbeeld.jpg';
 import ase80CardImage from '@/assets/schueco-sliding-premium.jpg';
-import ass77CardImage from '@/assets/schueco-sliding-modern.jpg';
+import ass77CardImage from '@/assets/schueco-schuif-voorbeeld.jpg';
 import ase67CardImage from '@/assets/schueco-sliding-hero.jpg';
 
 const SchuecoSchuifdeuren = () => {
