@@ -86,160 +86,154 @@ const SchuecoSchuifdeuren = () => {
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* ASE 80.HI Premium */}
-            <Card className="card-tesla-hero border-2 border-primary/20">
-              <CardContent className="p-8">
-                <div className="bg-gradient-to-br from-primary to-primary-variant p-4 rounded-xl inline-flex mb-6">
-                  <Maximize2 className="h-8 w-8 text-white" />
-                </div>
-                <div className="flex items-center gap-2 mb-4">
-                  <h3 className="text-2xl font-semibold">ASE 80.HI</h3>
+            <div className="group relative h-96 rounded-2xl overflow-hidden cursor-pointer">
+              <div 
+                className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 group-hover:scale-110"
+                style={{ backgroundImage: `url(${require('@/assets/schueco-ase-80-card.jpg')})` }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              
+              {/* Title */}
+              <div className="absolute top-6 left-6 z-10">
+                <div className="flex items-center gap-2 mb-2">
+                  <h3 className="text-3xl font-bold text-white">ASE 80.HI</h3>
                   <span className="bg-primary text-primary-foreground text-xs px-2 py-1 rounded-full">PREMIUM</span>
                 </div>
-                <p className="text-lg font-medium text-primary mb-2">Hef-schuifsysteem Ultra</p>
-                <p className="text-muted-foreground mb-6">
-                  Het topmodel voor maximale glasoppervlakken tot 400kg per vleugel. 
-                  Hydraulische hefmechanica voor moeiteloze bediening.
-                </p>
-                
-                <div className="space-y-4 mb-6">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Profieldiepte:</span>
-                    <span className="font-medium">80 mm</span>
+                <p className="text-lg font-medium text-primary-light">Hef-schuifsysteem Ultra</p>
+              </div>
+              
+              {/* Hover Content */}
+              <div className="absolute inset-x-6 bottom-6 z-10 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
+                  <div className="space-y-3 mb-6">
+                    <div className="flex items-center gap-2">
+                      <Maximize2 className="h-4 w-4 text-primary-light" />
+                      <span className="text-white text-sm font-medium">400kg per vleugel</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Wind className="h-4 w-4 text-primary-light" />
+                      <span className="text-white text-sm font-medium">Hydraulische hefmechanica</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Sun className="h-4 w-4 text-primary-light" />
+                      <span className="text-white text-sm font-medium">Uw-waarde: 0,9 W/m²K</span>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">
-                      <TechnicalTooltip 
-                        term="Uw-waarde" 
-                        definition="Warmtedoorgangscoëfficiënt van het complete element - hoe lager, hoe beter geïsoleerd"
-                      >
-                        Uw-waarde:
-                      </TechnicalTooltip>
-                    </span>
-                    <span className="font-medium text-primary">0,9 W/m²K</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Max. vlakgewicht:</span>
-                    <span className="font-medium text-primary">400 kg</span>
+                  
+                  <TechnicalSpecDropdown 
+                    title="Volledige Specificaties ASE 80.HI"
+                    specs={ase80Specs}
+                  />
+                  
+                  <div className="flex gap-3 mt-4">
+                    <Link to="/offerte" className="flex-1">
+                      <Button className="w-full text-sm">Offerte</Button>
+                    </Link>
+                    <Link to="/contact" className="flex-1">
+                      <Button variant="outline" className="w-full text-sm bg-white/10 border-white/30 text-white hover:bg-white/20">Info</Button>
+                    </Link>
                   </div>
                 </div>
-
-                <TechnicalSpecDropdown 
-                  title="Volledige Specificaties ASE 80.HI"
-                  specs={ase80Specs}
-                />
-                
-                <div className="flex gap-3 mt-6">
-                  <Link to="/offerte" className="flex-1">
-                    <Button className="w-full">Offerte Aanvragen</Button>
-                  </Link>
-                  <Link to="/contact" className="flex-1">
-                    <Button variant="outline" className="w-full">Info</Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
             {/* ASS 77.PD Panorama */}
-            <Card className="card-tesla-hero">
-              <CardContent className="p-8">
-                <div className="bg-gradient-to-br from-accent to-accent-variant p-4 rounded-xl inline-flex mb-6">
-                  <Sun className="h-8 w-8 text-white" />
-                </div>
-                <h3 className="text-2xl font-semibold mb-4">ASS 77.PD</h3>
-                <p className="text-lg font-medium text-accent mb-2">Panorama Schuifdeuren</p>
-                <p className="text-muted-foreground mb-6">
-                  Elegante schuifdeuren voor grote glaspartijen. Perfect voor terrassen 
-                  en tuindeuren met strak modern design.
-                </p>
-                
-                <div className="space-y-4 mb-6">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Profieldiepte:</span>
-                    <span className="font-medium">77 mm</span>
+            <div className="group relative h-96 rounded-2xl overflow-hidden cursor-pointer">
+              <div 
+                className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 group-hover:scale-110"
+                style={{ backgroundImage: `url(${require('@/assets/schueco-ass-77-card.jpg')})` }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              
+              {/* Title */}
+              <div className="absolute top-6 left-6 z-10">
+                <h3 className="text-3xl font-bold text-white mb-2">ASS 77.PD</h3>
+                <p className="text-lg font-medium text-accent-light">Panorama Schuifdeuren</p>
+              </div>
+              
+              {/* Hover Content */}
+              <div className="absolute inset-x-6 bottom-6 z-10 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
+                  <div className="space-y-3 mb-6">
+                    <div className="flex items-center gap-2">
+                      <Sun className="h-4 w-4 text-accent-light" />
+                      <span className="text-white text-sm font-medium">Elegante schuifdeuren</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Maximize2 className="h-4 w-4 text-accent-light" />
+                      <span className="text-white text-sm font-medium">300kg per vleugel</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Wind className="h-4 w-4 text-accent-light" />
+                      <span className="text-white text-sm font-medium">Uw-waarde: 1,2 W/m²K</span>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">
-                      <TechnicalTooltip 
-                        term="Uw-waarde" 
-                        definition="Warmtedoorgangscoëfficiënt van het complete element - hoe lager, hoe beter geïsoleerd"
-                      >
-                        Uw-waarde:
-                      </TechnicalTooltip>
-                    </span>
-                    <span className="font-medium text-accent">1,2 W/m²K</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Max. vlakgewicht:</span>
-                    <span className="font-medium text-accent">300 kg</span>
+                  
+                  <TechnicalSpecDropdown 
+                    title="Volledige Specificaties ASS 77.PD"
+                    specs={ass77Specs}
+                  />
+                  
+                  <div className="flex gap-3 mt-4">
+                    <Link to="/offerte" className="flex-1">
+                      <Button className="w-full text-sm" variant="outline">Offerte</Button>
+                    </Link>
+                    <Link to="/contact" className="flex-1">
+                      <Button variant="secondary" className="w-full text-sm">Info</Button>
+                    </Link>
                   </div>
                 </div>
-
-                <TechnicalSpecDropdown 
-                  title="Volledige Specificaties ASS 77.PD"
-                  specs={ass77Specs}
-                />
-                
-                <div className="flex gap-3 mt-6">
-                  <Link to="/offerte" className="flex-1">
-                    <Button className="w-full" variant="outline">Offerte Aanvragen</Button>
-                  </Link>
-                  <Link to="/contact" className="flex-1">
-                    <Button variant="secondary" className="w-full">Info</Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
             {/* ASE 67.PD Basic */}
-            <Card className="card-tesla-hero">
-              <CardContent className="p-8">
-                <div className="bg-gradient-to-br from-secondary to-secondary-variant p-4 rounded-xl inline-flex mb-6">
-                  <Layers className="h-8 w-8 text-white" />
-                </div>
-                <h3 className="text-2xl font-semibold mb-4">ASE 67.PD</h3>
-                <p className="text-lg font-medium text-secondary mb-2">Basis Schuifsysteem</p>
-                <p className="text-muted-foreground mb-6">
-                  Betrouwbaar basis schuifsysteem voor standaard toepassingen. 
-                  Goede kwaliteit tegen een aantrekkelijke prijs.
-                </p>
-                
-                <div className="space-y-4 mb-6">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Profieldiepte:</span>
-                    <span className="font-medium">67 mm</span>
+            <div className="group relative h-96 rounded-2xl overflow-hidden cursor-pointer">
+              <div 
+                className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 group-hover:scale-110"
+                style={{ backgroundImage: `url(${require('@/assets/schueco-ase-67-card.jpg')})` }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              
+              {/* Title */}
+              <div className="absolute top-6 left-6 z-10">
+                <h3 className="text-3xl font-bold text-white mb-2">ASE 67.PD</h3>
+                <p className="text-lg font-medium text-secondary-light">Basis Schuifsysteem</p>
+              </div>
+              
+              {/* Hover Content */}
+              <div className="absolute inset-x-6 bottom-6 z-10 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
+                  <div className="space-y-3 mb-6">
+                    <div className="flex items-center gap-2">
+                      <Layers className="h-4 w-4 text-secondary-light" />
+                      <span className="text-white text-sm font-medium">Betrouwbaar basis systeem</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Maximize2 className="h-4 w-4 text-secondary-light" />
+                      <span className="text-white text-sm font-medium">200kg per vleugel</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Wind className="h-4 w-4 text-secondary-light" />
+                      <span className="text-white text-sm font-medium">Uw-waarde: 1,6 W/m²K</span>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">
-                      <TechnicalTooltip 
-                        term="Uw-waarde" 
-                        definition="Warmtedoorgangscoëfficiënt van het complete element - hoe lager, hoe beter geïsoleerd"
-                      >
-                        Uw-waarde:
-                      </TechnicalTooltip>
-                    </span>
-                    <span className="font-medium text-secondary">1,6 W/m²K</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Max. vlakgewicht:</span>
-                    <span className="font-medium text-secondary">200 kg</span>
+                  
+                  <TechnicalSpecDropdown 
+                    title="Volledige Specificaties ASE 67.PD"
+                    specs={ase67Specs}
+                  />
+                  
+                  <div className="flex gap-3 mt-4">
+                    <Link to="/offerte" className="flex-1">
+                      <Button className="w-full text-sm" variant="secondary">Offerte</Button>
+                    </Link>
+                    <Link to="/contact" className="flex-1">
+                      <Button variant="outline" className="w-full text-sm bg-white/10 border-white/30 text-white hover:bg-white/20">Info</Button>
+                    </Link>
                   </div>
                 </div>
-
-                <TechnicalSpecDropdown 
-                  title="Volledige Specificaties ASE 67.PD"
-                  specs={ase67Specs}
-                />
-                
-                <div className="flex gap-3 mt-6">
-                  <Link to="/offerte" className="flex-1">
-                    <Button className="w-full" variant="secondary">Offerte Aanvragen</Button>
-                  </Link>
-                  <Link to="/contact" className="flex-1">
-                    <Button variant="outline" className="w-full">Info</Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
         </div>
       </section>
