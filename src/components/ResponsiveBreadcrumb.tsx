@@ -104,25 +104,31 @@ const ResponsiveBreadcrumb: React.FC<ResponsiveBreadcrumbProps> = ({
 
   // Always show the last maxVisibleItems, with ellipsis if needed
   const shouldShowEllipsis = breadcrumbs.length > maxVisibleItems;
-  const visibleBreadcrumbs = shouldShowEllipsis 
-    ? [
-        breadcrumbs[0], // Always show Home
-        ...breadcrumbs.slice(-maxVisibleItems + 1) // Show last items
-      ]
-    : breadcrumbs;
+  const visibleBreadcrumbs = breadcrumbs.slice(-maxVisibleItems); // Take last N items
 
   // Check if we need to insert ellipsis
   const needsEllipsis = shouldShowEllipsis && breadcrumbs.length > maxVisibleItems;
-  const ellipsisPosition = needsEllipsis ? 1 : -1; // Position after Home
+  const showEllipsisAtStart = needsEllipsis;
 
   return (
     <div className="bg-background border-b border-border/40 relative z-30 mt-16 md:mt-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3">
         <Breadcrumb>
           <BreadcrumbList>
+            {/* Show ellipsis at start if needed */}
+            {showEllipsisAtStart && (
+              <>
+                <BreadcrumbItem>
+                  <BreadcrumbEllipsis />
+                </BreadcrumbItem>
+                <BreadcrumbSeparator>
+                  <ChevronRight className="h-4 w-4" />
+                </BreadcrumbSeparator>
+              </>
+            )}
+
             {visibleBreadcrumbs.map((breadcrumb, index) => {
               const isLast = index === visibleBreadcrumbs.length - 1;
-              const showEllipsisAfter = needsEllipsis && index === 0;
               
               return (
                 <React.Fragment key={`breadcrumb-${index}`}>
@@ -133,9 +139,7 @@ const ResponsiveBreadcrumb: React.FC<ResponsiveBreadcrumbProps> = ({
                           to={breadcrumb.href}
                           className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors"
                         >
-                          {index === 0 && <Home className="h-4 w-4" />}
-                          <span className="hidden sm:inline">{breadcrumb.label}</span>
-                          {index === 0 && <span className="sm:hidden">Home</span>}
+                          <span>{breadcrumb.label}</span>
                         </Link>
                       </BreadcrumbLink>
                     ) : (
@@ -145,20 +149,8 @@ const ResponsiveBreadcrumb: React.FC<ResponsiveBreadcrumbProps> = ({
                     )}
                   </BreadcrumbItem>
                   
-                  {/* Show ellipsis after Home if needed */}
-                  {showEllipsisAfter && (
-                    <>
-                      <BreadcrumbSeparator>
-                        <ChevronRight className="h-4 w-4" />
-                      </BreadcrumbSeparator>
-                      <BreadcrumbItem>
-                        <BreadcrumbEllipsis />
-                      </BreadcrumbItem>
-                    </>
-                  )}
-                  
                   {/* Regular separator */}
-                  {!isLast && !showEllipsisAfter && (
+                  {!isLast && (
                     <BreadcrumbSeparator>
                       <ChevronRight className="h-4 w-4" />
                     </BreadcrumbSeparator>
