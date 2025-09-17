@@ -42,7 +42,7 @@ const SchuecoProdukten = () => {
                 </Button>
               </Link>
               <Link to="/contact">
-                <Button variant="outline" className="min-w-[200px] border-white text-white hover:bg-white hover:text-black">
+                <Button variant="outline" className="min-w-[200px] border-white/80 text-white bg-black/20 backdrop-blur-sm hover:bg-white hover:text-black transition-all duration-300">
                   Meer Informatie
                 </Button>
               </Link>
