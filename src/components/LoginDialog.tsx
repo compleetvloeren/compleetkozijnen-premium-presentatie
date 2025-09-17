@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -8,6 +9,7 @@ import { User, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 export const LoginDialog: React.FC = () => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -36,11 +38,16 @@ export const LoginDialog: React.FC = () => {
     } else {
       toast({
         title: "Succesvol ingelogd",
-        description: "Welkom terug in het dashboard!"
+        description: "Je wordt doorgestuurd naar het dashboard..."
       });
       setIsOpen(false);
       setEmail('');
       setPassword('');
+      
+      // Redirect to dashboard after successful login
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 1000);
     }
     setLoading(false);
   };

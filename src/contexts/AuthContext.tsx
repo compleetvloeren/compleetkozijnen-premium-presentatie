@@ -28,29 +28,37 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
+    console.log('AuthProvider: Setting up auth state listener');
+    
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log('Auth state changed:', event, !!session);
         setSession(session);
         setUser(session?.user ?? null);
         
         // Check admin status when user logs in
         if (session?.user) {
+          console.log('Checking admin status for user:', session.user.id);
           setTimeout(async () => {
             try {
-              const { data: profile } = await supabase
+              const { data: profile, error } = await supabase
                 .from('profiles')
                 .select('role')
                 .eq('user_id', session.user.id)
-                .single();
+                .maybeSingle();
               
-              setIsAdmin(profile?.role === 'admin');
+              console.log('Profile data:', profile, 'Error:', error);
+              const adminStatus = profile?.role === 'admin';
+              console.log('Setting admin status to:', adminStatus);
+              setIsAdmin(adminStatus);
             } catch (error) {
               console.error('Error checking admin status:', error);
               setIsAdmin(false);
             }
-          }, 0);
+          }, 100); // Slightly longer delay to ensure database is ready
         } else {
+          console.log('No user, setting admin to false');
           setIsAdmin(false);
         }
         
@@ -59,9 +67,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     );
 
     // THEN check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    console.log('AuthProvider: Checking for existing session');
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      console.log('Initial session check:', !!session);
       setSession(session);
       setUser(session?.user ?? null);
+      
+      // Check admin status for existing session
+      if (session?.user) {
+        console.log('Initial admin check for user:', session.user.id);
+        try {
+          const { data: profile, error } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('user_id', session.user.id)
+            .maybeSingle();
+          
+          console.log('Initial profile data:', profile, 'Error:', error);
+          const adminStatus = profile?.role === 'admin';
+          console.log('Initial admin status:', adminStatus);
+          setIsAdmin(adminStatus);
+        } catch (error) {
+          console.error('Error checking initial admin status:', error);
+          setIsAdmin(false);
+        }
+      } else {
+        console.log('No initial user found');
+        setIsAdmin(false);
+      }
+      
       setLoading(false);
     });
 
