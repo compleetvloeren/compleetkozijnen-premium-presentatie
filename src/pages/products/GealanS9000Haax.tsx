@@ -66,10 +66,31 @@ De 4° schuinte geeft het kozijn een klassieke uitstraling, terwijl de verstevig
     <div className="min-h-screen">
       <Navigation />
       
+      {/* Video Hero Section */}
+      <section className="relative min-h-[70vh] overflow-hidden pt-16 md:pt-20">
+        {/* Background Video */}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <iframe
+            src="https://player.vimeo.com/video/1119543342?autoplay=1&loop=1&muted=1&controls=0&title=0&byline=0&portrait=0&background=1"
+            className="absolute top-1/2 left-1/2 w-full h-full min-w-full min-h-full border-0"
+            style={{ 
+              width: '177.77777778vh',
+              height: '56.25vw',
+              minWidth: '100%',
+              minHeight: '100%',
+              transform: 'translate(-50%, -50%)'
+            }}
+            frameBorder="0"
+            allow="autoplay; fullscreen"
+            title="GEALAN S-9000 kozijnsystemen video"
+          />
+        </div>
+      </section>
+      
       {/* Hero Section */}
-      <section className="relative min-h-[80vh] bg-gradient-to-br from-primary/90 to-accent/90 text-white overflow-hidden">
+      <section className="relative bg-gradient-to-br from-primary/90 to-accent/90 text-white overflow-hidden py-16">
         <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-black/40" />
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 h-full flex items-center">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
             <div className="animate-fade-in">
               <div className="flex items-center gap-4 mb-6">
