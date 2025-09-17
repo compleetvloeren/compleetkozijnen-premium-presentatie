@@ -247,11 +247,9 @@ const Dashboard: React.FC = () => {
 
       const response = await supabase.functions.invoke('leads-crud', {
         body: { 
+          action: 'delete',
           leadId: leadId,
           password: password 
-        },
-        headers: {
-          'Authorization': `Bearer ${session.access_token}`,
         },
       });
 

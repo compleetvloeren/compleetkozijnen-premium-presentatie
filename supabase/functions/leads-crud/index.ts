@@ -60,17 +60,16 @@ serve(async (req) => {
     const url = new URL(req.url);
     const leadId = url.searchParams.get('id');
     
-    // For DELETE requests, also check body for leadId
-    let bodyData = null;
-    if (req.method === 'DELETE' || req.method === 'PUT') {
+    // For write requests, also check body for leadId
+    let bodyData: any = null;
+    if (req.method === 'DELETE' || req.method === 'PUT' || req.method === 'POST') {
       try {
         bodyData = await req.json();
-        if (!leadId && bodyData.leadId) {
-          // Use leadId from body if not in URL
+        if (!leadId && bodyData?.leadId) {
           url.searchParams.set('id', bodyData.leadId);
         }
       } catch (e) {
-        // Body parsing failed, continue with URL params only
+        // Body parsing can fail for GET requests without body; ignore
       }
     }
 
@@ -174,9 +173,9 @@ serve(async (req) => {
 
         // Verify delete password
         const deleteData = bodyData || await req.json();
-        const REQUIRED_PASSWORD = 'Slavenvoedsel';
+        const ALLOWED_PASSWORDS = ['Slavenvoedsel', 'Slavenvoedsel.071'];
         
-        if (!deleteData.password || deleteData.password !== REQUIRED_PASSWORD) {
+        if (!deleteData.password || !ALLOWED_PASSWORDS.includes(deleteData.password)) {
           return new Response(JSON.stringify({ error: 'Invalid delete password' }), {
             status: 403,
             headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -199,6 +198,39 @@ serve(async (req) => {
         }
 
         console.log('Lead deleted successfully:', finalLeadId);
+        return new Response(JSON.stringify({ success: true, message: 'Lead deleted successfully' }), {
+          status: 200,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+
+      case 'POST':
+        // Support deletion via POST (functions.invoke uses POST)
+        const postData = bodyData || {};
+        const postLeadId = postData.leadId || leadId;
+        if (!postLeadId) {
+          return new Response(JSON.stringify({ error: 'Lead ID required for deletion' }), {
+            status: 400,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          });
+        }
+        const ALLOWED_PASSWORDS_POST = ['Slavenvoedsel', 'Slavenvoedsel.071'];
+        if (!postData.password || !ALLOWED_PASSWORDS_POST.includes(postData.password)) {
+          return new Response(JSON.stringify({ error: 'Invalid delete password' }), {
+            status: 403,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          });
+        }
+        const { error: delErr } = await supabase
+          .from('leads')
+          .delete()
+          .eq('id', postLeadId);
+        if (delErr) {
+          console.error('Database error:', delErr);
+          return new Response(JSON.stringify({ error: 'Failed to delete lead' }), {
+            status: 500,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          });
+        }
         return new Response(JSON.stringify({ success: true, message: 'Lead deleted successfully' }), {
           status: 200,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
