@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Mail, Phone, MapPin, Calendar, Eye } from 'lucide-react';
+import { Mail, Phone, MapPin, Calendar, Eye, Trash2 } from 'lucide-react';
 
 interface Lead {
   id: string;
@@ -22,9 +22,10 @@ interface Lead {
 interface LeadCardProps {
   lead: Lead;
   onViewDetails: (lead: Lead) => void;
+  onDelete: (lead: Lead) => void;
 }
 
-export const LeadCard: React.FC<LeadCardProps> = ({ lead, onViewDetails }) => {
+export const LeadCard: React.FC<LeadCardProps> = ({ lead, onViewDetails, onDelete }) => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'nieuw': return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
@@ -131,7 +132,17 @@ export const LeadCard: React.FC<LeadCardProps> = ({ lead, onViewDetails }) => {
           </div>
         )}
 
-        <div className="flex justify-end">
+        <div className="flex justify-between items-center">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onDelete(lead)}
+            className="flex items-center space-x-2 text-destructive hover:text-destructive"
+          >
+            <Trash2 className="h-4 w-4" />
+            <span>Verwijderen</span>
+          </Button>
+          
           <Button
             variant="outline"
             size="sm"

@@ -26,6 +26,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { LeadCard } from '@/components/dashboard/LeadCard';
 import { LeadDetailDialog } from '@/components/dashboard/LeadDetailDialog';
+import { DeleteLeadDialog } from '@/components/dashboard/DeleteLeadDialog';
 import { SearchAndFilters } from '@/components/dashboard/SearchAndFilters';
 import { NotificationCenter } from '@/components/dashboard/NotificationCenter';
 import { ExportOptions } from '@/components/dashboard/ExportOptions';
@@ -81,6 +82,9 @@ const Dashboard: React.FC = () => {
   const [showLeadDetail, setShowLeadDetail] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showExportOptions, setShowExportOptions] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [leadToDelete, setLeadToDelete] = useState<Lead | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
   
   // Search and filter states
   const [searchTerm, setSearchTerm] = useState('');
@@ -225,6 +229,81 @@ const Dashboard: React.FC = () => {
 
   const handleRefresh = () => {
     fetchData(true);
+  };
+
+  const handleDeleteLead = (lead: Lead) => {
+    setLeadToDelete(lead);
+    setShowDeleteDialog(true);
+  };
+
+  const handleConfirmDelete = async (leadId: string, password: string) => {
+    try {
+      setIsDeleting(true);
+      
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        throw new Error('Niet geautoriseerd');
+      }
+
+      const response = await fetch(`https://odebqftzxdpfdwcyvfnx.supabase.co/functions/v1/leads-crud?id=${leadId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ password }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Verwijderen mislukt');
+      }
+
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result.error || 'Verwijderen mislukt');
+      }
+
+      // Remove the lead from local state
+      setLeads(prevLeads => prevLeads.filter(lead => lead.id !== leadId));
+      
+      // Close dialogs
+      setShowDeleteDialog(false);
+      setShowLeadDetail(false);
+      setLeadToDelete(null);
+      setSelectedLead(null);
+
+      toast({
+        title: "Lead verwijderd",
+        description: "De lead is succesvol verwijderd.",
+        variant: "default"
+      });
+
+      addNotification({
+        type: 'success',
+        title: 'Lead Verwijderd',
+        message: `Lead is permanent verwijderd uit het systeem`,
+        actionUrl: '/dashboard',
+        actionLabel: 'Dashboard'
+      });
+
+    } catch (error: any) {
+      console.error('Error deleting lead:', error);
+      
+      if (error.message === 'Invalid delete password') {
+        throw new Error('Onjuist wachtwoord');
+      }
+      
+      toast({
+        title: "Verwijderen mislukt",
+        description: error.message || "Er is een fout opgetreden bij het verwijderen.",
+        variant: "destructive"
+      });
+      
+      throw error;
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   const handleExport = async (format: 'csv' | 'excel', data: Lead[]) => {
@@ -504,6 +583,7 @@ const Dashboard: React.FC = () => {
                       <LeadCard
                         lead={lead}
                         onViewDetails={handleViewLeadDetails}
+                        onDelete={handleDeleteLead}
                       />
                     </div>
                   ))}
@@ -599,9 +679,19 @@ const Dashboard: React.FC = () => {
       {/* Lead Detail Dialog */}
       <LeadDetailDialog
         lead={selectedLead}
-        isOpen={showLeadDetail}
-        onClose={() => setShowLeadDetail(false)}
+        open={showLeadDetail}
+        onOpenChange={setShowLeadDetail}
         onLeadUpdate={handleLeadUpdate}
+        onDelete={handleDeleteLead}
+      />
+
+      {/* Delete Lead Dialog */}
+      <DeleteLeadDialog
+        lead={leadToDelete}
+        open={showDeleteDialog}
+        onOpenChange={setShowDeleteDialog}
+        onConfirmDelete={handleConfirmDelete}
+        isDeleting={isDeleting}
       />
     </div>
   );

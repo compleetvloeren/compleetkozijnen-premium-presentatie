@@ -3,6 +3,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
@@ -20,9 +21,10 @@ import {
   Clock, 
   Euro,
   FileText,
-  Edit3,
+  Edit3 as Edit,
   Save,
-  X
+  X,
+  Trash2
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -49,16 +51,18 @@ interface Lead {
 
 interface LeadDetailDialogProps {
   lead: Lead | null;
-  isOpen: boolean;
-  onClose: () => void;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
   onLeadUpdate: (updatedLead: Lead) => void;
+  onDelete: (lead: Lead) => void;
 }
 
 export const LeadDetailDialog: React.FC<LeadDetailDialogProps> = ({
   lead,
-  isOpen,
-  onClose,
-  onLeadUpdate
+  open,
+  onOpenChange,
+  onLeadUpdate,
+  onDelete
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [status, setStatus] = useState<string>(lead?.status || '');
@@ -143,7 +147,7 @@ export const LeadDetailDialog: React.FC<LeadDetailDialogProps> = ({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <div className="flex justify-between items-start">
@@ -306,7 +310,7 @@ export const LeadDetailDialog: React.FC<LeadDetailDialogProps> = ({
             <h3 className="text-lg font-semibold">Status & Notities</h3>
             {!isEditing ? (
               <Button variant="outline" size="sm" onClick={() => setIsEditing(true)}>
-                <Edit3 className="h-4 w-4 mr-2" />
+                <Edit className="h-4 w-4 mr-2" />
                 Bewerken
               </Button>
             ) : (
@@ -364,6 +368,35 @@ export const LeadDetailDialog: React.FC<LeadDetailDialogProps> = ({
             </div>
           )}
         </div>
+
+        <DialogFooter className="flex justify-between border-t pt-4">
+          <Button 
+            variant="outline" 
+            onClick={() => onDelete(lead)}
+            className="text-destructive hover:text-destructive"
+          >
+            <Trash2 className="h-4 w-4 mr-2" />
+            Verwijderen
+          </Button>
+          
+          {isEditing ? (
+            <div className="flex space-x-2">
+              <Button variant="outline" onClick={() => setIsEditing(false)}>
+                <X className="h-4 w-4 mr-2" />
+                Annuleren
+              </Button>
+              <Button onClick={handleSave} disabled={loading}>
+                <Save className="h-4 w-4 mr-2" />
+                {loading ? 'Opslaan...' : 'Opslaan'}
+              </Button>
+            </div>
+          ) : (
+            <Button onClick={() => setIsEditing(true)}>
+              <Edit className="h-4 w-4 mr-2" />
+              Bewerken
+            </Button>
+          )}
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

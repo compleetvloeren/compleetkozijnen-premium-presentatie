@@ -157,6 +157,19 @@ serve(async (req) => {
           });
         }
 
+        // Verify delete password
+        const deleteData = await req.json();
+        const REQUIRED_PASSWORD = 'Slavenvoedsel.071';
+        
+        if (!deleteData.password || deleteData.password !== REQUIRED_PASSWORD) {
+          return new Response(JSON.stringify({ error: 'Invalid delete password' }), {
+            status: 403,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          });
+        }
+
+        console.log('Delete password verified for lead:', leadId);
+
         const { error: deleteError } = await supabase
           .from('leads')
           .delete()
@@ -170,6 +183,7 @@ serve(async (req) => {
           });
         }
 
+        console.log('Lead deleted successfully:', leadId);
         return new Response(JSON.stringify({ success: true, message: 'Lead deleted successfully' }), {
           status: 200,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
