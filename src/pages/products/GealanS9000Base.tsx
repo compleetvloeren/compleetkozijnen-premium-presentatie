@@ -226,12 +226,6 @@ De 5-kamer technologie in combinatie met het 3-dichting systeem zorgt voor uitst
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary bg-transparent backdrop-blur-sm" asChild>
-              <a href={`${import.meta.env.BASE_URL}brochures/S-9000-NL-algemeen.pdf`} target="_blank" rel="noopener noreferrer">
-                <Download className="mr-2 h-5 w-5" />
-                Bekijk brochure
-              </a>
-            </Button>
           </div>
         </div>
       </section>
