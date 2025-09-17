@@ -23,11 +23,11 @@ const Navigation = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-18">
           {/* Logo */}
-          <Link to="/" className="flex items-center justify-center">
+          <Link to="/" className="flex items-center justify-start">
             <img 
               src={logo} 
               alt="CompleetKozijnen.nl"
-              className="h-14 w-auto md:h-18 object-contain"
+              className="h-full w-auto max-h-14 md:max-h-16 object-contain scale-150 md:scale-125"
             />
           </Link>
 
