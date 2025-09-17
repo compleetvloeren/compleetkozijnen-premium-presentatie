@@ -14,16 +14,190 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      contact_submissions: {
+        Row: {
+          assigned_to: string | null
+          created_at: string
+          email: string
+          id: string
+          message: string
+          name: string
+          phone: string | null
+          responded_at: string | null
+          status: string | null
+          subject: string | null
+          updated_at: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          name: string
+          phone?: string | null
+          responded_at?: string | null
+          status?: string | null
+          subject?: string | null
+          updated_at?: string
+        }
+        Update: {
+          assigned_to?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          phone?: string | null
+          responded_at?: string | null
+          status?: string | null
+          subject?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contact_submissions_assigned_to_fkey"
+            columns: ["assigned_to"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      leads: {
+        Row: {
+          assigned_to: string | null
+          budget_range: Database["public"]["Enums"]["budget_range"] | null
+          company: string | null
+          created_at: string
+          description: string | null
+          email: string
+          id: string
+          location: string | null
+          name: string
+          notes: string | null
+          phone: string | null
+          preferred_contact_method: string | null
+          preferred_contact_time: string | null
+          project_details: string | null
+          project_type: Database["public"]["Enums"]["project_type"] | null
+          special_requirements: string | null
+          status: Database["public"]["Enums"]["lead_status"] | null
+          timeline: string | null
+          updated_at: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          budget_range?: Database["public"]["Enums"]["budget_range"] | null
+          company?: string | null
+          created_at?: string
+          description?: string | null
+          email: string
+          id?: string
+          location?: string | null
+          name: string
+          notes?: string | null
+          phone?: string | null
+          preferred_contact_method?: string | null
+          preferred_contact_time?: string | null
+          project_details?: string | null
+          project_type?: Database["public"]["Enums"]["project_type"] | null
+          special_requirements?: string | null
+          status?: Database["public"]["Enums"]["lead_status"] | null
+          timeline?: string | null
+          updated_at?: string
+        }
+        Update: {
+          assigned_to?: string | null
+          budget_range?: Database["public"]["Enums"]["budget_range"] | null
+          company?: string | null
+          created_at?: string
+          description?: string | null
+          email?: string
+          id?: string
+          location?: string | null
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          preferred_contact_method?: string | null
+          preferred_contact_time?: string | null
+          project_details?: string | null
+          project_type?: Database["public"]["Enums"]["project_type"] | null
+          special_requirements?: string | null
+          status?: Database["public"]["Enums"]["lead_status"] | null
+          timeline?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "leads_assigned_to_fkey"
+            columns: ["assigned_to"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          full_name: string | null
+          id: string
+          role: string | null
+          updated_at: string
+          user_id: string
+          username: string
+        }
+        Insert: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          role?: string | null
+          updated_at?: string
+          user_id: string
+          username: string
+        }
+        Update: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          role?: string | null
+          updated_at?: string
+          user_id?: string
+          username?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_admin_user: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      budget_range:
+        | "5000-10000"
+        | "10000-25000"
+        | "25000-50000"
+        | "50000+"
+        | "onbekend"
+      lead_status:
+        | "nieuw"
+        | "in_behandeling"
+        | "offerte_verstuurd"
+        | "gewonnen"
+        | "verloren"
+      project_type:
+        | "ramen"
+        | "deuren"
+        | "schuifdeuren"
+        | "kozijnen"
+        | "renovatie"
+        | "nieuwbouw"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +324,29 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      budget_range: [
+        "5000-10000",
+        "10000-25000",
+        "25000-50000",
+        "50000+",
+        "onbekend",
+      ],
+      lead_status: [
+        "nieuw",
+        "in_behandeling",
+        "offerte_verstuurd",
+        "gewonnen",
+        "verloren",
+      ],
+      project_type: [
+        "ramen",
+        "deuren",
+        "schuifdeuren",
+        "kozijnen",
+        "renovatie",
+        "nieuwbouw",
+      ],
+    },
   },
 } as const
