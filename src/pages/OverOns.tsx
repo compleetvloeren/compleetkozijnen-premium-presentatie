@@ -5,7 +5,7 @@ import Navigation from '@/components/Navigation';
 import ResponsiveBreadcrumb from '@/components/ResponsiveBreadcrumb';
 import Footer from '@/components/Footer';
 import { Link } from 'react-router-dom';
-import heroImage from '@/assets/hero-home.jpg';
+import heroImage from '@/assets/over-ons-hero.jpg';
 import gealanImage from '@/assets/gealan-s9000-base.png';
 import schuecoImage from '@/assets/schueco-windows-modern.jpg';
 import installationImage from '@/assets/installation-service.jpg';
