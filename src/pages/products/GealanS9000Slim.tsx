@@ -10,6 +10,7 @@ import { getTechnicalTerm } from '@/lib/technicalGlossary';
 import gealanSlimImage from '@/assets/gealan-s9000-slim.png';
 import gealanSlimProfile from '@/assets/gealan-s9000-slim-profile.png';
 
+const GealanS9000Slim = () => {
   const productData = {
     name: 'GEALAN S-9000 Slim',
     title: 'Strak & Minimalistisch',
@@ -30,231 +31,122 @@ Dit systeem is ideaal voor moderne woningen waar clean lines en een minimalistis
       'Strak lijnenspel en cleane afwerking',
       'Ook geschikt voor wisselopeningen'
     ],
-    technicalSpecs: [
+    technicalSpecs: {
+      kamers: '5-kamer profiel',
+      dichting: '3-dichting systeem',
+      bouwdiepte: 'Compacte 82,5 mm bouwdiepte',
+      design: 'Vlakke optiek',
+      toepassing: 'Wisselopeningen mogelijk'
+    },
+    advantages: [
       {
-        key: '5-kamertechnologie',
-        label: 'Profiel Systeem',
-        value: '5-kamer slim profiel systeem',
-        description: 'Geoptimaliseerd 5-kamer systeem voor slanke bouw zonder concessies aan isolatie.',
-        hasTooltip: true
+        icon: Minimize2,
+        title: 'Compacte Elegantie',
+        description: 'Slanke profielen voor moderne, minimalistische architectuur'
       },
       {
-        key: '3-dichting-systeem',
-        label: 'Dichting',
-        value: '3-dichting systeem',
-        description: 'Drie afzonderlijke dichtingen rondom het kozijn voor optimale lucht- en waterdichtheid.',
-        hasTooltip: true
+        icon: Shield,
+        title: 'Kwaliteit & Duurzaamheid',
+        description: 'Ondanks compacte afmetingen geen compromis op kwaliteit'
       },
       {
-        key: 'inbouwdiepte',
-        label: 'Bouwdiepte',
-        value: 'Compacte 82,5 mm bouwdiepte',
-        description: 'Compacte bouwdiepte voor slanke uitstraling zonder verlies van functionaliteit.',
-        hasTooltip: true
+        icon: Droplets,
+        title: 'Betrouwbare Dichting',
+        description: '3-dichting systeem ook in compacte uitvoering'
       },
       {
-        key: 'design',
-        label: 'Design',
-        value: 'Vlakke optiek minimalistisch',
-        description: 'Strakke, vlakke optiek voor moderne, minimalistische architectuur.'
-      },
-      {
-        key: 'toepassing',
-        label: 'Toepassing',
-        value: 'Wisselopeningen en vaste beglazing',
-        description: 'Flexibel inzetbaar voor zowel draaiende elementen als vaste beglazing.'
-      },
-      {
-        key: 'glasdikte',
-        label: 'Glassysteem',
-        value: 'Tot 48 mm glaspakket',
-        description: 'Optimaal afgestemde glasdikte voor het slanke profiel systeem.',
-        hasTooltip: true
-      },
-      {
-        key: 'gealan-acrylcolor',
-        label: 'Kleursysteem',
-        value: 'GEALAN-ACRYLCOLOR®',
-        description: 'Duurzaam kleursysteem met 40+ jaar bewezen kwaliteit en superieure weerbestendigheid.',
-        hasTooltip: true
-      },
-      {
-        key: 'isolatie',
-        label: 'Isolatie',
-        value: 'Aangepaste isolatieprofielen',
-        description: 'Speciaal ontwikkelde isolatieprofielen voor optimale prestaties in slanke bouw.'
-      },
-      {
-        key: 'esthetiek',
-        label: 'Esthetiek',
-        value: 'Clean lines moderne uitstraling',
-        description: 'Strakke lijnen en moderne uitstraling perfect voor contemporary woningen.'
-      },
-      {
-        key: 'flexibiliteit',
-        label: 'Flexibiliteit',
-        value: 'Geschikt voor diverse stijlen',
-        description: 'Veelzijdig inzetbaar voor verschillende moderne architectuurstijlen.'
+        icon: Wind,
+        title: 'Veelzijdig Toepasbaar',
+        description: 'Geschikt voor diverse toepassingen inclusief wisselopeningen'
       }
-    ],
-    applications: [
-      'Moderne nieuwbouwprojecten met clean architecture',
-      'Renovatie van contemporary woningen',
-      'Appartementen en penthouses met strak design',
-      'Projecten waar slanke profielen vereist zijn',
-      'Wisselopeningen en grote glaspartijen',
-      'Minimalistische kantoorpanden'
-    ],
-    certifications: [
-      'CE-markering conform EN 14351-1',
-      'Uf-waarde 1,2 W/(m²K) getest',
-      'Waterdichtheid klasse 9A',
-      'Windbelasting klasse C5/B5',
-      'Nederlandse bouwvoorschriften conform',
-      'Geschikt voor wisselopeningen',
-      'RAL Gütezeichen kwaliteitscertificaat'
     ]
   };
-
-  const performanceData = [
-    {
-      icon: Thermometer,
-      title: 'Thermische Prestaties',
-      value: '1,2 W/(m²K)',
-      description: 'Uitstekende isolatie ondanks compacte bouwdiepte'
-    },
-    {
-      icon: Minimize2,
-      title: 'Compacte Bouw',
-      value: '82,5 mm',
-      description: 'Minimale bouwdiepte voor slanke moderne uitstraling'
-    },
-    {
-      icon: Droplets,
-      title: 'Waterdichtheid',
-      value: 'Klasse 9A',
-      description: 'Betrouwbare bescherming ondanks slim design'
-    },
-    {
-      icon: Wind,
-      title: 'Windbestendigheid',
-      value: 'C5/B5',
-      description: 'Sterke prestaties in alle weersomstandigheden'
-    }
-  ];
 
   return (
     <div className="min-h-screen">
       <Navigation />
       
-      {/* Breadcrumb */}
-      <section className="pt-24 pb-8 bg-muted/30">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="flex items-center space-x-2 text-sm text-muted-foreground mb-4">
-            <Link to="/" className="hover:text-primary transition-colors">Home</Link>
-            <span>/</span>
-            <Link to="/producten" className="hover:text-primary transition-colors">Producten</Link>
-            <span>/</span>
-            <span className="text-foreground">GEALAN S-9000 Slim</span>
-          </nav>
-          <Link to="/producten" className="inline-flex items-center text-primary hover:text-primary/80 transition-colors">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Terug naar Producten
-          </Link>
-        </div>
-      </section>
-
       {/* Hero Section */}
-      <section className="py-16 bg-gradient-to-br from-background to-muted/30">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="order-2 lg:order-1">
-              <h1 className="text-display-large mb-6">
-                {productData.name}
-                <span className="block text-transparent bg-gradient-to-r from-primary to-accent bg-clip-text">
-                  {productData.title}
-                </span>
-              </h1>
-              <p className="text-xl text-muted-foreground mb-8">{productData.description}</p>
-              
-              {/* Quick Specs */}
-              <div className="grid grid-cols-3 gap-4 mb-8 p-6 bg-white/50 backdrop-blur-sm rounded-xl border">
-                <div className="text-center">
-                  <div className="text-sm text-muted-foreground mb-1">
-                    <TechnicalTooltip {...getTechnicalTerm('inbouwdiepte')}>
-                      <span>Inbouwdiepte</span>
-                    </TechnicalTooltip>
-                  </div>
-                  <div className="text-xl font-bold text-primary">{productData.buildingDepth}</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-sm text-muted-foreground mb-1">
-                    <TechnicalTooltip {...getTechnicalTerm('glasdikte')}>
-                      <span>Glasdikte</span>
-                    </TechnicalTooltip>
-                  </div>
-                  <div className="text-xl font-bold text-primary">{productData.glazingThickness}</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-sm text-muted-foreground mb-1">
-                    <TechnicalTooltip {...getTechnicalTerm('uf-waarde')}>
-                      <span>Uf-waarde</span>
-                    </TechnicalTooltip>
-                  </div>
-                  <div className="text-xl font-bold text-primary">{productData.ufValue}</div>
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link to="/offerte">
-                  <Button size="lg" className="btn-hero">
-                    Offerte Aanvragen
-                    <ArrowRight className="ml-2 h-5 w-5" />
+      <section className="relative min-h-[80vh] bg-gradient-to-br from-primary/90 to-accent/90 text-white overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-black/40" />
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 h-full flex items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
+            <div className="animate-fade-in">
+              <div className="flex items-center gap-4 mb-6">
+                <Link to="/producten/gealan">
+                  <Button variant="ghost" size="sm" className="text-white/80 hover:text-white hover:bg-white/10">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Terug naar overzicht
                   </Button>
                 </Link>
-                <Button variant="outline" size="lg" className="group">
-                  <Download className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
-                  Brochure Downloaden
-                </Button>
+              </div>
+              
+              <h1 className="text-display-large mb-4">
+                {productData.name}
+              </h1>
+              <p className="text-2xl font-semibold mb-6 text-accent-foreground/90">
+                {productData.title}
+              </p>
+              <p className="text-xl mb-8 opacity-90 leading-relaxed">
+                {productData.description}
+              </p>
+              
+              {/* Quick specs */}
+              <div className="grid grid-cols-3 gap-6 mb-8">
+                <div className="text-center">
+                  <div className="text-sm opacity-75 mb-1">Inbouwdiepte</div>
+                  <div className="text-xl font-bold">{productData.buildingDepth}</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-sm opacity-75 mb-1">Glasdikte</div>
+                  <div className="text-xl font-bold">{productData.glazingThickness}</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-sm opacity-75 mb-1">Uf-waarde</div>
+                  <div className="text-xl font-bold">{productData.ufValue}</div>
+                </div>
               </div>
             </div>
             
-            <div className="order-1 lg:order-2">
-              <div className="grid grid-cols-1 gap-4">
-                <div className="aspect-video rounded-2xl overflow-hidden bg-gradient-to-br from-muted/30 to-background p-8">
-                  <img 
-                    src={productData.image}
-                    alt={`${productData.name} - Complete view`}
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-                <div className="aspect-video rounded-2xl overflow-hidden bg-gradient-to-br from-muted/30 to-background p-8">
-                  <img 
-                    src={productData.profileImage}
-                    alt={`${productData.name} - Profile view`}
-                    className="w-full h-full object-contain"
-                  />
-                </div>
+            <div className="flex justify-center lg:justify-end">
+              <div className="relative">
+                <img 
+                  src={productData.image}
+                  alt={productData.name}
+                  className="max-w-full h-auto max-h-[500px] object-contain"
+                />
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Performance Metrics */}
-      <section className="py-16">
+      {/* Product Description */}
+      <section className="py-16 bg-background">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-display text-center mb-12">Prestatie Overzicht</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {performanceData.map((metric, index) => (
-              <Card key={metric.title} className="card-tesla text-center">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-display mb-8 text-center">Product Details</h2>
+            <div className="prose prose-lg max-w-none">
+              <p className="text-xl text-muted-foreground leading-relaxed whitespace-pre-line">
+                {productData.fullDescription}
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Grid */}
+      <section className="py-16 bg-muted/30">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-display mb-12 text-center">Productkenmerken</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {productData.features.map((feature, index) => (
+              <Card key={index} className="card-tesla-hero">
                 <CardContent className="p-6">
-                  <div className="bg-gradient-to-br from-primary to-accent p-4 rounded-xl inline-flex mb-4">
-                    <metric.icon className="h-8 w-8 text-white" />
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="h-6 w-6 text-primary shrink-0 mt-1" />
+                    <span className="text-body">{feature}</span>
                   </div>
-                  <h3 className="text-title mb-2">{metric.title}</h3>
-                  <div className="text-2xl font-bold text-primary mb-3">{metric.value}</div>
-                  <p className="text-body text-muted-foreground">{metric.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -262,67 +154,39 @@ Dit systeem is ideaal voor moderne woningen waar clean lines en een minimalistis
         </div>
       </section>
 
-      {/* Detailed Information */}
-      <section className="py-16 bg-gradient-to-br from-muted/30 to-background">
+      {/* Technical Specifications */}
+      <section className="py-16 bg-background">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-display mb-12 text-center">Technische Specificaties</h2>
+            <TechnicalSpecDropdown 
+              title="Volledige Specificaties" 
+              specs={Object.entries(productData.technicalSpecs).map(([key, value]) => ({
+                key,
+                label: key.charAt(0).toUpperCase() + key.slice(1),
+                value
+              }))}
+            />
             
-            {/* Product Description */}
-            <div>
-              <h2 className="text-display mb-6">Product Overzicht</h2>
-              <div className="prose prose-lg max-w-none text-muted-foreground mb-8">
-                {productData.fullDescription.split('\n\n').map((paragraph, index) => (
-                  <p key={index} className="mb-4">{paragraph}</p>
-                ))}
-              </div>
-
-              {/* Key Features */}
-              <div className="space-y-4">
-                <h3 className="text-title mb-4">Belangrijkste Kenmerken</h3>
-                {productData.features.map((feature, index) => (
-                  <div key={index} className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-primary mt-0.5 mr-3 flex-shrink-0" />
-                    <span className="text-body">{feature}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Technical Specifications */}
-            <div>
-              <h2 className="text-display mb-6">Technische Specificaties</h2>
-              <div className="mb-8">
-                <TechnicalSpecDropdown 
-                  title="Technische Specificaties" 
-                  specs={productData.technicalSpecs} 
-                />
-              </div>
-
-              {/* Applications */}
-              <div className="mb-8">
-                <h3 className="text-title mb-4">Toepassingen</h3>
-                <div className="space-y-2">
-                  {productData.applications.map((application, index) => (
-                    <div key={index} className="flex items-center">
-                      <div className="w-2 h-2 bg-primary rounded-full mr-3" />
-                      <span className="text-body">{application}</span>
+            {/* Advantages Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+              {productData.advantages.map((advantage, index) => (
+                <Card key={index} className="card-tesla-hero">
+                  <CardContent className="p-6">
+                    <div className="flex items-start gap-4">
+                      <div className="bg-gradient-to-br from-primary to-accent p-3 rounded-lg shrink-0">
+                        <advantage.icon className="h-6 w-6 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="text-title mb-2">{advantage.title}</h3>
+                        <p className="text-body text-muted-foreground">
+                          {advantage.description}
+                        </p>
+                      </div>
                     </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Certifications */}
-              <div>
-                <h3 className="text-title mb-4">Certificeringen</h3>
-                <div className="space-y-2">
-                  {productData.certifications.map((cert, index) => (
-                    <div key={index} className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-primary mr-3" />
-                      <span className="text-body">{cert}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
         </div>
