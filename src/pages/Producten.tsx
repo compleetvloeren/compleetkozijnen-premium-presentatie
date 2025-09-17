@@ -10,7 +10,7 @@ const Producten = () => {
     {
       name: 'GEALAN',
       title: 'Duitse Premiumkwaliteit',
-      description: 'Ontdek onze complete range GEALAN S-9000 kozijnsystemen. Van slank en modern tot robuust en klassiek - speciaal ontwikkeld voor de Nederlandse markt.',
+      description: 'Ontdek onze complete range GEALAN S-9000 kunststof kozijnsystemen. Van slank en modern tot robuust en klassiek - speciaal ontwikkeld voor de Nederlandse markt.',
       features: [
         '5-kamer technologie voor optimale isolatie',
         '3-dichting systeem tegen weer en wind',
@@ -32,7 +32,7 @@ const Producten = () => {
     {
       name: 'SCHÜCO',
       title: 'Innovatieve Technologie',
-      description: 'Premium aluminium kozijnsystemen met geavanceerde Duitse technologie. Van raamsystemen tot schuifdeuren - alles van A tot Z geregeld.',
+      description: 'Exclusief aluminium specialist met geavanceerde Duitse technologie. Van raamsystemen tot schuifdeuren - alleen aluminium kozijnsystemen van wereldklasse.',
       features: [
         'AWS/ADS/ASE serie systemen',
         'Uf-waarden tot 1,0 W/(m²K)',
@@ -69,7 +69,7 @@ const Producten = () => {
             </h1>
             <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
               Ontdek onze selectie van hoogwaardige kozijnsystemen van toonaangevende merken. 
-              Kwaliteit, isolatie en design komen samen in onze premium producten.
+              GEALAN kunststof en SCHÜCO aluminium - elk specialistisch in hun eigen materiaal.
             </p>
             <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">

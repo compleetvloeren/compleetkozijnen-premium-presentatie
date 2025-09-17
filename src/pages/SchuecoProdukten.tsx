@@ -31,8 +31,8 @@ const SchuecoProdukten = () => {
               </span>
             </h1>
             <p className="text-xl mb-8 max-w-3xl mx-auto leading-relaxed">
-              Premium Duitse technologie voor moderne woningen. Van innovatieve raamsystemen tot 
-              luxe schuifdeuren - wij regelen alles van A tot Z voor uw droomkozijnen.
+              Exclusief aluminium specialist met premium Duitse technologie. Van innovatieve raamsystemen tot 
+              luxe schuifdeuren - SCHÜCO biedt alleen de beste aluminium kozijnsystemen ter wereld.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/offerte">
@@ -57,8 +57,8 @@ const SchuecoProdukten = () => {
           <div className="text-center mb-16">
             <h2 className="text-display mb-4">Onze SCHÜCO Productcategorieën</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Ontdek de volledige range van premium aluminium kozijnsystemen. 
-              Van energie-efficiënte ramen tot luxe schuifdeuren.
+              Ontdek de volledige range van premium aluminium kozijnsystemen van wereldklasse. 
+              SCHÜCO is de exclusieve aluminium specialist - geen kunststof, alleen het beste aluminium.
             </p>
           </div>
           
