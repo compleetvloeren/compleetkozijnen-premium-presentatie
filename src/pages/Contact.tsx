@@ -1,4 +1,5 @@
-import { Mail, Phone, MapPin, Clock, MessageCircle, Calendar } from 'lucide-react';
+import { useState } from 'react';
+import { Mail, Phone, MapPin, Clock, MessageCircle, Calendar, Loader2 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,8 +9,24 @@ import Navigation from '@/components/Navigation';
 import ResponsiveBreadcrumb from '@/components/ResponsiveBreadcrumb';
 import Footer from '@/components/Footer';
 import { Link } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import { FormSuccess } from '@/components/ui/form-success';
+import { validateEmail, validateDutchPhone, validateName } from '@/lib/formValidation';
 
 const Contact = () => {
+  const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    subject: '',
+    message: ''
+  });
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const contactMethods = [
     {
       icon: Phone,
@@ -43,6 +60,116 @@ const Contact = () => {
     { day: "Zondag", hours: "Gesloten" }
   ];
 
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+
+    // Required field validations with improved validation
+    if (!formData.firstName.trim()) newErrors.firstName = 'Voornaam is verplicht';
+    else {
+      const nameError = validateName(formData.firstName);
+      if (nameError) newErrors.firstName = nameError;
+    }
+
+    if (!formData.lastName.trim()) newErrors.lastName = 'Achternaam is verplicht';
+    else {
+      const nameError = validateName(formData.lastName);
+      if (nameError) newErrors.lastName = nameError;
+    }
+
+    if (!formData.email.trim()) newErrors.email = 'E-mailadres is verplicht';
+    else {
+      const emailError = validateEmail(formData.email);
+      if (emailError) newErrors.email = emailError;
+    }
+
+    if (!formData.subject.trim()) newErrors.subject = 'Onderwerp is verplicht';
+    if (!formData.message.trim()) newErrors.message = 'Bericht is verplicht';
+
+    // Phone validation (optional field)
+    if (formData.phone && formData.phone.trim()) {
+      const phoneError = validateDutchPhone(formData.phone);
+      if (phoneError) newErrors.phone = phoneError;
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!validateForm()) {
+      toast({
+        title: "Formulier incompleet",
+        description: "Controleer de verplichte velden en probeer opnieuw.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      // Map form data to API format
+      const contactData = {
+        name: `${formData.firstName} ${formData.lastName}`.trim(),
+        email: formData.email,
+        phone: formData.phone.trim() || null,
+        subject: formData.subject,
+        message: formData.message
+      };
+
+      const { data, error } = await supabase.functions.invoke('submit-contact', {
+        body: contactData
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Bericht verzonden!",
+        description: "We nemen zo snel mogelijk contact met je op.",
+      });
+
+      // Show success state
+      setSubmitted(true);
+
+      // Reset form
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: ''
+      });
+      setErrors({});
+
+    } catch (error) {
+      console.error('Error submitting contact form:', error);
+      toast({
+        title: "Fout bij verzenden",
+        description: "Er is een fout opgetreden. Probeer het opnieuw of bel ons direct.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({
+        ...prev,
+        [field]: ''
+      }));
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -67,6 +194,22 @@ const Contact = () => {
         </div>
       </section>
 
+      {/* Show success message or contact sections */}
+      {submitted ? (
+        <section className="py-16">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+            <FormSuccess
+              title="Bericht Verzonden!"
+              description="Bedankt voor uw bericht. We hebben het ontvangen en nemen zo snel mogelijk contact met u op, meestal binnen 24 uur."
+              nextActions={[
+                { label: 'Gratis Offerte Aanvragen', href: '/offerte' },
+                { label: 'Bekijk Producten', href: '/producten', variant: 'outline' }
+              ]}
+            />
+          </div>
+        </section>
+      ) : (
+      <>
       {/* Contact Methods */}
       <section className="py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -100,31 +243,82 @@ const Contact = () => {
             <Card className="card-tesla-hero">
               <CardContent className="p-8">
                 <h2 className="text-title mb-6">Stuur ons een bericht</h2>
-                <form className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="firstName">Voornaam *</Label>
-                      <Input id="firstName" placeholder="Uw voornaam" required />
+                      <Input 
+                        id="firstName" 
+                        placeholder="Uw voornaam" 
+                        value={formData.firstName}
+                        onChange={(e) => handleInputChange('firstName', e.target.value)}
+                        required 
+                        className={errors.firstName ? 'border-red-500' : ''}
+                      />
+                      {errors.firstName && (
+                        <p className="text-sm text-red-500 mt-1">{errors.firstName}</p>
+                      )}
                     </div>
                     <div>
                       <Label htmlFor="lastName">Achternaam *</Label>
-                      <Input id="lastName" placeholder="Uw achternaam" required />
+                      <Input 
+                        id="lastName" 
+                        placeholder="Uw achternaam" 
+                        value={formData.lastName}
+                        onChange={(e) => handleInputChange('lastName', e.target.value)}
+                        required 
+                        className={errors.lastName ? 'border-red-500' : ''}
+                      />
+                      {errors.lastName && (
+                        <p className="text-sm text-red-500 mt-1">{errors.lastName}</p>
+                      )}
                     </div>
                   </div>
                   
                   <div>
                     <Label htmlFor="email">E-mailadres *</Label>
-                    <Input id="email" type="email" placeholder="uw.email@voorbeeld.nl" required />
+                    <Input 
+                      id="email" 
+                      type="email" 
+                      placeholder="uw.email@voorbeeld.nl" 
+                      value={formData.email}
+                      onChange={(e) => handleInputChange('email', e.target.value)}
+                      required 
+                      className={errors.email ? 'border-red-500' : ''}
+                    />
+                    {errors.email && (
+                      <p className="text-sm text-red-500 mt-1">{errors.email}</p>
+                    )}
                   </div>
                   
                   <div>
                     <Label htmlFor="phone">Telefoonnummer</Label>
-                    <Input id="phone" type="tel" placeholder="06-12345678" />
+                    <Input 
+                      id="phone" 
+                      type="tel" 
+                      placeholder="06-12345678 (optioneel)" 
+                      value={formData.phone}
+                      onChange={(e) => handleInputChange('phone', e.target.value)}
+                      className={errors.phone ? 'border-red-500' : ''}
+                    />
+                    {errors.phone && (
+                      <p className="text-sm text-red-500 mt-1">{errors.phone}</p>
+                    )}
                   </div>
                   
                   <div>
                     <Label htmlFor="subject">Onderwerp *</Label>
-                    <Input id="subject" placeholder="Waar kunnen we u mee helpen?" required />
+                    <Input 
+                      id="subject" 
+                      placeholder="Waar kunnen we u mee helpen?" 
+                      value={formData.subject}
+                      onChange={(e) => handleInputChange('subject', e.target.value)}
+                      required 
+                      className={errors.subject ? 'border-red-500' : ''}
+                    />
+                    {errors.subject && (
+                      <p className="text-sm text-red-500 mt-1">{errors.subject}</p>
+                    )}
                   </div>
                   
                   <div>
@@ -133,13 +327,26 @@ const Contact = () => {
                       id="message" 
                       placeholder="Beschrijf uw vraag of wens zo uitgebreid mogelijk..."
                       rows={5}
+                      value={formData.message}
+                      onChange={(e) => handleInputChange('message', e.target.value)}
                       required 
+                      className={errors.message ? 'border-red-500' : ''}
                     />
+                    {errors.message && (
+                      <p className="text-sm text-red-500 mt-1">{errors.message}</p>
+                    )}
                   </div>
                   
                   <div className="flex flex-col sm:flex-row gap-4">
-                    <Button type="submit" className="btn-hero flex-1">
-                      Verstuur Bericht
+                    <Button type="submit" className="btn-hero flex-1" disabled={loading}>
+                      {loading ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Versturen...
+                        </>
+                      ) : (
+                        'Verstuur Bericht'
+                      )}
                     </Button>
                     <Link to="/offerte" className="flex-1">
                       <Button type="button" className="btn-secondary w-full">
@@ -277,6 +484,8 @@ const Contact = () => {
           </div>
         </div>
       </section>
+      </>
+      )}
 
       <Footer />
     </div>

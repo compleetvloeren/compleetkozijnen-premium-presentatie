@@ -10,10 +10,15 @@ import Navigation from '@/components/Navigation';
 import ResponsiveBreadcrumb from '@/components/ResponsiveBreadcrumb';
 import Footer from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
-import { Calculator, Clock, Shield, Users } from 'lucide-react';
+import { Calculator, Clock, Shield, Users, Loader2 } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { FormSuccess } from '@/components/ui/form-success';
+import { validateEmail, validateDutchPhone, validateDutchPostalCode, validateName } from '@/lib/formValidation';
 
 const Offerte = () => {
   const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -33,25 +38,135 @@ const Offerte = () => {
     terms: false
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+
+    // Required field validations with custom messages
+    if (!formData.firstName.trim()) newErrors.firstName = 'Voornaam is verplicht';
+    else {
+      const nameError = validateName(formData.firstName);
+      if (nameError) newErrors.firstName = nameError;
+    }
+
+    if (!formData.lastName.trim()) newErrors.lastName = 'Achternaam is verplicht';
+    else {
+      const nameError = validateName(formData.lastName);
+      if (nameError) newErrors.lastName = nameError;
+    }
+
+    if (!formData.email.trim()) newErrors.email = 'E-mailadres is verplicht';
+    else {
+      const emailError = validateEmail(formData.email);
+      if (emailError) newErrors.email = emailError;
+    }
+
+    if (!formData.phone.trim()) newErrors.phone = 'Telefoonnummer is verplicht';
+    else {
+      const phoneError = validateDutchPhone(formData.phone);
+      if (phoneError) newErrors.phone = phoneError;
+    }
+
+    if (!formData.address.trim()) newErrors.address = 'Adres is verplicht';
+    if (!formData.postalCode.trim()) newErrors.postalCode = 'Postcode is verplicht';
+    else {
+      const postalError = validateDutchPostalCode(formData.postalCode);
+      if (postalError) newErrors.postalCode = postalError;
+    }
+
+    if (!formData.city.trim()) newErrors.city = 'Plaats is verplicht';
+    if (!formData.terms) newErrors.terms = 'Accepteer de algemene voorwaarden';
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.terms) {
+    if (!validateForm()) {
       toast({
-        title: "Algemene voorwaarden",
-        description: "Accepteer de algemene voorwaarden om door te gaan.",
+        title: "Formulier incompleet",
+        description: "Controleer de verplichte velden en probeer opnieuw.",
         variant: "destructive",
       });
       return;
     }
 
-    // Simulate form submission
-    toast({
-      title: "Offerteverzoek verzonden!",
-      description: "We nemen binnen 24 uur contact met je op.",
-    });
+    setLoading(true);
 
-    console.log('Form submitted:', formData);
+    try {
+      // Map form data to API format
+      const leadData = {
+        name: `${formData.firstName} ${formData.lastName}`.trim(),
+        email: formData.email,
+        phone: formData.phone,
+        projectType: formData.projectType,
+        budgetRange: mapBudgetToDbFormat(formData.budget),
+        timeline: formData.timeline,
+        location: `${formData.address}, ${formData.postalCode} ${formData.city}`.trim(),
+        description: formData.description,
+        projectDetails: `Type woning: ${formData.houseType || 'Niet opgegeven'}\nAantal ramen: ${formData.windowCount || 'Niet opgegeven'}\nAantal deuren: ${formData.doorCount || 'Niet opgegeven'}`,
+        preferredContactMethod: 'email',
+        specialRequirements: formData.newsletter ? 'Nieuwsbrief gewenst' : ''
+      };
+
+      const { data, error } = await supabase.functions.invoke('submit-lead', {
+        body: leadData
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Offerteverzoek verzonden!",
+        description: "We nemen binnen 24 uur contact met je op voor een vrijblijvend gesprek.",
+      });
+
+      // Show success state
+      setSubmitted(true);
+
+      // Reset form
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        address: '',
+        postalCode: '',
+        city: '',
+        houseType: '',
+        projectType: '',
+        windowCount: '',
+        doorCount: '',
+        timeline: '',
+        budget: '',
+        description: '',
+        newsletter: false,
+        terms: false
+      });
+      setErrors({});
+
+    } catch (error) {
+      console.error('Error submitting lead:', error);
+      toast({
+        title: "Fout bij verzenden",
+        description: "Er is een fout opgetreden. Probeer het opnieuw of neem contact met ons op.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const mapBudgetToDbFormat = (budget: string) => {
+    switch (budget) {
+      case '0-10000': return 'tot_5k';
+      case '10000-25000': return '5k_15k';
+      case '25000-50000': return '15k_30k';
+      case '50000-plus': return 'boven_30k';
+      default: return null;
+    }
   };
 
   const handleInputChange = (field: string, value: string | boolean) => {
@@ -59,6 +174,13 @@ const Offerte = () => {
       ...prev,
       [field]: value
     }));
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({
+        ...prev,
+        [field]: ''
+      }));
+    }
   };
 
   const advantages = [
@@ -120,7 +242,21 @@ const Offerte = () => {
         </div>
       </section>
 
-      {/* Form Section */}
+      {/* Show success message or form */}
+      {submitted ? (
+        <section className="py-16">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+            <FormSuccess
+              title="Offerteverzoek Verzonden!"
+              description="Bedankt voor uw interesse. We hebben uw aanvraag ontvangen en nemen binnen 24 uur contact met u op voor een vrijblijvend gesprek over uw project."
+              nextActions={[
+                { label: 'Bekijk Onze Producten', href: '/producten' },
+                { label: 'Contact Opnemen', href: '/contact', variant: 'outline' }
+              ]}
+            />
+          </div>
+        </section>
+      ) : (
       <section className="py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
           <Card className="card-tesla-hero">
@@ -137,48 +273,61 @@ const Offerte = () => {
                 <div>
                   <h3 className="text-title mb-4">Contactgegevens</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="firstName">Voornaam *</Label>
-                      <Input
-                        id="firstName"
-                        value={formData.firstName}
-                        onChange={(e) => handleInputChange('firstName', e.target.value)}
-                        required
-                        className="mt-1"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="lastName">Achternaam *</Label>
-                      <Input
-                        id="lastName"
-                        value={formData.lastName}
-                        onChange={(e) => handleInputChange('lastName', e.target.value)}
-                        required
-                        className="mt-1"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="email">E-mailadres *</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={(e) => handleInputChange('email', e.target.value)}
-                        required
-                        className="mt-1"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="phone">Telefoonnummer *</Label>
-                      <Input
-                        id="phone"
-                        type="tel"
-                        value={formData.phone}
-                        onChange={(e) => handleInputChange('phone', e.target.value)}
-                        required
-                        className="mt-1"
-                      />
-                    </div>
+                  <div>
+                    <Label htmlFor="firstName">Voornaam *</Label>
+                    <Input
+                      id="firstName"
+                      value={formData.firstName}
+                      onChange={(e) => handleInputChange('firstName', e.target.value)}
+                      required
+                      className={`mt-1 ${errors.firstName ? 'border-red-500' : ''}`}
+                    />
+                    {errors.firstName && (
+                      <p className="text-sm text-red-500 mt-1">{errors.firstName}</p>
+                    )}
+                  </div>
+                  <div>
+                    <Label htmlFor="lastName">Achternaam *</Label>
+                    <Input
+                      id="lastName"
+                      value={formData.lastName}
+                      onChange={(e) => handleInputChange('lastName', e.target.value)}
+                      required
+                      className={`mt-1 ${errors.lastName ? 'border-red-500' : ''}`}
+                    />
+                    {errors.lastName && (
+                      <p className="text-sm text-red-500 mt-1">{errors.lastName}</p>
+                    )}
+                  </div>
+                  <div>
+                    <Label htmlFor="email">E-mailadres *</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => handleInputChange('email', e.target.value)}
+                      required
+                      className={`mt-1 ${errors.email ? 'border-red-500' : ''}`}
+                    />
+                    {errors.email && (
+                      <p className="text-sm text-red-500 mt-1">{errors.email}</p>
+                    )}
+                  </div>
+                  <div>
+                    <Label htmlFor="phone">Telefoonnummer *</Label>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      value={formData.phone}
+                      onChange={(e) => handleInputChange('phone', e.target.value)}
+                      required
+                      className={`mt-1 ${errors.phone ? 'border-red-500' : ''}`}
+                      placeholder="06-12345678 of +31612345678"
+                    />
+                    {errors.phone && (
+                      <p className="text-sm text-red-500 mt-1">{errors.phone}</p>
+                    )}
+                  </div>
                   </div>
                 </div>
 
@@ -193,8 +342,12 @@ const Offerte = () => {
                         value={formData.address}
                         onChange={(e) => handleInputChange('address', e.target.value)}
                         required
-                        className="mt-1"
+                        className={`mt-1 ${errors.address ? 'border-red-500' : ''}`}
+                        placeholder="Straatnaam en huisnummer"
                       />
+                      {errors.address && (
+                        <p className="text-sm text-red-500 mt-1">{errors.address}</p>
+                      )}
                     </div>
                     <div>
                       <Label htmlFor="postalCode">Postcode *</Label>
@@ -203,8 +356,12 @@ const Offerte = () => {
                         value={formData.postalCode}
                         onChange={(e) => handleInputChange('postalCode', e.target.value)}
                         required
-                        className="mt-1"
+                        className={`mt-1 ${errors.postalCode ? 'border-red-500' : ''}`}
+                        placeholder="1234 AB"
                       />
+                      {errors.postalCode && (
+                        <p className="text-sm text-red-500 mt-1">{errors.postalCode}</p>
+                      )}
                     </div>
                     <div className="md:col-span-3">
                       <Label htmlFor="city">Plaats *</Label>
@@ -213,8 +370,11 @@ const Offerte = () => {
                         value={formData.city}
                         onChange={(e) => handleInputChange('city', e.target.value)}
                         required
-                        className="mt-1"
+                        className={`mt-1 ${errors.city ? 'border-red-500' : ''}`}
                       />
+                      {errors.city && (
+                        <p className="text-sm text-red-500 mt-1">{errors.city}</p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -339,31 +499,42 @@ const Offerte = () => {
                     </Label>
                   </div>
 
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id="terms"
-                      checked={formData.terms}
-                      onCheckedChange={(checked) => handleInputChange('terms', !!checked)}
-                      required
-                    />
-                    <Label htmlFor="terms" className="text-sm">
-                      Ik ga akkoord met de{' '}
-                      <a href="/algemene-voorwaarden" className="text-primary hover:underline">
-                        algemene voorwaarden
-                      </a>{' '}
-                      en het{' '}
-                      <a href="/privacy" className="text-primary hover:underline">
-                        privacybeleid
-                      </a>
-                      . *
-                    </Label>
-                  </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="terms"
+                        checked={formData.terms}
+                        onCheckedChange={(checked) => handleInputChange('terms', !!checked)}
+                        required
+                        className={errors.terms ? 'border-red-500' : ''}
+                      />
+                      <Label htmlFor="terms" className="text-sm">
+                        Ik ga akkoord met de{' '}
+                        <a href="/algemene-voorwaarden" className="text-primary hover:underline">
+                          algemene voorwaarden
+                        </a>{' '}
+                        en het{' '}
+                        <a href="/privacy" className="text-primary hover:underline">
+                          privacybeleid
+                        </a>
+                        . *
+                      </Label>
+                    </div>
+                    {errors.terms && (
+                      <p className="text-sm text-red-500">{errors.terms}</p>
+                    )}
                 </div>
 
                 {/* Submit Button */}
                 <div className="text-center pt-4">
-                  <Button type="submit" size="lg" className="btn-hero px-12 py-4">
-                    Verzend Offerteverzoek
+                  <Button type="submit" size="lg" className="btn-hero px-12 py-4" disabled={loading}>
+                    {loading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Versturen...
+                      </>
+                    ) : (
+                      'Verzend Offerteverzoek'
+                    )}
                   </Button>
                   <p className="text-sm text-muted-foreground mt-4">
                     We nemen binnen 24 uur contact met je op voor een vrijblijvend gesprek.
@@ -374,6 +545,7 @@ const Offerte = () => {
           </Card>
         </div>
       </section>
+      )}
 
       <Footer />
     </div>
