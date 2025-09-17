@@ -87,6 +87,13 @@ const Footer = () => {
                   </a>
                 </div>
 
+                <div className="flex items-center space-x-3">
+                  <div className="h-5 w-5 text-primary flex items-center justify-center">
+                    <span className="text-xs font-bold">KvK</span>
+                  </div>
+                  <span className="text-white">98302043</span>
+                </div>
+
                 <div className="flex items-start space-x-3">
                   <Clock className="h-5 w-5 text-primary mt-1" />
                   <div>
