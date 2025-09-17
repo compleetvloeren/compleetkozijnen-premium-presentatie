@@ -46,12 +46,16 @@ const SchuecoSchuifdeuren = () => {
       
       {/* Hero Section */}
       <section className="relative min-h-[70vh] overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${heroImage})` }}
+        <video 
+          className="absolute inset-0 w-full h-full object-cover"
+          autoPlay
+          loop
+          muted
+          playsInline
         >
-          <div className="absolute inset-0 bg-black/40" />
-        </div>
+          <source src="https://www.schueco.com/resource/blob/352482/7e31236a24d1fba017bb903d4f767cd5/morethanaview-stage-video-data.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-black/40" />
         <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center min-h-[70vh]">
           <div className="max-w-4xl mx-auto text-center text-white animate-fade-in">
             <h1 className="text-display-large mb-6 font-bold">
