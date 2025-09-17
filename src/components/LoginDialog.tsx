@@ -74,7 +74,7 @@ export const LoginDialog: React.FC = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" placeholder="Gebruiker@compleetkozijnen.nl" value={email} onChange={e => setEmail(e.target.value)} required />
+                <Input id="email" type="email" placeholder="E-mail adres" value={email} onChange={e => setEmail(e.target.value)} required />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="password">Wachtwoord</Label>
