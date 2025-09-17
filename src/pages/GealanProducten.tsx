@@ -307,7 +307,9 @@ const Producten = () => {
                     </Link>
                     <a 
                       href="/brochures/S-9000-NL-algemeen.pdf" 
-                      download 
+                      download="GEALAN-S9000-algemene-brochure.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="flex-1"
                     >
                       <Button variant="outline" className="w-full">
@@ -421,7 +423,12 @@ const Producten = () => {
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
-              <a href="/brochures/Gealan-S9000-NL-technisch.pdf" download>
+              <a 
+                href="/brochures/Gealan-S9000-NL-technisch.pdf" 
+                download="GEALAN-S9000-technische-brochure.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Button size="lg" variant="outline" className="px-8 py-4">
                   📄 Technische Brochure
                 </Button>
