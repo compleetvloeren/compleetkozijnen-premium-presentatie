@@ -305,17 +305,17 @@ const Producten = () => {
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </Link>
-                    <a 
-                      href="/brochures/S-9000-NL-algemeen.pdf" 
-                      download="GEALAN-S9000-algemene-brochure.pdf"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1"
-                    >
-                      <Button variant="outline" className="w-full">
+                    <Button variant="outline" className="w-full" asChild>
+                      <a 
+                        href="/brochures/S-9000-NL-algemeen.pdf" 
+                        download="GEALAN-S9000-algemene-brochure.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1"
+                      >
                         📄 Brochure Downloaden
-                      </Button>
-                    </a>
+                      </a>
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -423,16 +423,16 @@ const Producten = () => {
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
-              <a 
-                href="/brochures/Gealan-S9000-NL-technisch.pdf" 
-                download="GEALAN-S9000-technische-brochure.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Button size="lg" variant="outline" className="px-8 py-4">
+              <Button size="lg" variant="outline" className="px-8 py-4" asChild>
+                <a 
+                  href="/brochures/Gealan-S9000-NL-technisch.pdf" 
+                  download="GEALAN-S9000-technische-brochure.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   📄 Technische Brochure
-                </Button>
-              </a>
+                </a>
+              </Button>
             </div>
           </div>
         </div>

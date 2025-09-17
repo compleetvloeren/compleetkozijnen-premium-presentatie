@@ -320,12 +320,12 @@ De 5-kamer technologie in combinatie met het 3-dichting systeem zorgt voor uitst
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
-            <a href="/brochures/S-9000-NL-algemeen.pdf" download>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10" asChild>
+              <a href="/brochures/S-9000-NL-algemeen.pdf" download="GEALAN-S9000-algemene-brochure.pdf" target="_blank" rel="noopener noreferrer">
                 <Download className="mr-2 h-5 w-5" />
                 Brochure Downloaden
-              </Button>
-            </a>
+              </a>
+            </Button>
           </div>
         </div>
       </section>
