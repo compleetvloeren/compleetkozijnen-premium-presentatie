@@ -19,7 +19,7 @@ const Navigation = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass backdrop-blur-xl border-b border-border/50">
+    <nav className="fixed top-0 left-0 right-0 z-50 glass backdrop-blur-xl border-b border-border/50 bg-background/70">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-18">
           {/* Logo */}
@@ -37,10 +37,10 @@ const Navigation = () => {
               <Link
                 key={item.name}
                 to={item.path}
-                className={`text-body font-medium transition-[var(--transition-smooth)] hover:text-white ${
+                className={`text-body font-medium transition-[var(--transition-smooth)] hover:text-foreground ${
                   isActive(item.path) 
-                    ? 'text-white' 
-                    : 'text-white/80'
+                    ? 'text-foreground' 
+                    : 'text-foreground/80'
                 }`}
               >
                 {item.name}
@@ -59,7 +59,7 @@ const Navigation = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 text-white"
+            className="md:hidden p-2 text-foreground"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
           >
