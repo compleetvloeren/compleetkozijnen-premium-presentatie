@@ -3,7 +3,9 @@ import { Button } from '@/components/ui/button';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Building, Award, Star } from 'lucide-react';
+import { ArrowRight, Building, Award, Star, Eye } from 'lucide-react';
+import gealanImage from '@/assets/gealan-s9000-base.png';
+import schuecoImage from '@/assets/schueco-windows-modern.jpg';
 
 const Producten = () => {
   const brands = [
@@ -27,7 +29,9 @@ const Producten = () => {
       },
       route: '/producten/gealan',
       status: 'Beschikbaar',
-      color: 'from-blue-600 to-blue-700'
+      color: 'from-blue-600 to-blue-700',
+      image: gealanImage,
+      material: 'Kunststof'
     },
     {
       name: 'SCHÜCO',
@@ -49,7 +53,9 @@ const Producten = () => {
       },
       route: '/producten/schueco',
       status: 'Beschikbaar',
-      color: 'from-slate-600 to-slate-700'
+      color: 'from-slate-600 to-slate-700',
+      image: schuecoImage,
+      material: 'Aluminium'
     }
   ];
 
@@ -94,13 +100,18 @@ const Producten = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
             {brands.map((brand, index) => (
-              <Card key={brand.name} className="card-tesla-hero overflow-hidden group">
-                <div className={`h-32 bg-gradient-to-r ${brand.color} relative overflow-hidden`}>
-                  <div className="absolute inset-0 bg-black/10" />
-                  <div className="relative h-full flex items-center justify-center">
-                    <h2 className="text-3xl font-bold text-white">{brand.name}</h2>
-                  </div>
-                  <div className="absolute top-4 right-4">
+              <div key={brand.name} className="group relative overflow-hidden rounded-2xl h-[600px] cursor-pointer">
+                <div 
+                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                  style={{ backgroundImage: `url(${brand.image})` }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+                
+                {/* Brand Header */}
+                <div className="absolute top-6 left-6 z-10">
+                  <h2 className="text-4xl font-bold text-white mb-2">{brand.name}</h2>
+                  <p className="text-white/80 text-lg">{brand.material} Specialist</p>
+                  <div className="mt-2">
                     <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                       brand.status === 'Beschikbaar' 
                         ? 'bg-green-500/20 text-green-300 border border-green-500/30' 
@@ -110,54 +121,80 @@ const Producten = () => {
                     </span>
                   </div>
                 </div>
+
+                {/* Always Visible Info */}
+                <div className="absolute bottom-6 left-6 right-6 z-10">
+                  <h3 className="text-2xl font-semibold text-white mb-2">{brand.title}</h3>
+                  <p className="text-white/90 text-sm mb-4">{brand.description}</p>
+                  
+                  {/* Quick Specs */}
+                  <div className="grid grid-cols-2 gap-3 mb-4">
+                    {Object.entries(brand.specs).slice(0, 2).map(([key, value]) => (
+                      <div key={key} className="bg-white/10 backdrop-blur-sm rounded-lg p-3 border border-white/20">
+                        <div className="text-xs text-white/70 mb-1 capitalize">{key}</div>
+                        <div className="font-semibold text-white text-sm">{value}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
                 
-                <CardContent className="p-8 card-tesla-hero">
-                  <div className="mb-6">
-                    <h3 className="text-headline mb-3">{brand.title}</h3>
-                    <p className="text-body text-muted-foreground mb-6">{brand.description}</p>
-                  </div>
-
-                  {/* Technical Specs */}
-                  <div className="grid grid-cols-2 gap-4 mb-6 p-4 bg-muted/30 rounded-xl">
-                    {Object.entries(brand.specs).map(([key, value]) => (
-                      <div key={key} className="text-center">
-                        <div className="text-xs text-muted-foreground mb-1 capitalize">{key}</div>
-                        <div className="font-semibold text-primary text-sm">{value}</div>
+                {/* Hover Content */}
+                <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-8">
+                  <div className="text-center text-white transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300 max-w-md">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                      <h4 className="text-xl font-semibold mb-4">Kenmerken & Specificaties</h4>
+                      
+                      {/* All Technical Specs */}
+                      <div className="grid grid-cols-2 gap-3 mb-6">
+                        {Object.entries(brand.specs).map(([key, value]) => (
+                          <div key={key} className="text-center">
+                            <div className="text-xs text-white/70 mb-1 capitalize">{key}</div>
+                            <div className="font-semibold text-white text-sm">{value}</div>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
 
-                  {/* Features */}
-                  <div className="space-y-2 mb-8">
-                    {brand.features.map((feature, featureIndex) => (
-                      <div key={featureIndex} className="flex items-center text-sm">
-                        <div className="w-2 h-2 bg-primary rounded-full mr-3" />
-                        <span>{feature}</span>
+                      {/* Features */}
+                      <ul className="space-y-2 text-sm mb-6 text-left">
+                        {brand.features.slice(0, 4).map((feature, featureIndex) => (
+                          <li key={featureIndex} className="flex items-center">
+                            <div className="w-2 h-2 bg-white rounded-full mr-3 flex-shrink-0" />
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+
+                      {/* Buttons */}
+                      <div className="space-y-3">
+                        <Link to={brand.route} className="block">
+                          <Button 
+                            className="w-full bg-white text-black hover:bg-white/90"
+                            disabled={brand.status !== 'Beschikbaar'}
+                          >
+                            {brand.status === 'Beschikbaar' ? 'Bekijk Producten' : 'Binnenkort Beschikbaar'}
+                            <ArrowRight className="ml-2 h-4 w-4" />
+                          </Button>
+                        </Link>
+                        
+                        {brand.status === 'Beschikbaar' && (
+                          <Link to="/offerte" className="block">
+                            <Button variant="outline" className="w-full border-white/40 text-white bg-white/10 hover:bg-white hover:text-black">
+                              Vrijblijvende Offerte
+                            </Button>
+                          </Link>
+                        )}
                       </div>
-                    ))}
+                    </div>
                   </div>
-
-                  <div className="flex flex-col gap-3 min-h-[120px] justify-end">
-                    <Link to={brand.route} className="w-full">
-                      <Button 
-                        className={`btn-hero w-full ${brand.status !== 'Beschikbaar' ? 'opacity-75' : ''}`}
-                        disabled={brand.status !== 'Beschikbaar'}
-                      >
-                        {brand.status === 'Beschikbaar' ? 'Bekijk Producten' : 'Binnenkort Beschikbaar'}
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </Link>
-                    
-                    {brand.status === 'Beschikbaar' && (
-                      <Link to="/offerte" className="w-full">
-                        <Button variant="outline" className="w-full">
-                          Vrijblijvende Offerte
-                        </Button>
-                      </Link>
-                    )}
+                </div>
+                
+                {/* View Icon */}
+                <div className="absolute top-6 right-6 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="bg-white/20 backdrop-blur-sm rounded-full p-3">
+                    <Eye className="h-6 w-6 text-white" />
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             ))}
           </div>
         </div>
