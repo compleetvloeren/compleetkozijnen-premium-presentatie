@@ -6,7 +6,7 @@ import TechnicalSpecDropdown from '@/components/TechnicalSpecDropdown';
 import TechnicalTooltip from '@/components/TechnicalTooltip';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Maximize2, Sun, Wind, Layers } from 'lucide-react';
-import heroImage from '@/assets/schueco-schuif-hero-real.jpg';
+import heroImage from '@/assets/schueco-schuifdeuren-hero-hq.jpg';
 import voorbeeldImage from '@/assets/schueco-schuif-voorbeeld.jpg';
 import ase80CardImage from '@/assets/schueco-sliding-premium.jpg';
 import ass77CardImage from '@/assets/schueco-schuif-voorbeeld.jpg';
