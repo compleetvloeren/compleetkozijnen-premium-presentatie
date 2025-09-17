@@ -58,7 +58,7 @@ const Producten = () => {
       <Navigation />
       
       {/* Hero Section */}
-      <section className="relative min-h-[60vh] bg-gradient-to-br from-background via-muted/30 to-background pt-16 md:pt-20">
+      <section className="relative bg-gradient-to-br from-background via-muted/30 to-background pt-16 md:pt-20 pb-8">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
           <div className="max-w-4xl mx-auto text-center animate-fade-in">
             <h1 className="text-display-large mb-6">
