@@ -88,160 +88,172 @@ const SchuecoRamen = () => {
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* AWS 90.SI+ Premium */}
-            <Card className="card-tesla-hero">
-              <CardContent className="p-8">
-                <div className="bg-gradient-to-br from-primary to-primary-variant p-4 rounded-xl inline-flex mb-6">
-                  <Thermometer className="h-8 w-8 text-white" />
+            <div className="group relative h-96 rounded-2xl overflow-hidden cursor-pointer">
+              <div 
+                className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 group-hover:scale-110"
+                style={{ backgroundImage: `url(${heroImage})` }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              
+              {/* Title */}
+              <div className="absolute top-6 left-6 z-10">
+                <div className="flex items-center gap-2 mb-2">
+                  <h3 className="text-3xl font-bold text-white">AWS 90.SI+</h3>
+                  <span className="bg-primary text-primary-foreground text-xs px-2 py-1 rounded-full">PREMIUM</span>
                 </div>
-                <h3 className="text-2xl font-semibold mb-4">AWS 90.SI+</h3>
-                <p className="text-lg font-medium text-primary mb-2">Premium Passief Huis</p>
-                <p className="text-muted-foreground mb-6">
-                  Het topmodel voor maximale energie-efficiëntie. Ideaal voor passief huis en 
-                  nieuwbouwprojecten met de hoogste eisen.
-                </p>
-                
-                <div className="space-y-4 mb-6">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Profieldiepte:</span>
-                    <span className="font-medium">90 mm</span>
+                <p className="text-lg font-medium text-primary-light">Premium Passief Huis</p>
+              </div>
+              
+              {/* Hover Content */}
+              <div className="absolute inset-x-6 bottom-6 z-10 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
+                  <div className="space-y-3 mb-6">
+                    <div className="flex items-center gap-2">
+                      <Thermometer className="h-4 w-4 text-primary-light" />
+                      <span className="text-white text-sm font-medium">90mm Profieldiepte</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Shield className="h-4 w-4 text-primary-light" />
+                      <span className="text-white text-sm font-medium">Uf-waarde: 1,0 W/m²K</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Eye className="h-4 w-4 text-primary-light" />
+                      <span className="text-white text-sm font-medium">Max. glasdikte: 54mm</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Zap className="h-4 w-4 text-primary-light" />
+                      <span className="text-white text-sm font-medium">Passief huis geschikt</span>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">
-                      <TechnicalTooltip 
-                        term="Uf-waarde" 
-                        definition="Warmtedoorgangscoëfficiënt van het profiel - hoe lager, hoe beter geïsoleerd"
-                      >
-                        Uf-waarde:
-                      </TechnicalTooltip>
-                    </span>
-                    <span className="font-medium text-primary">1,0 W/m²K</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Max. glasdikte:</span>
-                    <span className="font-medium">54 mm</span>
+                  
+                  <TechnicalSpecDropdown 
+                    title="Volledige Specificaties AWS 90.SI+"
+                    specs={aws90Specs}
+                  />
+                  
+                  <div className="flex gap-3 mt-4">
+                    <Link to="/offerte" className="flex-1">
+                      <Button className="w-full text-sm">Offerte</Button>
+                    </Link>
+                    <Link to="/contact" className="flex-1">
+                      <Button variant="outline" className="w-full text-sm bg-white/10 border-white/30 text-white hover:bg-white/20">Info</Button>
+                    </Link>
                   </div>
                 </div>
-
-                <TechnicalSpecDropdown 
-                  title="Volledige Specificaties AWS 90.SI+"
-                  specs={aws90Specs}
-                />
-                
-                <div className="flex gap-3 mt-6">
-                  <Link to="/offerte" className="flex-1">
-                    <Button className="w-full">Offerte Aanvragen</Button>
-                  </Link>
-                  <Link to="/contact" className="flex-1">
-                    <Button variant="outline" className="w-full">Info</Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
             {/* AWS 75.SI+ Standard */}
-            <Card className="card-tesla-hero border-2 border-primary/20">
-              <CardContent className="p-8">
-                <div className="bg-gradient-to-br from-accent to-accent-variant p-4 rounded-xl inline-flex mb-6">
-                  <Shield className="h-8 w-8 text-white" />
+            <div className="group relative h-96 rounded-2xl overflow-hidden cursor-pointer">
+              <div 
+                className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 group-hover:scale-110"
+                style={{ backgroundImage: `url(${woningImage})` }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              
+              {/* Title */}
+              <div className="absolute top-6 left-6 z-10">
+                <div className="flex items-center gap-2 mb-2">
+                  <h3 className="text-3xl font-bold text-white">AWS 75.SI+</h3>
+                  <span className="bg-accent text-accent-foreground text-xs px-2 py-1 rounded-full">POPULAIR</span>
                 </div>
-                <div className="flex items-center gap-2 mb-4">
-                  <h3 className="text-2xl font-semibold">AWS 75.SI+</h3>
-                  <span className="bg-primary text-primary-foreground text-xs px-2 py-1 rounded-full">POPULAIR</span>
-                </div>
-                <p className="text-lg font-medium text-accent mb-2">Premium Standard</p>
-                <p className="text-muted-foreground mb-6">
-                  De perfecte balans tussen prestaties en prijs. Uitstekende isolatie met 
-                  bewezen kwaliteit voor renovatie en nieuwbouw.
-                </p>
-                
-                <div className="space-y-4 mb-6">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Profieldiepte:</span>
-                    <span className="font-medium">75 mm</span>
+                <p className="text-lg font-medium text-accent-light">Premium Standard</p>
+              </div>
+              
+              {/* Hover Content */}
+              <div className="absolute inset-x-6 bottom-6 z-10 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
+                  <div className="space-y-3 mb-6">
+                    <div className="flex items-center gap-2">
+                      <Thermometer className="h-4 w-4 text-accent-light" />
+                      <span className="text-white text-sm font-medium">75mm Profieldiepte</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Shield className="h-4 w-4 text-accent-light" />
+                      <span className="text-white text-sm font-medium">Uf-waarde: 1,4 W/m²K</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Eye className="h-4 w-4 text-accent-light" />
+                      <span className="text-white text-sm font-medium">Max. glasdikte: 44mm</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Zap className="h-4 w-4 text-accent-light" />
+                      <span className="text-white text-sm font-medium">Perfecte balans</span>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">
-                      <TechnicalTooltip 
-                        term="Uf-waarde" 
-                        definition="Warmtedoorgangscoëfficiënt van het profiel - hoe lager, hoe beter geïsoleerd"
-                      >
-                        Uf-waarde:
-                      </TechnicalTooltip>
-                    </span>
-                    <span className="font-medium text-accent">1,4 W/m²K</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Max. glasdikte:</span>
-                    <span className="font-medium">44 mm</span>
+                  
+                  <TechnicalSpecDropdown 
+                    title="Volledige Specificaties AWS 75.SI+"
+                    specs={aws75Specs}
+                  />
+                  
+                  <div className="flex gap-3 mt-4">
+                    <Link to="/offerte" className="flex-1">
+                      <Button className="w-full text-sm">Offerte</Button>
+                    </Link>
+                    <Link to="/contact" className="flex-1">
+                      <Button variant="outline" className="w-full text-sm bg-white/10 border-white/30 text-white hover:bg-white/20">Info</Button>
+                    </Link>
                   </div>
                 </div>
-
-                <TechnicalSpecDropdown 
-                  title="Volledige Specificaties AWS 75.SI+"
-                  specs={aws75Specs}
-                />
-                
-                <div className="flex gap-3 mt-6">
-                  <Link to="/offerte" className="flex-1">
-                    <Button className="w-full" variant="outline">Offerte Aanvragen</Button>
-                  </Link>
-                  <Link to="/contact" className="flex-1">
-                    <Button variant="secondary" className="w-full">Info</Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
             {/* AWS 50.NI Basic */}
-            <Card className="card-tesla-hero">
-              <CardContent className="p-8">
-                <div className="bg-gradient-to-br from-secondary to-secondary-variant p-4 rounded-xl inline-flex mb-6">
-                  <Eye className="h-8 w-8 text-white" />
+            <div className="group relative h-96 rounded-2xl overflow-hidden cursor-pointer">
+              <div 
+                className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 group-hover:scale-110"
+                style={{ backgroundImage: `url(${heroImage})` }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              
+              {/* Title */}
+              <div className="absolute top-6 left-6 z-10">
+                <div className="flex items-center gap-2 mb-2">
+                  <h3 className="text-3xl font-bold text-white">AWS 50.NI</h3>
+                  <span className="bg-secondary text-secondary-foreground text-xs px-2 py-1 rounded-full">BASIS</span>
                 </div>
-                <h3 className="text-2xl font-semibold mb-4">AWS 50.NI</h3>
-                <p className="text-lg font-medium text-secondary mb-2">Basis Kwaliteit</p>
-                <p className="text-muted-foreground mb-6">
-                  Betrouwbaar basissysteem voor projecten waar functionaliteit en prijs 
-                  voorop staan zonder in te leveren op kwaliteit.
-                </p>
-                
-                <div className="space-y-4 mb-6">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Profieldiepte:</span>
-                    <span className="font-medium">50 mm</span>
+                <p className="text-lg font-medium text-secondary-light">Betrouwbare Basis</p>
+              </div>
+              
+              {/* Hover Content */}
+              <div className="absolute inset-x-6 bottom-6 z-10 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
+                  <div className="space-y-3 mb-6">
+                    <div className="flex items-center gap-2">
+                      <Thermometer className="h-4 w-4 text-secondary-light" />
+                      <span className="text-white text-sm font-medium">50mm Profieldiepte</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Shield className="h-4 w-4 text-secondary-light" />
+                      <span className="text-white text-sm font-medium">Uf-waarde: 2,2 W/m²K</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Eye className="h-4 w-4 text-secondary-light" />
+                      <span className="text-white text-sm font-medium">Max. glasdikte: 32mm</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Zap className="h-4 w-4 text-secondary-light" />
+                      <span className="text-white text-sm font-medium">Aantrekkelijke prijs</span>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">
-                      <TechnicalTooltip 
-                        term="Uf-waarde" 
-                        definition="Warmtedoorgangscoëfficiënt van het profiel - hoe lager, hoe beter geïsoleerd"
-                      >
-                        Uf-waarde:
-                      </TechnicalTooltip>
-                    </span>
-                    <span className="font-medium text-secondary">2,2 W/m²K</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Max. glasdikte:</span>
-                    <span className="font-medium">32 mm</span>
+                  
+                  <TechnicalSpecDropdown 
+                    title="Volledige Specificaties AWS 50.NI"
+                    specs={aws50Specs}
+                  />
+                  
+                  <div className="flex gap-3 mt-4">
+                    <Link to="/offerte" className="flex-1">
+                      <Button className="w-full text-sm">Offerte</Button>
+                    </Link>
+                    <Link to="/contact" className="flex-1">
+                      <Button variant="outline" className="w-full text-sm bg-white/10 border-white/30 text-white hover:bg-white/20">Info</Button>
+                    </Link>
                   </div>
                 </div>
-
-                <TechnicalSpecDropdown 
-                  title="Volledige Specificaties AWS 50.NI"
-                  specs={aws50Specs}
-                />
-                
-                <div className="flex gap-3 mt-6">
-                  <Link to="/offerte" className="flex-1">
-                    <Button className="w-full" variant="secondary">Offerte Aanvragen</Button>
-                  </Link>
-                  <Link to="/contact" className="flex-1">
-                    <Button variant="outline" className="w-full">Info</Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
         </div>
       </section>
