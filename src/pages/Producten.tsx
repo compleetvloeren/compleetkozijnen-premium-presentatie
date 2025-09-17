@@ -111,7 +111,7 @@ const Producten = () => {
                   </div>
                 </div>
                 
-                <CardContent className="p-8">
+                <CardContent className="p-8 card-tesla-hero">
                   <div className="mb-6">
                     <h3 className="text-headline mb-3">{brand.title}</h3>
                     <p className="text-body text-muted-foreground mb-6">{brand.description}</p>
