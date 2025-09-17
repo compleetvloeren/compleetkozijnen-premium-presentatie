@@ -10,13 +10,18 @@ const Hero = () => {
       <div className="absolute inset-0 z-0">
         <iframe
           src="https://player.vimeo.com/video/1119535890?autoplay=1&loop=1&muted=1&controls=0&title=0&byline=0&portrait=0&background=1"
-          className="w-full h-full object-cover"
-          style={{ minHeight: '100%', minWidth: '100%' }}
+          className="absolute inset-0 w-full h-full border-0"
+          style={{ 
+            width: '100vw', 
+            height: '100vh',
+            objectFit: 'cover',
+            transform: 'scale(1.02)'
+          }}
           frameBorder="0"
           allow="autoplay; fullscreen"
           title="Premium kozijnen video"
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-black/50 via-black/30 to-black/60" />
+        <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/20 to-black/50" />
       </div>
 
       {/* Content */}
