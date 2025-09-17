@@ -68,9 +68,7 @@ export const LoginDialog: React.FC = () => {
         <Card className="border-0 shadow-none">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl font-bold text-center">Login</CardTitle>
-            <CardDescription className="text-center">
-              Log in voor toegang tot het admin dashboard
-            </CardDescription>
+            <CardDescription className="text-center">Log in voor toegang </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
