@@ -55,8 +55,8 @@ const Footer = () => {
               </div>
               
               <p className="text-lg text-slate-200 max-w-md">
-                Specialist in premium GEALAN kozijnsystemen. Van advies tot installatie, 
-                wij verzorgen het complete proces voor uw droomkozijnen.
+                Het verkopen en monteren van kozijnen. Specialist in premium GEALAN kozijnsystemen. 
+                Van advies tot installatie, wij verzorgen het complete proces voor uw droomkozijnen.
               </p>
 
               {/* Contact Info */}
@@ -64,9 +64,9 @@ const Footer = () => {
                 <div className="flex items-start space-x-3">
                   <MapPin className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
                   <div>
-                    <p className="font-medium text-white">CompleetKozijnen B.V.</p>
-                    <p className="text-slate-300">Voorbeeldstraat 123</p>
-                    <p className="text-slate-300">1234 AB Voorbeeldstad</p>
+                    <p className="font-medium text-white">Compleet Kozijnen B.V.</p>
+                    <p className="text-slate-300">Industrieweg 16</p>
+                    <p className="text-slate-300">8304 AD Emmeloord</p>
                   </div>
                 </div>
 
@@ -128,7 +128,7 @@ const Footer = () => {
         <div className="border-t border-slate-700 py-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-sm text-slate-400">
-              © {currentYear} CompleetKozijnen.nl. Alle rechten voorbehouden.
+              © {currentYear} Compleet Kozijnen B.V. Alle rechten voorbehouden.
             </div>
             
             <div className="flex flex-wrap justify-center md:justify-end space-x-6 text-sm">
@@ -162,7 +162,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-2">
                 <div className="w-2 h-2 bg-primary rounded-full" />
-                <span>KvK: 12345678</span>
+                <span>KvK: 98302043</span>
               </div>
               <div className="flex items-center space-x-2">
                 <div className="w-2 h-2 bg-primary rounded-full" />
