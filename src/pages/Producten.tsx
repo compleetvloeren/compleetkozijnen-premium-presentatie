@@ -247,30 +247,30 @@ const Producten = () => {
                   </div>
 
                   {/* Technical Specs */}
-                  <div className="grid grid-cols-3 gap-4 mb-6 p-4 bg-muted/30 rounded-xl">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 p-4 bg-muted/30 rounded-xl">
                     <div className="text-center">
-                      <div className="text-sm text-muted-foreground">
+                      <div className="text-xs sm:text-sm text-muted-foreground mb-1">
                         <TechnicalTooltip {...getTechnicalTerm('inbouwdiepte')}>
                           <span>Inbouwdiepte</span>
                         </TechnicalTooltip>
                       </div>
-                      <div className="font-semibold text-primary">{product.buildingDepth}</div>
+                      <div className="font-semibold text-primary text-sm sm:text-base">{product.buildingDepth}</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-sm text-muted-foreground">
+                      <div className="text-xs sm:text-sm text-muted-foreground mb-1">
                         <TechnicalTooltip {...getTechnicalTerm('glasdikte')}>
                           <span>Glasdikte</span>
                         </TechnicalTooltip>
                       </div>
-                      <div className="font-semibold text-primary">{product.glazingThickness}</div>
+                      <div className="font-semibold text-primary text-sm sm:text-base">{product.glazingThickness}</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-sm text-muted-foreground">
+                      <div className="text-xs sm:text-sm text-muted-foreground mb-1">
                         <TechnicalTooltip {...getTechnicalTerm('uf-waarde')}>
                           <span>Uf-waarde</span>
                         </TechnicalTooltip>
                       </div>
-                      <div className="font-semibold text-primary">{product.ufValue}</div>
+                      <div className="font-semibold text-primary text-sm sm:text-base">{product.ufValue}</div>
                     </div>
                   </div>
 
