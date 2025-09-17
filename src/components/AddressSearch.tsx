@@ -56,23 +56,45 @@ export const AddressSearch: React.FC<AddressSearchProps> = ({
         const data = await response.json();
         const addressSuggestions: AddressSuggestion[] = data.response?.docs?.map((doc: any) => {
           console.log('API doc:', doc); // Debug log
-          const parts = doc.weergavenaam.split(', ');
-          const addressPart = parts[0] || '';
-          const cityPart = parts[1] || '';
           
-          // Extract house number and street
+          // Parse the weergavenaam properly - format is usually "Street HouseNumber, PostalCode City"
+          const fullDisplay = doc.weergavenaam || '';
+          const parts = fullDisplay.split(', ');
+          
+          let addressPart = '';
+          let postalCode = '';
+          let city = '';
+          
+          if (parts.length >= 2) {
+            addressPart = parts[0] || '';
+            // Second part contains postal code and city
+            const secondPart = parts[1] || '';
+            const postalCityMatch = secondPart.match(/^(\d{4}\s?[A-Z]{2})\s+(.+)$/);
+            
+            if (postalCityMatch) {
+              postalCode = postalCityMatch[1];
+              city = postalCityMatch[2];
+            } else {
+              // Fallback - try to use API fields directly
+              postalCode = doc.postcode || '';
+              city = secondPart;
+            }
+          } else {
+            addressPart = fullDisplay;
+            postalCode = doc.postcode || '';
+            city = doc.woonplaatsnaam || doc.plaatsnaam || '';
+          }
+          
+          // Extract house number and street from address part
           const addressMatch = addressPart.match(/^(.+?)(\d+.*)$/);
           const street = addressMatch ? addressMatch[1].trim() : addressPart;
           const houseNumber = addressMatch ? addressMatch[2].trim() : '';
           
-          // Get postal code from the API response
-          const postalCode = doc.postcode || doc.postalcode || '';
-          
           return {
-            display: doc.weergavenaam,
+            display: fullDisplay,
             address: addressPart,
             postalCode: postalCode,
-            city: cityPart,
+            city: city,
             houseNumber,
             street
           };
