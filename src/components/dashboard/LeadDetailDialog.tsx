@@ -237,7 +237,7 @@ export const LeadDetailDialog: React.FC<LeadDetailDialogProps> = ({
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Projectgegevens</h3>
             
-            <div className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {lead.project_type && (
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">Project Type</p>
@@ -273,6 +273,16 @@ export const LeadDetailDialog: React.FC<LeadDetailDialogProps> = ({
                 </div>
               )}
             </div>
+            
+            {/* Additional project details from project_details field */}
+            {lead.project_details && (
+              <div className="mt-4 space-y-2">
+                <h4 className="font-medium text-muted-foreground">Woning- en Projectdetails</h4>
+                <div className="bg-muted/30 p-3 rounded-md">
+                  <pre className="whitespace-pre-wrap text-sm">{lead.project_details}</pre>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -286,19 +296,23 @@ export const LeadDetailDialog: React.FC<LeadDetailDialogProps> = ({
           </div>
         )}
 
-        {/* Project Details */}
+        {/* Project Details - Combined Information */}
         {lead.project_details && (
           <div className="space-y-2">
-            <h3 className="text-lg font-semibold">Project Details</h3>
-            <p className="text-muted-foreground">{lead.project_details}</p>
+            <h3 className="text-lg font-semibold">Woning- en Projectdetails</h3>
+            <div className="bg-muted/20 p-4 rounded-lg border">
+              <pre className="text-sm text-muted-foreground whitespace-pre-wrap font-sans">{lead.project_details}</pre>
+            </div>
           </div>
         )}
 
-        {/* Special Requirements */}
+        {/* Special Requirements - Enhanced Display */}
         {lead.special_requirements && (
           <div className="space-y-2">
-            <h3 className="text-lg font-semibold">Speciale Wensen</h3>
-            <p className="text-muted-foreground">{lead.special_requirements}</p>
+            <h3 className="text-lg font-semibold">Speciale Wensen & Voorkeuren</h3>
+            <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+              <p className="text-sm text-blue-900 dark:text-blue-100">{lead.special_requirements}</p>
+            </div>
           </div>
         )}
 

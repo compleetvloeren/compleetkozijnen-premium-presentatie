@@ -17,6 +17,11 @@ interface Lead {
   timeline?: string;
   created_at: string;
   description?: string;
+  project_details?: string;
+  preferred_contact_method?: string;
+  preferred_contact_time?: string;
+  special_requirements?: string;
+  notes?: string;
 }
 
 interface LeadCardProps {
@@ -120,6 +125,16 @@ export const LeadCard: React.FC<LeadCardProps> = ({ lead, onViewDetails, onDelet
             <div>
               <span className="text-xs font-medium text-muted-foreground">Timeline</span>
               <p className="text-sm">{lead.timeline}</p>
+            </div>
+          )}
+          
+          {/* Show project details summary if available */}
+          {lead.project_details && (
+            <div className="md:col-span-2">
+              <span className="text-xs font-medium text-muted-foreground">Woning Info</span>
+              <p className="text-sm line-clamp-2 text-muted-foreground">
+                {lead.project_details.split('\n').join(' • ')}
+              </p>
             </div>
           )}
         </div>
