@@ -99,10 +99,10 @@ const SchuecoSchuifdeuren = () => {
               {/* Title */}
               <div className="absolute top-6 left-6 z-10">
                 <div className="flex items-center gap-2 mb-2">
-                  <h3 className="text-3xl font-bold text-white">Schuifdeuren</h3>
+                  <h3 className="text-3xl font-bold text-white">Schuifdeuren & Vouwwanden</h3>
                   <span className="bg-primary text-primary-foreground text-xs px-2 py-1 rounded-full">PREMIUM</span>
                 </div>
-                <p className="text-lg font-medium text-primary-light">ASE 80.HI Sliding Systems</p>
+                <p className="text-lg font-medium text-primary-light">ASE 80.HI - Ultra Performance</p>
               </div>
               
               {/* Hover Content */}
@@ -154,8 +154,8 @@ const SchuecoSchuifdeuren = () => {
               
               {/* Title */}
               <div className="absolute top-6 left-6 z-10">
-                <h3 className="text-3xl font-bold text-white mb-2">Schuifdeuren</h3>
-                <p className="text-lg font-medium text-accent-light">ASS 77.PD Sliding Systems</p>
+                <h3 className="text-3xl font-bold text-white mb-2">Schuifdeuren & Vouwwanden</h3>
+                <p className="text-lg font-medium text-accent-light">ASS 77.PD - Panorama Design</p>
               </div>
               
               {/* Hover Content */}
@@ -207,8 +207,8 @@ const SchuecoSchuifdeuren = () => {
               
               {/* Title */}
               <div className="absolute top-6 left-6 z-10">
-                <h3 className="text-3xl font-bold text-white mb-2">Schuifdeuren</h3>
-                <p className="text-lg font-medium text-secondary-light">ASE 67.PD Sliding Systems</p>
+                <h3 className="text-3xl font-bold text-white mb-2">Schuifdeuren & Vouwwanden</h3>
+                <p className="text-lg font-medium text-secondary-light">ASE 67.PD - Basis Systeem</p>
               </div>
               
               {/* Hover Content */}
