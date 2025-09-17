@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
-import logo from '@/assets/compleet-kozijnen-logo.jpg';
+import logo from '@/assets/compleet-kozijnen-logo.png';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -50,7 +50,7 @@ const Footer = () => {
                 <img 
                   src={logo} 
                   alt="CompleetKozijnen.nl"
-                  className="h-12 w-auto filter brightness-0 invert"
+                  className="h-12 w-auto"
                 />
               </div>
               
