@@ -1,6 +1,7 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Navigation from '@/components/Navigation';
+import ResponsiveBreadcrumb from '@/components/ResponsiveBreadcrumb';
 import Footer from '@/components/Footer';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Building, Award, Star, Eye } from 'lucide-react';
@@ -62,6 +63,7 @@ const Producten = () => {
   return (
     <div className="min-h-screen">
       <Navigation />
+      <ResponsiveBreadcrumb />
       
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-background via-muted/30 to-background pt-16 md:pt-20 pb-8">

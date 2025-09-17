@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import Navigation from '@/components/Navigation';
+import ResponsiveBreadcrumb from '@/components/ResponsiveBreadcrumb';
 import Footer from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
 import { Calculator, Clock, Shield, Users } from 'lucide-react';
@@ -86,6 +87,7 @@ const Offerte = () => {
   return (
     <div className="min-h-screen">
       <Navigation />
+      <ResponsiveBreadcrumb />
       
       {/* Hero Section */}
       <section className="pt-24 pb-12 bg-gradient-to-br from-background to-muted/30">

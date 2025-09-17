@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import Navigation from '@/components/Navigation';
+import ResponsiveBreadcrumb from '@/components/ResponsiveBreadcrumb';
 import Footer from '@/components/Footer';
 import { Link } from 'react-router-dom';
 
@@ -45,6 +46,7 @@ const Contact = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
+      <ResponsiveBreadcrumb />
       
       {/* Hero Section */}
       <section className="pt-20 pb-16 bg-gradient-to-br from-background to-muted/30">

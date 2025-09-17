@@ -2,6 +2,7 @@ import { CheckCircle, Clock, Shield, Wrench, MapPin, Phone, Mail } from 'lucide-
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Navigation from '@/components/Navigation';
+import ResponsiveBreadcrumb from '@/components/ResponsiveBreadcrumb';
 import Footer from '@/components/Footer';
 import CTASection from '@/components/CTASection';
 import { Link } from 'react-router-dom';
@@ -65,6 +66,7 @@ const Service = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
+      <ResponsiveBreadcrumb />
       
       {/* Hero Section */}
       <section className="pt-20 pb-16 bg-gradient-to-br from-background to-muted/30">
