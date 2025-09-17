@@ -307,7 +307,7 @@ const Producten = () => {
                     </Link>
                     <Button variant="outline" className="w-full" asChild>
                       <a 
-                        href="/brochures/S-9000-NL-algemeen.pdf" 
+                        href="./brochures/S-9000-NL-algemeen.pdf" 
                         download="GEALAN-S9000-algemene-brochure.pdf"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -425,7 +425,7 @@ const Producten = () => {
               </Link>
               <Button size="lg" variant="outline" className="px-8 py-4" asChild>
                 <a 
-                  href="/brochures/Gealan-S9000-NL-technisch.pdf" 
+                  href="./brochures/Gealan-S9000-NL-technisch.pdf" 
                   download="GEALAN-S9000-technische-brochure.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
