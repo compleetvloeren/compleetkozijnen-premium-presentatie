@@ -1,71 +1,209 @@
-import React from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Calendar, Users, TrendingUp, Mail, Phone, MapPin, Clock } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Calendar, Users, TrendingUp, Mail, Phone, MapPin, Clock, Search, Filter, Plus } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import { LeadCard } from '@/components/dashboard/LeadCard';
+import { LeadDetailDialog } from '@/components/dashboard/LeadDetailDialog';
+import { SearchAndFilters } from '@/components/dashboard/SearchAndFilters';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
+
+interface Lead {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  company?: string;
+  project_type?: string;
+  budget_range?: string;
+  status: string;
+  location?: string;
+  timeline?: string;
+  created_at: string;
+  description?: string;
+  project_details?: string;
+  preferred_contact_method?: string;
+  preferred_contact_time?: string;
+  special_requirements?: string;
+  notes?: string;
+}
+
+interface ContactSubmission {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  subject?: string;
+  message: string;
+  status: string;
+  created_at: string;
+}
 
 const Dashboard: React.FC = () => {
   const { user, signOut } = useAuth();
+  const { toast } = useToast();
+  
+  const [leads, setLeads] = useState<Lead[]>([]);
+  const [contacts, setContacts] = useState<ContactSubmission[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+  const [showLeadDetail, setShowLeadDetail] = useState(false);
+  
+  // Search and filter states
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [projectTypeFilter, setProjectTypeFilter] = useState('all');
+  const [budgetFilter, setBudgetFilter] = useState('all');
 
-  // Mock data for demonstration
-  const stats = {
-    totalLeads: 127,
-    newLeads: 23,
-    inProgress: 45,
-    converted: 59,
-    recentLeads: 15,
-    totalContacts: 89
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      
+      // Fetch leads
+      const { data: leadsData, error: leadsError } = await supabase
+        .from('leads')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (leadsError) throw leadsError;
+
+      // Fetch contact submissions
+      const { data: contactsData, error: contactsError } = await supabase
+        .from('contact_submissions')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (contactsError) throw contactsError;
+
+      setLeads(leadsData || []);
+      setContacts(contactsData || []);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      toast({
+        title: "Fout bij laden",
+        description: "Kon data niet laden. Probeer het opnieuw.",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const recentLeads = [
-    {
-      id: '1',
-      name: 'Jan Bakker',
-      email: 'jan.bakker@email.nl',
-      phone: '06-12345678',
-      project_type: 'ramen',
-      status: 'nieuw',
-      created_at: new Date().toISOString(),
-      location: 'Amsterdam'
-    },
-    {
-      id: '2', 
-      name: 'Maria de Vries',
-      email: 'maria@email.nl',
-      phone: '06-87654321',
-      project_type: 'deuren',
-      status: 'in_behandeling',
-      created_at: new Date(Date.now() - 86400000).toISOString(),
-      location: 'Utrecht'
-    }
-  ];
+  // Filter and search logic
+  const filteredLeads = useMemo(() => {
+    return leads.filter(lead => {
+      // Search filter
+      const matchesSearch = searchTerm === '' || 
+        lead.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        lead.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (lead.company && lead.company.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (lead.location && lead.location.toLowerCase().includes(searchTerm.toLowerCase()));
 
-  const recentContacts = [
-    {
-      id: '1',
-      name: 'Peter Jansen',
-      email: 'peter@email.nl',
-      subject: 'Vraag over installatie',
-      status: 'ongelezen',
-      created_at: new Date().toISOString()
-    }
-  ];
+      // Status filter
+      const matchesStatus = statusFilter === 'all' || lead.status === statusFilter;
+
+      // Project type filter
+      const matchesProjectType = projectTypeFilter === 'all' || lead.project_type === projectTypeFilter;
+
+      // Budget filter
+      const matchesBudget = budgetFilter === 'all' || lead.budget_range === budgetFilter;
+
+      return matchesSearch && matchesStatus && matchesProjectType && matchesBudget;
+    });
+  }, [leads, searchTerm, statusFilter, projectTypeFilter, budgetFilter]);
+
+  // Statistics calculations
+  const stats = useMemo(() => {
+    const now = new Date();
+    const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    
+    return {
+      totalLeads: leads.length,
+      newLeads: leads.filter(lead => lead.status === 'nieuw').length,
+      inProgress: leads.filter(lead => lead.status === 'in_behandeling').length,
+      converted: leads.filter(lead => lead.status === 'gewonnen').length,
+      recentLeads: leads.filter(lead => new Date(lead.created_at) > weekAgo).length,
+      totalContacts: contacts.length,
+      unreadContacts: contacts.filter(contact => contact.status === 'ongelezen').length
+    };
+  }, [leads, contacts]);
+
+  const handleLeadUpdate = (updatedLead: Lead) => {
+    setLeads(prevLeads => 
+      prevLeads.map(lead => 
+        lead.id === updatedLead.id ? updatedLead : lead
+      )
+    );
+    setSelectedLead(updatedLead);
+  };
+
+  const handleViewLeadDetails = (lead: Lead) => {
+    setSelectedLead(lead);
+    setShowLeadDetail(true);
+  };
+
+  const handleResetFilters = () => {
+    setSearchTerm('');
+    setStatusFilter('all');
+    setProjectTypeFilter('all');
+    setBudgetFilter('all');
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'nieuw': return 'bg-blue-100 text-blue-800';
-      case 'in_behandeling': return 'bg-yellow-100 text-yellow-800';
-      case 'offerte_verstuurd': return 'bg-purple-100 text-purple-800';
-      case 'gewonnen': return 'bg-green-100 text-green-800';
-      case 'verloren': return 'bg-red-100 text-red-800';
-      case 'ongelezen': return 'bg-orange-100 text-orange-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'nieuw': return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
+      case 'in_behandeling': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
+      case 'offerte_verstuurd': return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200';
+      case 'gewonnen': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
+      case 'verloren': return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
+      case 'ongelezen': return 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200';
+      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200';
     }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navigation />
+        <main className="container mx-auto px-4 py-8">
+          <div className="space-y-8">
+            <div className="flex justify-between items-center">
+              <div>
+                <Skeleton className="h-8 w-48 mb-2" />
+                <Skeleton className="h-4 w-64" />
+              </div>
+              <Skeleton className="h-10 w-24" />
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[...Array(4)].map((_, i) => (
+                <Card key={i}>
+                  <CardHeader className="pb-2">
+                    <Skeleton className="h-4 w-24" />
+                  </CardHeader>
+                  <CardContent>
+                    <Skeleton className="h-8 w-16 mb-2" />
+                    <Skeleton className="h-3 w-32" />
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -137,58 +275,69 @@ const Dashboard: React.FC = () => {
           </Card>
         </div>
 
-        {/* Recent Activity */}
+        {/* Main Content */}
         <Tabs defaultValue="leads" className="space-y-4">
           <TabsList>
-            <TabsTrigger value="leads">Recente Leads</TabsTrigger>
-            <TabsTrigger value="contacts">Contact Berichten</TabsTrigger>
+            <TabsTrigger value="leads">
+              Leads ({stats.totalLeads})
+            </TabsTrigger>
+            <TabsTrigger value="contacts">
+              Contact Berichten ({stats.unreadContacts > 0 ? stats.unreadContacts : stats.totalContacts})
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="leads">
-            <Card>
-              <CardHeader>
-                <CardTitle>Recente Leads</CardTitle>
-                <CardDescription>
-                  De nieuwste aanvragen voor offertes
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {recentLeads.map((lead) => (
-                    <div key={lead.id} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div className="space-y-1">
-                        <div className="flex items-center space-x-2">
-                          <h4 className="font-medium">{lead.name}</h4>
-                          <Badge className={getStatusColor(lead.status)}>
-                            {lead.status.replace('_', ' ')}
-                          </Badge>
-                        </div>
-                        <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                          <div className="flex items-center space-x-1">
-                            <Mail className="h-3 w-3" />
-                            <span>{lead.email}</span>
-                          </div>
-                          <div className="flex items-center space-x-1">
-                            <Phone className="h-3 w-3" />
-                            <span>{lead.phone}</span>
-                          </div>
-                          <div className="flex items-center space-x-1">
-                            <MapPin className="h-3 w-3" />
-                            <span>{lead.location}</span>
-                          </div>
-                        </div>
-                        <p className="text-sm text-muted-foreground">
-                          Project: {lead.project_type} • {new Date(lead.created_at).toLocaleDateString('nl-NL')}
-                        </p>
-                      </div>
-                      <Button variant="outline" size="sm">
-                        Bekijken
-                      </Button>
-                    </div>
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Leads Overzicht</CardTitle>
+                  <CardDescription>
+                    Beheer en bekijk alle aanvragen voor offertes
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <SearchAndFilters
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                    statusFilter={statusFilter}
+                    setStatusFilter={setStatusFilter}
+                    projectTypeFilter={projectTypeFilter}
+                    setProjectTypeFilter={setProjectTypeFilter}
+                    budgetFilter={budgetFilter}
+                    setBudgetFilter={setBudgetFilter}
+                    onReset={handleResetFilters}
+                    totalResults={leads.length}
+                    filteredResults={filteredLeads.length}
+                  />
+                </CardContent>
+              </Card>
+
+              {filteredLeads.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filteredLeads.map((lead) => (
+                    <LeadCard
+                      key={lead.id}
+                      lead={lead}
+                      onViewDetails={handleViewLeadDetails}
+                    />
                   ))}
                 </div>
-              </CardContent>
-            </Card>
+              ) : (
+                <Card>
+                  <CardContent className="py-12">
+                    <div className="text-center">
+                      <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                      <h3 className="text-lg font-semibold mb-2">Geen leads gevonden</h3>
+                      <p className="text-muted-foreground">
+                        {leads.length === 0 
+                          ? "Er zijn nog geen leads ingediend."
+                          : "Probeer andere zoekfilters."}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
           </TabsContent>
 
           <TabsContent value="contacts">
@@ -200,28 +349,52 @@ const Dashboard: React.FC = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {recentContacts.map((contact) => (
-                    <div key={contact.id} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div className="space-y-1">
-                        <div className="flex items-center space-x-2">
-                          <h4 className="font-medium">{contact.name}</h4>
-                          <Badge className={getStatusColor(contact.status)}>
-                            {contact.status}
-                          </Badge>
+                {contacts.length > 0 ? (
+                  <div className="space-y-4">
+                    {contacts.map((contact) => (
+                      <div key={contact.id} className="flex items-center justify-between p-4 border rounded-lg">
+                        <div className="space-y-1">
+                          <div className="flex items-center space-x-2">
+                            <h4 className="font-medium">{contact.name}</h4>
+                            <Badge className={getStatusColor(contact.status)}>
+                              {contact.status}
+                            </Badge>
+                          </div>
+                          <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+                            <div className="flex items-center space-x-1">
+                              <Mail className="h-3 w-3" />
+                              <span>{contact.email}</span>
+                            </div>
+                            {contact.phone && (
+                              <div className="flex items-center space-x-1">
+                                <Phone className="h-3 w-3" />
+                                <span>{contact.phone}</span>
+                              </div>
+                            )}
+                          </div>
+                          {contact.subject && (
+                            <p className="text-sm font-medium">{contact.subject}</p>
+                          )}
+                          <p className="text-sm text-muted-foreground line-clamp-2">{contact.message}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {new Date(contact.created_at).toLocaleDateString('nl-NL')}
+                          </p>
                         </div>
-                        <p className="text-sm text-muted-foreground">{contact.email}</p>
-                        <p className="text-sm font-medium">{contact.subject}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {new Date(contact.created_at).toLocaleDateString('nl-NL')}
-                        </p>
+                        <Button variant="outline" size="sm">
+                          Bekijken
+                        </Button>
                       </div>
-                      <Button variant="outline" size="sm">
-                        Bekijken
-                      </Button>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8">
+                    <Mail className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold mb-2">Geen berichten</h3>
+                    <p className="text-muted-foreground">
+                      Er zijn nog geen contact berichten ontvangen.
+                    </p>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
@@ -229,6 +402,14 @@ const Dashboard: React.FC = () => {
       </main>
 
       <Footer />
+
+      {/* Lead Detail Dialog */}
+      <LeadDetailDialog
+        lead={selectedLead}
+        isOpen={showLeadDetail}
+        onClose={() => setShowLeadDetail(false)}
+        onLeadUpdate={handleLeadUpdate}
+      />
     </div>
   );
 };
