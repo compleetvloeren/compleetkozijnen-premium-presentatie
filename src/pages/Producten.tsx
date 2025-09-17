@@ -32,24 +32,24 @@ const Producten = () => {
     {
       name: 'SCHÜCO',
       title: 'Innovatieve Technologie',
-      description: 'Binnenkort beschikbaar: SCHÜCO kozijnsystemen met geavanceerde technologie en superieure prestaties voor moderne woningen.',
+      description: 'Premium aluminium kozijnsystemen met geavanceerde Duitse technologie. Van raamsystemen tot schuifdeuren - alles van A tot Z geregeld.',
       features: [
-        'Innovatieve profieltechnologie',
-        'Uitstekende isolatiewaarden',
-        'Moderne designopties',
-        'Duurzame materialen',
-        'Flexibele toepassingsmogelijkheden',
-        'Uitgebreide garantie'
+        'AWS/ADS/ASE serie systemen',
+        'Uf-waarden tot 1,0 W/(m²K)',
+        'RC2-RC4 beveiligingsniveaus',
+        'Hydraulische schuifsystemen',
+        'Maximale glasoppervlakken',
+        'Passief huis geschikt'
       ],
       specs: {
-        isolatie: 'Uf-waarde informatie volgt',
-        veiligheid: 'Hoogwaardige beveiliging',
-        dichtheid: 'Premium waterdichtheid',
-        windbelasting: 'Superieure windbestendigheid'
+        isolatie: 'Uf-waarde tot 1,0 W/(m²K)',
+        veiligheid: 'RC2-RC4 certificering',
+        dichtheid: 'Klasse 4 luchtdichtheid',
+        windbelasting: 'Premium windbestendigheid'
       },
       route: '/producten/schueco',
-      status: 'Binnenkort Beschikbaar',
-      color: 'from-gray-500 to-gray-600'
+      status: 'Beschikbaar',
+      color: 'from-slate-600 to-slate-700'
     }
   ];
 
