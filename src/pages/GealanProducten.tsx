@@ -313,8 +313,10 @@ const Producten = () => {
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </Link>
-                    <Button variant="outline" className="w-full" onClick={() => openPdf('/brochures/S-9000-NL-algemeen.pdf')}>
-                      📄 Bekijk brochure
+                    <Button variant="outline" className="w-full" asChild>
+                      <a href={`${import.meta.env.BASE_URL}brochures/S-9000-NL-algemeen.pdf`} target="_blank" rel="noopener noreferrer">
+                        📄 Bekijk brochure
+                      </a>
                     </Button>
                   </div>
                 </CardContent>
@@ -423,8 +425,10 @@ const Producten = () => {
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
-              <Button size="lg" variant="outline" className="px-8 py-4" onClick={() => openPdf('/brochures/Gealan-S9000-NL-technisch.pdf')}>
-                📄 Bekijk technische brochure
+              <Button size="lg" variant="outline" className="px-8 py-4" asChild>
+                <a href={`${import.meta.env.BASE_URL}brochures/Gealan-S9000-NL-technisch.pdf`} target="_blank" rel="noopener noreferrer">
+                  📄 Bekijk technische brochure
+                </a>
               </Button>
             </div>
           </div>
