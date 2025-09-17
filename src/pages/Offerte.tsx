@@ -162,11 +162,11 @@ const Offerte = () => {
 
   const mapBudgetToDbFormat = (budget: string) => {
     switch (budget) {
-      case '0-10000': return 'tot_5k';
-      case '10000-25000': return '5k_15k';
-      case '25000-50000': return '15k_30k';
-      case '50000-plus': return 'boven_30k';
-      default: return null;
+      case '0-10000': return '5000-10000';
+      case '10000-25000': return '10000-25000';
+      case '25000-50000': return '25000-50000';
+      case '50000-plus': return '50000+';
+      default: return 'onbekend';
     }
   };
 
