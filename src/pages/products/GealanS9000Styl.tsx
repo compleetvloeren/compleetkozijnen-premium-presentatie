@@ -9,12 +9,6 @@ import TechnicalSpecDropdown from '@/components/TechnicalSpecDropdown';
 import { getTechnicalTerm } from '@/lib/technicalGlossary';
 import gealanStylImage from '@/assets/gealan-s9000-styl.png';
 import gealanStylProfile from '@/assets/gealan-s9000-styl-profile.png';
-import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import brochureAlgemeen from '@/assets/brochures/S-9000-NL-algemeen.pdf';
-
-const GealanS9000Styl = () => {
-  const [pdfOpen, setPdfOpen] = useState(false);
 
   const productData = {
     name: 'GEALAN S-9000 Styl',
@@ -350,24 +344,13 @@ Met zijn unieke combinatie van 4° en 15° schuintes creëert dit systeem een au
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10" onClick={() => setPdfOpen(true)}>
+            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10" onClick={() => window.open('/brochures/S-9000-NL-algemeen.pdf', '_blank')}>
               <Download className="mr-2 h-5 w-5" />
               Bekijk brochure
             </Button>
           </div>
         </div>
       </section>
-
-      <Dialog open={pdfOpen} onOpenChange={setPdfOpen}>
-        <DialogContent className="max-w-5xl w-[95vw]">
-          <DialogHeader>
-            <DialogTitle>Brochure</DialogTitle>
-          </DialogHeader>
-          <div className="w-full h-[75vh]">
-            <iframe src={brochureAlgemeen} className="w-full h-full" title="Brochure PDF" />
-          </div>
-        </DialogContent>
-      </Dialog>
 
       <Footer />
     </div>
