@@ -16,6 +16,7 @@ import GealanS9000Slim from "./pages/products/GealanS9000Slim";
 import OverOns from "./pages/OverOns";
 import Service from "./pages/Service";
 import Contact from "./pages/Contact";
+import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/producten" element={<Producten />} />
