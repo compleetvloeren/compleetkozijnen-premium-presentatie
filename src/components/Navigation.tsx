@@ -37,10 +37,10 @@ const Navigation = () => {
               <Link
                 key={item.name}
                 to={item.path}
-                className={`text-body font-medium transition-[var(--transition-smooth)] hover:text-primary ${
+                className={`text-body font-medium transition-[var(--transition-smooth)] hover:text-white ${
                   isActive(item.path) 
-                    ? 'text-primary' 
-                    : 'text-foreground/80'
+                    ? 'text-white' 
+                    : 'text-white/80'
                 }`}
               >
                 {item.name}
@@ -59,7 +59,7 @@ const Navigation = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2"
+            className="md:hidden p-2 text-white"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
           >
