@@ -4,15 +4,36 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Calendar, Users, TrendingUp, Mail, Phone, MapPin, Clock, Search, Filter, Plus } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { 
+  Calendar, 
+  Users, 
+  TrendingUp, 
+  Mail, 
+  Phone, 
+  MapPin, 
+  Clock, 
+  Search, 
+  Filter, 
+  Plus, 
+  Bell,
+  Download,
+  BarChart3,
+  AlertCircle,
+  RefreshCw
+} from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { LeadCard } from '@/components/dashboard/LeadCard';
 import { LeadDetailDialog } from '@/components/dashboard/LeadDetailDialog';
 import { SearchAndFilters } from '@/components/dashboard/SearchAndFilters';
+import { NotificationCenter } from '@/components/dashboard/NotificationCenter';
+import { ExportOptions } from '@/components/dashboard/ExportOptions';
+import { DashboardLoadingSkeleton, StatCardSkeleton, LeadCardSkeleton } from '@/components/dashboard/LoadingSkeletons';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useNotifications, useLeadNotifications } from '@/hooks/useNotifications';
+import { exportLeads } from '@/lib/exportUtils';
 
 interface Lead {
   id: string;
@@ -48,12 +69,18 @@ interface ContactSubmission {
 const Dashboard: React.FC = () => {
   const { user, signOut } = useAuth();
   const { toast } = useToast();
+  const { notifications, unreadCount, addNotification, markAsRead, markAllAsRead, dismissNotification } = useNotifications();
+  const { simulateExportComplete, simulateSystemError } = useLeadNotifications();
   
   const [leads, setLeads] = useState<Lead[]>([]);
   const [contacts, setContacts] = useState<ContactSubmission[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [exporting, setExporting] = useState(false);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [showLeadDetail, setShowLeadDetail] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [showExportOptions, setShowExportOptions] = useState(false);
   
   // Search and filter states
   const [searchTerm, setSearchTerm] = useState('');
@@ -63,11 +90,18 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     fetchData();
+    // Poll for new data every 30 seconds
+    const interval = setInterval(fetchData, 30000);
+    return () => clearInterval(interval);
   }, []);
 
-  const fetchData = async () => {
+  const fetchData = async (isRefresh = false) => {
     try {
-      setLoading(true);
+      if (isRefresh) {
+        setRefreshing(true);
+      } else {
+        setLoading(true);
+      }
       
       // Fetch leads
       const { data: leadsData, error: leadsError } = await supabase
@@ -85,17 +119,38 @@ const Dashboard: React.FC = () => {
 
       if (contactsError) throw contactsError;
 
+      // Check for new leads and notify
+      if (isRefresh && leadsData && leads.length > 0) {
+        const newLeads = leadsData.filter(newLead => 
+          !leads.some(existingLead => existingLead.id === newLead.id)
+        );
+        
+        newLeads.forEach(lead => {
+          addNotification({
+            type: 'info',
+            title: 'Nieuwe Lead',
+            message: `${lead.name} heeft een offerteverzoek ingediend`,
+            actionUrl: '/dashboard',
+            actionLabel: 'Bekijk Lead'
+          });
+        });
+      }
+
       setLeads(leadsData || []);
       setContacts(contactsData || []);
     } catch (error) {
       console.error('Error fetching data:', error);
-      toast({
-        title: "Fout bij laden",
-        description: "Kon data niet laden. Probeer het opnieuw.",
-        variant: "destructive"
-      });
+      if (!isRefresh) {
+        toast({
+          title: "Fout bij laden",
+          description: "Kon data niet laden. Probeer het opnieuw.",
+          variant: "destructive"
+        });
+        simulateSystemError("Dashboard data kon niet worden geladen");
+      }
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
   };
 
@@ -145,6 +200,15 @@ const Dashboard: React.FC = () => {
       )
     );
     setSelectedLead(updatedLead);
+    
+    // Notify about status change
+    addNotification({
+      type: 'success',
+      title: 'Lead Bijgewerkt',
+      message: `Status van ${updatedLead.name} is bijgewerkt`,
+      actionUrl: '/dashboard',
+      actionLabel: 'Bekijk Lead'
+    });
   };
 
   const handleViewLeadDetails = (lead: Lead) => {
@@ -157,6 +221,28 @@ const Dashboard: React.FC = () => {
     setStatusFilter('all');
     setProjectTypeFilter('all');
     setBudgetFilter('all');
+  };
+
+  const handleRefresh = () => {
+    fetchData(true);
+  };
+
+  const handleExport = async (format: 'csv' | 'excel', data: Lead[]) => {
+    try {
+      setExporting(true);
+      await exportLeads(data, format);
+      simulateExportComplete(data.length, format);
+    } catch (error) {
+      console.error('Export failed:', error);
+      toast({
+        title: "Export mislukt",
+        description: "Er is een fout opgetreden bij het exporteren.",
+        variant: "destructive"
+      });
+      simulateSystemError("Lead export is mislukt");
+    } finally {
+      setExporting(false);
+    }
   };
 
   const getStatusColor = (status: string) => {
@@ -173,32 +259,10 @@ const Dashboard: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="dashboard-container">
         <Navigation />
         <main className="container mx-auto px-4 py-8">
-          <div className="space-y-8">
-            <div className="flex justify-between items-center">
-              <div>
-                <Skeleton className="h-8 w-48 mb-2" />
-                <Skeleton className="h-4 w-64" />
-              </div>
-              <Skeleton className="h-10 w-24" />
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[...Array(4)].map((_, i) => (
-                <Card key={i}>
-                  <CardHeader className="pb-2">
-                    <Skeleton className="h-4 w-24" />
-                  </CardHeader>
-                  <CardContent>
-                    <Skeleton className="h-8 w-16 mb-2" />
-                    <Skeleton className="h-3 w-32" />
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
+          <DashboardLoadingSkeleton />
         </main>
         <Footer />
       </div>
@@ -206,68 +270,169 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="dashboard-container">
       <Navigation />
       
-      <main className="container mx-auto px-4 py-8">
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">Dashboard</h1>
-            <p className="text-muted-foreground">Welkom terug, {user?.email}</p>
+      {/* Dashboard Header */}
+      <header className="dashboard-header">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div className="animate-fade-in-up">
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
+                Dashboard
+              </h1>
+              <p className="text-muted-foreground">Welkom terug, {user?.email}</p>
+            </div>
+            
+            <div className="flex items-center space-x-3">
+              {/* Notifications */}
+              <div className="relative">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowNotifications(!showNotifications)}
+                  className={`relative ${unreadCount > 0 ? 'bg-primary/10 border-primary/20' : ''}`}
+                >
+                  <Bell className="h-4 w-4" />
+                  {unreadCount > 0 && (
+                    <span className="dashboard-notification-badge absolute -top-2 -right-2 min-w-[1.25rem] h-5 flex items-center justify-center text-xs">
+                      {unreadCount > 9 ? '9+' : unreadCount}
+                    </span>
+                  )}
+                </Button>
+                
+                {showNotifications && (
+                  <div className="absolute right-0 top-full mt-2 w-80 z-50 animate-scale-in">
+                    <div className="bg-white rounded-lg shadow-xl border border-border/50 p-4">
+                      <NotificationCenter
+                        notifications={notifications}
+                        onMarkAsRead={markAsRead}
+                        onMarkAllAsRead={markAllAsRead}
+                        onDismiss={dismissNotification}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Export Options */}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowExportOptions(!showExportOptions)}
+                disabled={filteredLeads.length === 0}
+              >
+                <Download className="h-4 w-4 mr-2" />
+                Export
+              </Button>
+
+              {/* Refresh */}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleRefresh}
+                disabled={refreshing}
+              >
+                <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
+                {refreshing ? 'Laden...' : 'Verversen'}
+              </Button>
+
+              {/* Logout */}
+              <Button variant="ghost" size="sm" onClick={signOut}>
+                Uitloggen
+              </Button>
+            </div>
           </div>
-          <Button variant="outline" onClick={signOut}>
-            Uitloggen
-          </Button>
         </div>
+      </header>
+
+      <main className="container mx-auto px-4 py-8 space-y-8">/
+
+        {/* Export Options Popup */}
+        {showExportOptions && (
+          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center animate-fade-in-up">
+            <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 animate-scale-in">
+              <div className="flex justify-between items-center p-4 border-b">
+                <h3 className="font-semibold">Export Leads</h3>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowExportOptions(false)}
+                >
+                  ×
+                </Button>
+              </div>
+              <div className="p-4">
+                <ExportOptions
+                  leads={leads}
+                  filteredLeads={filteredLeads}
+                  onExport={handleExport}
+                  isExporting={exporting}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Error Alert for Empty State */}
+        {!loading && leads.length === 0 && (
+          <Alert className="mb-6">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>
+              Er zijn nog geen leads in het systeem. Zodra er offerteverzoeken worden ingediend, 
+              verschijnen deze hier in het dashboard.
+            </AlertDescription>
+          </Alert>
+        )}
 
         {/* Statistics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card>
+          <Card className="dashboard-stat-card">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Totaal Leads</CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.totalLeads}</div>
+              <div className="text-2xl font-bold text-primary">{stats.totalLeads}</div>
               <p className="text-xs text-muted-foreground">
                 +{stats.recentLeads} deze week
               </p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="dashboard-stat-card">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Nieuwe Leads</CardTitle>
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.newLeads}</div>
+              <div className="text-2xl font-bold text-blue-600">{stats.newLeads}</div>
               <p className="text-xs text-muted-foreground">
                 Nog niet behandeld
               </p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="dashboard-stat-card">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">In Behandeling</CardTitle>
               <Clock className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.inProgress}</div>
+              <div className="text-2xl font-bold text-amber-600">{stats.inProgress}</div>
               <p className="text-xs text-muted-foreground">
                 Actieve projecten
               </p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="dashboard-stat-card">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Geconverteerd</CardTitle>
               <Calendar className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.converted}</div>
+              <div className="text-2xl font-bold text-green-600">{stats.converted}</div>
               <p className="text-xs text-muted-foreground">
                 Succesvol afgesloten
               </p>
@@ -275,26 +440,46 @@ const Dashboard: React.FC = () => {
           </Card>
         </div>
 
-        {/* Main Content */}
-        <Tabs defaultValue="leads" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="leads">
+        <Tabs defaultValue="leads" className="space-y-6">
+          <TabsList className="bg-white/60 backdrop-blur-sm border border-border/50">
+            <TabsTrigger value="leads" className="relative">
               Leads ({stats.totalLeads})
+              {stats.newLeads > 0 && (
+                <span className="ml-2 bg-primary text-primary-foreground text-xs px-2 py-0.5 rounded-full">
+                  {stats.newLeads} nieuw
+                </span>
+              )}
             </TabsTrigger>
             <TabsTrigger value="contacts">
               Contact Berichten ({stats.unreadContacts > 0 ? stats.unreadContacts : stats.totalContacts})
+              {stats.unreadContacts > 0 && (
+                <span className="ml-2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full">
+                  {stats.unreadContacts}
+                </span>
+              )}
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="leads">
-            <div className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Leads Overzicht</CardTitle>
-                  <CardDescription>
-                    Beheer en bekijk alle aanvragen voor offertes
-                  </CardDescription>
-                </CardHeader>
+          <TabsContent value="leads" className="space-y-6">
+            <Card className="dashboard-card">
+              <CardHeader>
+                <div className="flex justify-between items-center">
+                  <div>
+                    <CardTitle className="flex items-center space-x-2">
+                      <BarChart3 className="h-5 w-5" />
+                      <span>Leads Overzicht</span>
+                    </CardTitle>
+                    <CardDescription>
+                      Beheer en bekijk alle aanvragen voor offertes
+                    </CardDescription>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Badge variant="secondary" className="bg-primary/10 text-primary">
+                      {filteredLeads.length} zichtbaar
+                    </Badge>
+                  </div>
+                </div>
+              </CardHeader>
                 <CardContent>
                   <SearchAndFilters
                     searchTerm={searchTerm}
@@ -314,34 +499,39 @@ const Dashboard: React.FC = () => {
 
               {filteredLeads.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredLeads.map((lead) => (
-                    <LeadCard
-                      key={lead.id}
-                      lead={lead}
-                      onViewDetails={handleViewLeadDetails}
-                    />
+                  {filteredLeads.map((lead, index) => (
+                    <div key={lead.id} className="animate-fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
+                      <LeadCard
+                        lead={lead}
+                        onViewDetails={handleViewLeadDetails}
+                      />
+                    </div>
                   ))}
                 </div>
               ) : (
-                <Card>
+                <Card className="dashboard-card">
                   <CardContent className="py-12">
                     <div className="text-center">
                       <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                       <h3 className="text-lg font-semibold mb-2">Geen leads gevonden</h3>
-                      <p className="text-muted-foreground">
+                      <p className="text-muted-foreground mb-4">
                         {leads.length === 0 
                           ? "Er zijn nog geen leads ingediend."
                           : "Probeer andere zoekfilters."}
                       </p>
+                      {leads.length === 0 && (
+                        <Button variant="outline" asChild>
+                          <a href="/offerte">Bekijk Offerte Pagina</a>
+                        </Button>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
               )}
-            </div>
-          </TabsContent>
+            </TabsContent>
 
           <TabsContent value="contacts">
-            <Card>
+            <Card className="dashboard-card">
               <CardHeader>
                 <CardTitle>Contact Berichten</CardTitle>
                 <CardDescription>
@@ -349,7 +539,6 @@ const Dashboard: React.FC = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                {contacts.length > 0 ? (
                   <div className="space-y-4">
                     {contacts.map((contact) => (
                       <div key={contact.id} className="flex items-center justify-between p-4 border rounded-lg">
@@ -390,9 +579,12 @@ const Dashboard: React.FC = () => {
                   <div className="text-center py-8">
                     <Mail className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                     <h3 className="text-lg font-semibold mb-2">Geen berichten</h3>
-                    <p className="text-muted-foreground">
+                    <p className="text-muted-foreground mb-4">
                       Er zijn nog geen contact berichten ontvangen.
                     </p>
+                    <Button variant="outline" asChild>
+                      <a href="/contact">Bekijk Contact Pagina</a>
+                    </Button>
                   </div>
                 )}
               </CardContent>
