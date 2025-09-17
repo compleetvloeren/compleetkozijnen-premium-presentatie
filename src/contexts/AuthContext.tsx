@@ -49,9 +49,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 .maybeSingle();
               
               console.log('Profile data:', profile, 'Error:', error);
-              const adminStatus = profile?.role === 'admin';
-              console.log('Setting admin status to:', adminStatus);
-              setIsAdmin(adminStatus);
+
+              // Ensure profile exists if not found
+              if (!profile) {
+                console.log('No profile found, invoking ensure-profile');
+                try {
+                  await supabase.functions.invoke('ensure-profile');
+                } catch (e) {
+                  console.error('ensure-profile invocation failed', e);
+                }
+
+                // Re-fetch profile
+                const { data: profile2 } = await supabase
+                  .from('profiles')
+                  .select('role')
+                  .eq('user_id', session.user.id)
+                  .maybeSingle();
+                if (profile2) {
+                  const adminStatus2 = profile2.role === 'admin';
+                  console.log('Setting admin status to (retry):', adminStatus2);
+                  setIsAdmin(adminStatus2);
+                } else {
+                  setIsAdmin(false);
+                }
+              } else {
+                const adminStatus = profile.role === 'admin';
+                console.log('Setting admin status to:', adminStatus);
+                setIsAdmin(adminStatus);
+              }
             } catch (error) {
               console.error('Error checking admin status:', error);
               setIsAdmin(false);
@@ -84,9 +109,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             .maybeSingle();
           
           console.log('Initial profile data:', profile, 'Error:', error);
-          const adminStatus = profile?.role === 'admin';
-          console.log('Initial admin status:', adminStatus);
-          setIsAdmin(adminStatus);
+
+          if (!profile) {
+            console.log('No initial profile, invoking ensure-profile');
+            try {
+              await supabase.functions.invoke('ensure-profile');
+            } catch (e) {
+              console.error('ensure-profile invocation failed', e);
+            }
+            const { data: profile2 } = await supabase
+              .from('profiles')
+              .select('role')
+              .eq('user_id', session.user.id)
+              .maybeSingle();
+            const adminStatus2 = profile2?.role === 'admin';
+            console.log('Initial admin status (after ensure):', adminStatus2);
+            setIsAdmin(adminStatus2);
+          } else {
+            const adminStatus = profile.role === 'admin';
+            console.log('Initial admin status:', adminStatus);
+            setIsAdmin(adminStatus);
+          }
         } catch (error) {
           console.error('Error checking initial admin status:', error);
           setIsAdmin(false);
