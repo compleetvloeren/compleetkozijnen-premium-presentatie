@@ -159,7 +159,7 @@ serve(async (req) => {
 
         // Verify delete password
         const deleteData = await req.json();
-        const REQUIRED_PASSWORD = 'Slavenvoedsel.071';
+        const REQUIRED_PASSWORD = 'Slavenvoedsel';
         
         if (!deleteData.password || deleteData.password !== REQUIRED_PASSWORD) {
           return new Response(JSON.stringify({ error: 'Invalid delete password' }), {
