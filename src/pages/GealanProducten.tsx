@@ -13,6 +13,10 @@ import gealanSlimImage from '@/assets/gealan-s9000-slim.png';
 import gealanHaaxProfile from '@/assets/gealan-s9000-haax-profile.png';
 import gealanStylProfile from '@/assets/gealan-s9000-styl-profile.png';
 import gealanSlimProfile from '@/assets/gealan-s9000-slim-profile.png';
+import { useState } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import brochureAlgemeen from '@/assets/brochures/S-9000-NL-algemeen.pdf';
+import brochureTechnisch from '@/assets/brochures/Gealan-S9000-NL-technisch.pdf';
 
 const Producten = () => {
   const productVariants = [
@@ -173,6 +177,10 @@ const Producten = () => {
     }
   ];
 
+  const [pdfOpen, setPdfOpen] = useState(false);
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const openPdf = (url: string) => { setPdfUrl(url); setPdfOpen(true); };
+
   return (
     <div className="min-h-screen">
       <Navigation />
@@ -305,16 +313,8 @@ const Producten = () => {
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </Link>
-                    <Button variant="outline" className="w-full" asChild>
-                      <a 
-                        href={`${import.meta.env.BASE_URL}brochures/S-9000-NL-algemeen.pdf`} 
-                        download="GEALAN-S9000-algemene-brochure.pdf"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1"
-                      >
-                        📄 Brochure Downloaden
-                      </a>
+                    <Button variant="outline" className="w-full" onClick={() => openPdf(brochureAlgemeen)}>
+                      📄 Bekijk brochure
                     </Button>
                   </div>
                 </CardContent>
@@ -423,20 +423,26 @@ const Producten = () => {
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
-              <Button size="lg" variant="outline" className="px-8 py-4" asChild>
-                <a 
-                href={`${import.meta.env.BASE_URL}brochures/Gealan-S9000-NL-technisch.pdf`} 
-                  download="GEALAN-S9000-technische-brochure.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  📄 Technische Brochure
-                </a>
+              <Button size="lg" variant="outline" className="px-8 py-4" onClick={() => openPdf(brochureTechnisch)}>
+                📄 Bekijk technische brochure
               </Button>
             </div>
           </div>
         </div>
       </section>
+
+      <Dialog open={pdfOpen} onOpenChange={setPdfOpen}>
+        <DialogContent className="max-w-5xl w-[95vw]">
+          <DialogHeader>
+            <DialogTitle>Brochure</DialogTitle>
+          </DialogHeader>
+          <div className="w-full h-[75vh]">
+            {pdfUrl && (
+              <iframe src={pdfUrl} className="w-full h-full" title="Brochure PDF" />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <Footer />
     </div>
