@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import Navigation from '@/components/Navigation';
 import ResponsiveBreadcrumb from '@/components/ResponsiveBreadcrumb';
 import Hero from '@/components/Hero';
+import BrandShowcase from '@/components/BrandShowcase';
 import FeaturesSection from '@/components/FeaturesSection';
 import CTASection from '@/components/CTASection';
 import Footer from '@/components/Footer';
@@ -31,6 +32,7 @@ const Index = () => {
       <ResponsiveBreadcrumb />
       <main>
         <Hero />
+        <BrandShowcase />
         <FeaturesSection />
         <CTASection />
       </main>

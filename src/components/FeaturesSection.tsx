@@ -20,8 +20,8 @@ const FeaturesSection = () => {
     },
     {
       icon: Droplets,
-      title: 'GEALAN-ACRYLCOLOR®',
-      description: 'Duurzaam kleursysteem met blijvende kleurechtheid en superieure weerbestendigheid.',
+      title: 'Premium Kleursystemen',
+      description: 'Duurzame kleursystemen van GEALAN-ACRYLCOLOR® en Schüco met blijvende kleurechtheid.',
       specs: 'Kleurvast voor het leven'
     },
     {
@@ -32,9 +32,9 @@ const FeaturesSection = () => {
     },
     {
       icon: Star,
-      title: 'Premium Kwaliteit',
-      description: 'Hoogwaardige GEALAN S-9000 systemen, speciaal ontwikkeld voor de Nederlandse markt.',
-      specs: 'Duitse engineering'
+      title: 'Premium Merken',
+      description: 'Hoogwaardige GEALAN S-9000 en Schüco systemen, geoptimaliseerd voor de Nederlandse markt.',
+      specs: 'Duitse & internationale kwaliteit'
     },
     {
       icon: Clock,
@@ -52,10 +52,10 @@ const FeaturesSection = () => {
       specs: ['120mm inbouwdiepte', '52mm glasdikte', 'Triple glazing']
     },
     {
-      title: 'Premium Wooncomfort',
-      description: 'Ervaar het verschil van professionele kozijnen in uw eigen woning.',
+      title: 'Schüco Raam & Deursystemen',
+      description: 'Aluminium systemen met superieure isolatie en moderne esthetiek.',
       image: interiorImage,
-      specs: ['Geluidsreductie', 'Energiebesparing', 'Veiligheid']
+      specs: ['Energie-efficiënt', 'Duurzaam aluminium', 'Slank design']
     },
     {
       title: 'Professionele Installatie', 
@@ -75,8 +75,64 @@ const FeaturesSection = () => {
             <span className="text-transparent bg-gradient-to-r from-primary to-accent bg-clip-text"> CompleetKozijnen?</span>
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
-            Ontdek de voordelen van onze premium GEALAN S-9000 kozijnsystemen en complete service.
+            Ontdek de voordelen van onze premium GEALAN S-9000 en Schüco kozijnsystemen met complete service.
           </p>
+        </div>
+
+        {/* Brand Showcase Section */}
+        <div className="mb-16 md:mb-20">
+          <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12">
+            Onze Premium Merken
+          </h3>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+            {/* GEALAN Brand Card */}
+            <Card className="card-tesla-hero p-6 md:p-8">
+              <div className="text-center mb-6">
+                <h4 className="text-2xl font-bold text-primary mb-4">GEALAN S-9000</h4>
+                <p className="text-muted-foreground mb-4">
+                  Duitse premium kwaliteit met innovatieve 3-dichting technologie voor optimale isolatie en comfort.
+                </p>
+                <div className="space-y-2 text-sm">
+                  <div className="flex items-center justify-center">
+                    <div className="w-2 h-2 bg-primary rounded-full mr-3" />
+                    <span>3-Dichting systeem</span>
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <div className="w-2 h-2 bg-primary rounded-full mr-3" />
+                    <span>STV® Lijmtechniek</span>
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <div className="w-2 h-2 bg-primary rounded-full mr-3" />
+                    <span>GEALAN-ACRYLCOLOR®</span>
+                  </div>
+                </div>
+              </div>
+            </Card>
+
+            {/* Schüco Brand Card */}
+            <Card className="card-tesla-hero p-6 md:p-8">
+              <div className="text-center mb-6">
+                <h4 className="text-2xl font-bold text-accent mb-4">Schüco</h4>
+                <p className="text-muted-foreground mb-4">
+                  Wereldwijd toonaangevend in aluminium raam- en deursystemen met focus op duurzaamheid en design.
+                </p>
+                <div className="space-y-2 text-sm">
+                  <div className="flex items-center justify-center">
+                    <div className="w-2 h-2 bg-accent rounded-full mr-3" />
+                    <span>Aluminium systemen</span>
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <div className="w-2 h-2 bg-accent rounded-full mr-3" />
+                    <span>Energie-efficiënt</span>
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <div className="w-2 h-2 bg-accent rounded-full mr-3" />
+                    <span>Modern design</span>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </div>
         </div>
 
         {/* Features Grid */}

@@ -22,13 +22,13 @@ const Hero = () => {
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 md:mb-6 leading-tight">
             Premium Kozijnen
             <span className="block text-white">
-              Compleet Geïnstalleerd
+              GEALAN & Schüco
             </span>
           </h1>
           
           <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-light mb-6 md:mb-8 text-white/90 max-w-3xl mx-auto leading-relaxed px-4">
-            Ontdek onze GEALAN S-9000 kozijnsystemen met 3-dichting technologie. 
-            Superieure isolatie, moderne designs en volledige montageservice.
+            Ontdek onze premium kozijnsystemen van GEALAN S-9000 en Schüco. 
+            Superieure isolatie, moderne designs en volledige montageservice van A tot Z.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-8 md:mb-12 px-4">
@@ -65,7 +65,7 @@ const Hero = () => {
                 <Award className="h-5 w-5 sm:h-6 sm:w-6 text-red-400" />
               </div>
               <h3 className="font-semibold text-xs sm:text-sm text-center">Premium Kwaliteit</h3>
-              <p className="text-xs text-white/70 text-center">GEALAN certificering</p>
+              <p className="text-xs text-white/70 text-center">GEALAN & Schüco certificering</p>
             </div>
             
             <div className="flex flex-col items-center space-y-1 sm:space-y-2">

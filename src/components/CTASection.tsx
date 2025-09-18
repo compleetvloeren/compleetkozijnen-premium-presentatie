@@ -41,7 +41,7 @@ const CTASection = () => {
             <span className="text-transparent bg-gradient-to-r from-primary to-accent bg-clip-text"> Nieuwe Kozijnen?</span>
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-6 md:mb-8 px-4">
-            Ontdek hoe wij uw woning kunnen transformeren met premium kozijnen en professionele service.
+            Ontdek hoe wij uw woning kunnen transformeren met premium GEALAN en Schüco kozijnen en professionele service.
           </p>
         </div>
 
