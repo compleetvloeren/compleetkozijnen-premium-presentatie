@@ -138,19 +138,33 @@ const FeaturesSection = () => {
         {/* Features Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mb-12 md:mb-20">
           {features.map((feature, index) => (
-            <Card key={feature.title} className="card-tesla group">
-              <CardContent className="p-4 sm:p-6">
-                <div className="flex items-start space-x-3 sm:space-x-4">
-                  <div className="bg-gradient-to-br from-primary to-accent p-2 sm:p-3 rounded-xl shadow-[var(--shadow-brand)] group-hover:scale-110 transition-[var(--transition-spring)] flex-shrink-0">
-                    <feature.icon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-base sm:text-lg font-semibold mb-2">{feature.title}</h3>
-                    <p className="text-sm sm:text-base text-muted-foreground mb-3 leading-relaxed">{feature.description}</p>
-                    <div className="text-xs sm:text-sm font-semibold text-primary">{feature.specs}</div>
-                  </div>
+            <Card key={feature.title} className="relative overflow-hidden h-64 group cursor-pointer border-0">
+              {/* Background Image */}
+              <div 
+                className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 group-hover:scale-110"
+                style={{ 
+                  backgroundImage: index === 0 ? `url(${gealanBaseImage})` : 
+                                 index === 1 ? `url(${interiorImage})` : 
+                                 `url(${installationImage})`
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/30" />
+              
+              {/* Icon and Title */}
+              <div className="absolute top-6 left-6 z-10">
+                <div className="bg-gradient-to-br from-primary to-accent p-3 rounded-xl shadow-[var(--shadow-brand)] mb-4 group-hover:scale-110 transition-[var(--transition-spring)]">
+                  <feature.icon className="h-6 w-6 text-white" />
                 </div>
-              </CardContent>
+                <h3 className="text-xl font-bold text-white mb-2">{feature.title}</h3>
+                <div className="text-sm font-semibold text-primary-light">{feature.specs}</div>
+              </div>
+              
+              {/* Hover Content */}
+              <div className="absolute inset-x-6 bottom-6 z-10 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
+                  <p className="text-white text-sm leading-relaxed">{feature.description}</p>
+                </div>
+              </div>
             </Card>
           ))}
         </div>
