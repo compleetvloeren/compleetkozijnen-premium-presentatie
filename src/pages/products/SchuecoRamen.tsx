@@ -345,7 +345,7 @@ const SchuecoRamen = () => {
             </div>
             
             <div className="text-center">
-              <div className="bg-gradient-to-br from-primary-variant to-accent-variant p-6 rounded-xl inline-flex mb-6">
+              <div className="bg-gradient-to-br from-primary to-accent p-6 rounded-xl inline-flex mb-6">
                 <Zap className="h-10 w-10 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Innovatieve Technologie</h3>
