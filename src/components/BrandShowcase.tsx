@@ -21,97 +21,89 @@ const BrandShowcase = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 mb-12 md:mb-16">
           {/* GEALAN Section */}
-          <Card className="card-tesla-hero overflow-hidden">
-            <div className="bg-gradient-to-br from-primary/10 to-primary/5 p-6 md:p-8">
-              <div className="flex items-center mb-6">
-                <div className="bg-primary p-3 rounded-xl mr-4">
-                  <Shield className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-primary">GEALAN S-9000</h3>
-                  <p className="text-sm text-muted-foreground">Duitse kwaliteit sinds 1965</p>
-                </div>
-              </div>
-
+          <Card className="card-tesla-hero overflow-hidden group">
+            <div className="aspect-video overflow-hidden">
+              <img 
+                src="/src/assets/gealan-s9000-base.png"
+                alt="GEALAN S-9000 Systems"
+                className="w-full h-full object-contain group-hover:scale-105 transition-[var(--transition-spring)] bg-white"
+              />
+            </div>
+            <CardContent className="p-6 md:p-8">
+              <h3 className="text-xl font-bold mb-3">GEALAN S-9000</h3>
               <p className="text-muted-foreground mb-6 leading-relaxed">
                 GEALAN staat voor innovatieve kunststof kozijnsystemen met bewezen Duitse kwaliteit. 
                 Het S-9000 systeem is speciaal ontwikkeld voor de Nederlandse markt met focus op 
                 maximale isolatie en comfort.
               </p>
-
               <div className="space-y-3 mb-6">
                 <div className="flex items-center">
-                  <Award className="h-4 w-4 text-primary mr-3" />
+                  <div className="w-2 h-2 bg-primary rounded-full mr-3 flex-shrink-0" />
                   <span className="text-sm">3-Dichting technologie voor optimale isolatie</span>
                 </div>
                 <div className="flex items-center">
-                  <Award className="h-4 w-4 text-primary mr-3" />
+                  <div className="w-2 h-2 bg-primary rounded-full mr-3 flex-shrink-0" />
                   <span className="text-sm">STV® lijmtechniek voor levenslange verbinding</span>
                 </div>
                 <div className="flex items-center">
-                  <Award className="h-4 w-4 text-primary mr-3" />
+                  <div className="w-2 h-2 bg-primary rounded-full mr-3 flex-shrink-0" />
                   <span className="text-sm">GEALAN-ACRYLCOLOR® voor kleurvaste afwerking</span>
                 </div>
                 <div className="flex items-center">
-                  <Award className="h-4 w-4 text-primary mr-3" />
+                  <div className="w-2 h-2 bg-primary rounded-full mr-3 flex-shrink-0" />
                   <span className="text-sm">Tot 52mm glasdikte mogelijk</span>
                 </div>
               </div>
-
               <Link to="/producten/gealan">
                 <Button className="w-full">
                   Ontdek GEALAN Systemen
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
-            </div>
+            </CardContent>
           </Card>
 
           {/* Schüco Section */}
-          <Card className="card-tesla-hero overflow-hidden">
-            <div className="bg-gradient-to-br from-accent/10 to-accent/5 p-6 md:p-8">
-              <div className="flex items-center mb-6">
-                <div className="bg-accent p-3 rounded-xl mr-4">
-                  <Zap className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-accent">Schüco</h3>
-                  <p className="text-sm text-muted-foreground">Wereldwijd marktleider sinds 1951</p>
-                </div>
-              </div>
-
+          <Card className="card-tesla-hero overflow-hidden group">
+            <div className="aspect-video overflow-hidden">
+              <img 
+                src="/src/assets/schueco-windows-hero.jpg"
+                alt="Schüco Systems"
+                className="w-full h-full object-cover group-hover:scale-105 transition-[var(--transition-spring)]"
+              />
+            </div>
+            <CardContent className="p-6 md:p-8">
+              <h3 className="text-xl font-bold mb-3">Schüco</h3>
               <p className="text-muted-foreground mb-6 leading-relaxed">
                 Schüco is wereldwijd toonaangevend in aluminium raam-, deur- en geveloplossingen. 
                 Met focus op duurzaamheid, energie-efficiëntie en modern design biedt Schüco 
                 systemen voor elke architecturale uitdaging.
               </p>
-
               <div className="space-y-3 mb-6">
                 <div className="flex items-center">
-                  <Leaf className="h-4 w-4 text-accent mr-3" />
+                  <div className="w-2 h-2 bg-accent rounded-full mr-3 flex-shrink-0" />
                   <span className="text-sm">Duurzame aluminium systemen</span>
                 </div>
                 <div className="flex items-center">
-                  <Leaf className="h-4 w-4 text-accent mr-3" />
+                  <div className="w-2 h-2 bg-accent rounded-full mr-3 flex-shrink-0" />
                   <span className="text-sm">Superieure thermische onderbreking</span>
                 </div>
                 <div className="flex items-center">
-                  <Leaf className="h-4 w-4 text-accent mr-3" />
+                  <div className="w-2 h-2 bg-accent rounded-full mr-3 flex-shrink-0" />
                   <span className="text-sm">Slank design met grote glasoppervlakken</span>
                 </div>
                 <div className="flex items-center">
-                  <Leaf className="h-4 w-4 text-accent mr-3" />
+                  <div className="w-2 h-2 bg-accent rounded-full mr-3 flex-shrink-0" />
                   <span className="text-sm">Uitstekende veiligheid en inbraakwerendheid</span>
                 </div>
               </div>
-
               <Link to="/producten/schueco">
                 <Button variant="outline" className="w-full border-accent text-accent hover:bg-accent hover:text-white">
                   Ontdek Schüco Systemen
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
-            </div>
+            </CardContent>
           </Card>
         </div>
 
