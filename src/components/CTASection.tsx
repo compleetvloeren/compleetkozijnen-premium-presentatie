@@ -48,8 +48,8 @@ const CTASection = () => {
         {/* CTA Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 max-w-5xl mx-auto">
           {ctaOptions.map((option, index) => (
-            <Card key={option.title} className="card-tesla group">
-              <CardContent className="p-4 sm:p-6 md:p-8 text-center">
+            <Card key={option.title} className="card-tesla group h-full">
+              <CardContent className="p-4 sm:p-6 md:p-8 text-center flex flex-col h-full">
                 <div className={`inline-flex p-3 sm:p-4 rounded-full mb-4 sm:mb-6 ${
                   option.variant === 'primary' 
                     ? 'bg-gradient-to-br from-primary to-accent shadow-[var(--shadow-brand)]' 
@@ -61,17 +61,17 @@ const CTASection = () => {
                 </div>
                 
                 <h3 className="text-base sm:text-lg font-semibold mb-2 sm:mb-3">{option.title}</h3>
-                <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6 leading-relaxed">{option.description}</p>
+                <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6 leading-relaxed flex-grow">{option.description}</p>
                 
                 {option.link.startsWith('http') ? (
                   <a 
                     href={option.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block"
+                    className="block mt-auto"
                   >
                     <Button 
-                      className={`w-full ${
+                      className={`w-full h-12 ${
                         option.variant === 'primary' ? 'btn-hero' : 'btn-secondary'
                       }`}
                     >
@@ -80,16 +80,16 @@ const CTASection = () => {
                     </Button>
                   </a>
                 ) : option.link.startsWith('tel:') ? (
-                  <a href={option.link} className="block">
-                    <Button className="btn-secondary w-full">
+                  <a href={option.link} className="block mt-auto">
+                    <Button className="btn-secondary w-full h-12">
                       {option.action}
                       <Phone className="ml-2 h-4 w-4" />
                     </Button>
                   </a>
                 ) : (
-                  <Link to={option.link}>
+                  <Link to={option.link} className="mt-auto">
                     <Button 
-                      className={`w-full ${
+                      className={`w-full h-12 ${
                         option.variant === 'primary' ? 'btn-hero' : 'btn-secondary'
                       }`}
                     >
