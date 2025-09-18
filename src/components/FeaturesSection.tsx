@@ -159,11 +159,8 @@ const FeaturesSection = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
               
-              {/* Icon and Title */}
+              {/* Title and Specs at Top */}
               <div className="absolute top-6 left-6 z-10">
-                <div className="bg-gradient-to-br from-primary to-accent p-3 rounded-xl shadow-[var(--shadow-brand)] mb-4 group-hover:scale-110 transition-[var(--transition-spring)]">
-                  <feature.icon className="h-6 w-6 text-white" />
-                </div>
                 <h3 className="text-xl font-bold text-white mb-2">{feature.title}</h3>
                 <div className="text-sm font-semibold text-white/90">{feature.specs}</div>
               </div>
