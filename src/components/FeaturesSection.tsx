@@ -1,6 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Thermometer, Lock, Droplets, Wrench, Star, Clock } from 'lucide-react';
-import windowSystemImage from '@/assets/window-system.jpg';
+import gealanBaseImage from '@/assets/gealan-s9000-base.png';
 import interiorImage from '@/assets/interior-windows.jpg';
 import installationImage from '@/assets/installation-service.jpg';
 
@@ -48,7 +48,7 @@ const FeaturesSection = () => {
     {
       title: 'GEALAN S-9000 Base',
       description: 'Slank kozijn met dieptewerking door 15° schuinte. Perfect voor moderne woningen.',
-      image: windowSystemImage,
+      image: gealanBaseImage,
       specs: ['120mm inbouwdiepte', '52mm glasdikte', 'Triple glazing']
     },
     {
