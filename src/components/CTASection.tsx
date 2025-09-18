@@ -17,7 +17,7 @@ const CTASection = () => {
       icon: Phone,
       title: 'Direct Contact',
       description: 'Bel ons voor een persoonlijk advies over uw kozijnproject.',
-      action: 'Bel: 085-2502359',
+      action: 'Bel: 085-250 2359',
       link: 'tel:0852502359',
       variant: 'secondary'
     }
