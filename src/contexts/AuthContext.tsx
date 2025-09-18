@@ -29,10 +29,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     console.log('AuthProvider: Setting up auth state listener');
+    let initialLoadingCompleted = false;
     
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      (event, session) => {
         console.log('Auth state changed:', event, !!session);
         setSession(session);
         setUser(session?.user ?? null);
@@ -80,14 +81,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             } catch (error) {
               console.error('Error checking admin status:', error);
               setIsAdmin(false);
+            } finally {
+              // Only set loading to false after admin check is complete
+              if (initialLoadingCompleted) {
+                setLoading(false);
+              }
             }
-          }, 100); // Slightly longer delay to ensure database is ready
+          }, 100);
         } else {
           console.log('No user, setting admin to false');
           setIsAdmin(false);
+          // Only set loading to false after initial load
+          if (initialLoadingCompleted) {
+            setLoading(false);
+          }
         }
-        
-        setLoading(false);
       }
     );
 
@@ -139,6 +147,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setIsAdmin(false);
       }
       
+      initialLoadingCompleted = true;
       setLoading(false);
     });
 
