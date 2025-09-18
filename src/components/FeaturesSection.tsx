@@ -165,7 +165,7 @@ const FeaturesSection = () => {
                   <feature.icon className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-2">{feature.title}</h3>
-                <div className="text-sm font-semibold text-primary-light">{feature.specs}</div>
+                <div className="text-sm font-semibold text-white/90">{feature.specs}</div>
               </div>
               
               {/* Hover Content */}
