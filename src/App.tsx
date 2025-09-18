@@ -38,9 +38,9 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <CookieConsent />
-        <BrowserRouter>
-          <ScrollToTop />
+          <BrowserRouter>
+            <CookieConsent />
+            <ScrollToTop />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/producten" element={<Producten />} />
