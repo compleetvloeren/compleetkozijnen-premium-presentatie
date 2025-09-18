@@ -211,6 +211,74 @@ serve(async (req) => {
       case 'POST':
         // Support deletion via POST (functions.invoke uses POST)
         const postData = bodyData || {};
+        
+        if (postData.action === 'delete') {
+          // Delete lead
+          const postLeadId = postData.leadId || leadId;
+          if (!postLeadId) {
+            return new Response(JSON.stringify({ error: 'Lead ID required for deletion' }), {
+              status: 400,
+              headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            });
+          }
+          const ALLOWED_PASSWORDS_POST = ['Slavenvoedsel', 'Slavenvoedsel.071'];
+          if (!postData.password || !ALLOWED_PASSWORDS_POST.includes(postData.password)) {
+            return new Response(JSON.stringify({ error: 'Invalid delete password' }), {
+              status: 403,
+              headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            });
+          }
+          const { error: delErr } = await adminClient
+            .from('leads')
+            .delete()
+            .eq('id', postLeadId);
+          if (delErr) {
+            console.error('Database error:', delErr);
+            return new Response(JSON.stringify({ error: 'Failed to delete lead' }), {
+              status: 500,
+              headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            });
+          }
+          console.log('Lead deleted successfully via POST:', postLeadId);
+          return new Response(JSON.stringify({ success: true, message: 'Lead deleted successfully' }), {
+            status: 200,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          });
+        } else if (postData.action === 'delete-contact') {
+          // Delete contact submission
+          const contactId = postData.contactId;
+          if (!contactId) {
+            return new Response(JSON.stringify({ error: 'Contact ID required for deletion' }), {
+              status: 400,
+              headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            });
+          }
+          const ALLOWED_PASSWORDS_CONTACT = ['Slavenvoedsel', 'Slavenvoedsel.071'];
+          if (!postData.password || !ALLOWED_PASSWORDS_CONTACT.includes(postData.password)) {
+            return new Response(JSON.stringify({ error: 'Invalid delete password' }), {
+              status: 403,
+              headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            });
+          }
+          const { error: contactDelErr } = await adminClient
+            .from('contact_submissions')
+            .delete()
+            .eq('id', contactId);
+          if (contactDelErr) {
+            console.error('Database error:', contactDelErr);
+            return new Response(JSON.stringify({ error: 'Failed to delete contact submission' }), {
+              status: 500,
+              headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            });
+          }
+          console.log('Contact submission deleted successfully via POST:', contactId);
+          return new Response(JSON.stringify({ success: true, message: 'Contact submission deleted successfully' }), {
+            status: 200,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          });
+        }
+        // Support deletion via POST (functions.invoke uses POST)
+        const postData = bodyData || {};
         const postLeadId = postData.leadId || leadId;
         if (!postLeadId) {
           return new Response(JSON.stringify({ error: 'Lead ID required for deletion' }), {
@@ -218,27 +286,9 @@ serve(async (req) => {
             headers: { ...corsHeaders, 'Content-Type': 'application/json' },
           });
         }
-        const ALLOWED_PASSWORDS_POST = ['Slavenvoedsel', 'Slavenvoedsel.071'];
-        if (!postData.password || !ALLOWED_PASSWORDS_POST.includes(postData.password)) {
-          return new Response(JSON.stringify({ error: 'Invalid delete password' }), {
-            status: 403,
-            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          });
-        }
-        const { error: delErr } = await adminClient
-          .from('leads')
-          .delete()
-          .eq('id', postLeadId);
-        if (delErr) {
-          console.error('Database error:', delErr);
-          return new Response(JSON.stringify({ error: 'Failed to delete lead' }), {
-            status: 500,
-            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          });
-        }
-        console.log('Lead deleted successfully via POST:', postLeadId);
-        return new Response(JSON.stringify({ success: true, message: 'Lead deleted successfully' }), {
-          status: 200,
+        // If no specific action, return error
+        return new Response(JSON.stringify({ error: 'Missing or invalid action' }), {
+          status: 400,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         });
 

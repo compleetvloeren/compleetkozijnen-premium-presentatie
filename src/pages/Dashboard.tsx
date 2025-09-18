@@ -20,13 +20,15 @@ import {
   Download,
   BarChart3,
   AlertCircle,
-  RefreshCw
+  RefreshCw,
+  Trash2
 } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { LeadCard } from '@/components/dashboard/LeadCard';
 import { LeadDetailDialog } from '@/components/dashboard/LeadDetailDialog';
 import { DeleteLeadDialog } from '@/components/dashboard/DeleteLeadDialog';
+import { DeleteContactDialog } from '@/components/dashboard/DeleteContactDialog';
 import { SearchAndFilters } from '@/components/dashboard/SearchAndFilters';
 import { NotificationCenter } from '@/components/dashboard/NotificationCenter';
 import { ExportOptions } from '@/components/dashboard/ExportOptions';
@@ -85,6 +87,9 @@ const Dashboard: React.FC = () => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [leadToDelete, setLeadToDelete] = useState<Lead | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showDeleteContactDialog, setShowDeleteContactDialog] = useState(false);
+  const [contactToDelete, setContactToDelete] = useState<ContactSubmission | null>(null);
+  const [isDeletingContact, setIsDeletingContact] = useState(false);
   
   // Search and filter states
   const [searchTerm, setSearchTerm] = useState('');
@@ -300,6 +305,72 @@ const Dashboard: React.FC = () => {
       throw error;
     } finally {
       setIsDeleting(false);
+    }
+  };
+
+  const handleDeleteContact = (contact: ContactSubmission) => {
+    setContactToDelete(contact);
+    setShowDeleteContactDialog(true);
+  };
+
+  const handleConfirmDeleteContact = async (contactId: string, password: string) => {
+    try {
+      setIsDeletingContact(true);
+      
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        throw new Error('Niet geautoriseerd');
+      }
+
+      const response = await supabase.functions.invoke('leads-crud', {
+        body: { 
+          action: 'delete-contact',
+          contactId: contactId,
+          password: password 
+        },
+      });
+
+      if (response.error) {
+        throw new Error(response.error.message || 'Verwijderen mislukt');
+      }
+
+      // Remove the contact from local state
+      setContacts(prevContacts => prevContacts.filter(contact => contact.id !== contactId));
+      
+      // Close dialogs
+      setShowDeleteContactDialog(false);
+      setContactToDelete(null);
+
+      toast({
+        title: "Contactbericht verwijderd",
+        description: "Het contactbericht is succesvol verwijderd.",
+        variant: "default"
+      });
+
+      addNotification({
+        type: 'success',
+        title: 'Contactbericht Verwijderd',
+        message: `Contactbericht is permanent verwijderd uit het systeem`,
+        actionUrl: '/dashboard',
+        actionLabel: 'Dashboard'
+      });
+
+    } catch (error: any) {
+      console.error('Error deleting contact:', error);
+      
+      if (error.message === 'Invalid delete password') {
+        throw new Error('Onjuist wachtwoord');
+      }
+      
+      toast({
+        title: "Verwijderen mislukt",
+        description: error.message || "Er is een fout opgetreden bij het verwijderen.",
+        variant: "destructive"
+      });
+      
+      throw error;
+    } finally {
+      setIsDeletingContact(false);
     }
   };
 
@@ -647,9 +718,19 @@ const Dashboard: React.FC = () => {
                             {new Date(contact.created_at).toLocaleDateString('nl-NL')}
                           </p>
                         </div>
-                        <Button variant="outline" size="sm">
-                          Bekijken
-                        </Button>
+                        <div className="flex space-x-2">
+                          <Button variant="outline" size="sm">
+                            Bekijken
+                          </Button>
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => handleDeleteContact(contact)}
+                            className="text-destructive hover:text-destructive"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -689,6 +770,15 @@ const Dashboard: React.FC = () => {
         onOpenChange={setShowDeleteDialog}
         onConfirmDelete={handleConfirmDelete}
         isDeleting={isDeleting}
+      />
+
+      {/* Delete Contact Dialog */}
+      <DeleteContactDialog
+        contact={contactToDelete}
+        open={showDeleteContactDialog}
+        onOpenChange={setShowDeleteContactDialog}
+        onConfirmDelete={handleConfirmDeleteContact}
+        isDeleting={isDeletingContact}
       />
     </div>
   );
