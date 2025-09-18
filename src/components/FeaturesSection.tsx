@@ -3,6 +3,12 @@ import { Thermometer, Lock, Droplets, Wrench, Star, Clock } from 'lucide-react';
 import gealanBaseImage from '@/assets/gealan-s9000-base.png';
 import interiorImage from '@/assets/interior-windows.jpg';
 import installationImage from '@/assets/installation-service.jpg';
+import dreiDichtingImage from '@/assets/3-dichting-systeem.jpg';
+import stvLijmtechniekImage from '@/assets/stv-lijmtechniek.jpg';
+import premiumKleurenImage from '@/assets/premium-kleursystemen.jpg';
+import volledigeMontageImage from '@/assets/volledige-montage.jpg';
+import premiumMerkenImage from '@/assets/premium-merken.jpg';
+import snelleLeveringImage from '@/assets/snelle-levering.jpg';
 
 const FeaturesSection = () => {
   const features = [
@@ -143,9 +149,12 @@ const FeaturesSection = () => {
               <div 
                 className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 group-hover:scale-110"
                 style={{ 
-                  backgroundImage: index === 0 ? `url(${gealanBaseImage})` : 
-                                 index === 1 ? `url(${interiorImage})` : 
-                                 `url(${installationImage})`
+                  backgroundImage: index === 0 ? `url(${dreiDichtingImage})` : 
+                                 index === 1 ? `url(${stvLijmtechniekImage})` : 
+                                 index === 2 ? `url(${premiumKleurenImage})` :
+                                 index === 3 ? `url(${volledigeMontageImage})` :
+                                 index === 4 ? `url(${premiumMerkenImage})` :
+                                 `url(${snelleLeveringImage})`
                 }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
