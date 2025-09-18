@@ -38,7 +38,7 @@ const CTASection = () => {
         </div>
 
         {/* CTA Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8 max-w-4xl mx-auto justify-center">
           {ctaOptions.map((option, index) => (
             <Card key={option.title} className="card-tesla group h-full">
               <CardContent className="p-4 sm:p-6 md:p-8 text-center flex flex-col h-full">
