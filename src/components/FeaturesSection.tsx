@@ -166,14 +166,14 @@ const FeaturesSection = () => {
                   className="w-full h-full object-cover group-hover:scale-105 transition-[var(--transition-spring)]"
                 />
               </div>
-              <CardContent className="p-4 sm:p-6">
-                <h3 className="text-base sm:text-lg font-semibold mb-2 sm:mb-3">{card.title}</h3>
-                <p className="text-sm sm:text-base text-muted-foreground mb-3 sm:mb-4 leading-relaxed">{card.description}</p>
-                <div className="space-y-1 sm:space-y-2">
+              <CardContent className="p-6 md:p-8">
+                <h3 className="text-xl font-bold mb-3">{card.title}</h3>
+                <p className="text-muted-foreground mb-6 leading-relaxed">{card.description}</p>
+                <div className="space-y-3">
                   {card.specs.map((spec, specIndex) => (
-                    <div key={specIndex} className="flex items-center text-xs sm:text-sm">
-                      <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-primary rounded-full mr-2 sm:mr-3 flex-shrink-0" />
-                      <span>{spec}</span>
+                    <div key={specIndex} className="flex items-center">
+                      <div className="w-2 h-2 bg-primary rounded-full mr-3 flex-shrink-0" />
+                      <span className="text-sm">{spec}</span>
                     </div>
                   ))}
                 </div>
