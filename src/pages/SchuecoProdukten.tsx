@@ -257,7 +257,7 @@ const SchuecoProdukten = () => {
               </div>
               
               <div className="text-center">
-                <div className="bg-gradient-to-br from-primary-variant to-accent-variant p-4 rounded-xl inline-flex mb-4">
+                <div className="bg-gradient-to-br from-primary to-accent p-4 rounded-xl inline-flex mb-4">
                   <Maximize2 className="h-8 w-8 text-white" />
                 </div>
                 <h3 className="text-lg font-semibold mb-2">Complete Service</h3>
