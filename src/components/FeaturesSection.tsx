@@ -163,7 +163,7 @@ const FeaturesSection = () => {
                 <img 
                   src={card.image}
                   alt={card.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-[var(--transition-spring)]"
+                  className="w-full h-full object-contain group-hover:scale-105 transition-[var(--transition-spring)] bg-white"
                 />
               </div>
               <CardContent className="p-6 md:p-8">
