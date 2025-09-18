@@ -31,18 +31,10 @@ const Contact = () => {
     {
       icon: Phone,
       title: "Telefoon",
-      primary: "+31 (0)40 123 4567",
+      primary: "085-250 2359",
       secondary: "Ma-Vr 8:00-17:00",
       action: "Bel Direct",
-      link: "tel:+31401234567"
-    },
-    {
-      icon: MessageCircle,
-      title: "WhatsApp",
-      primary: "Direct chatten",
-      secondary: "Snelle reactie gegarandeerd",
-      action: "Start Chat",
-      link: "https://wa.me/31401234567"
+      link: "tel:0852502359"
     },
     {
       icon: Mail,
@@ -417,14 +409,9 @@ const Contact = () => {
                         Gratis Offerte Aanvragen
                       </Button>
                     </Link>
-                    <a href="tel:+31401234567">
+                    <a href="tel:0852502359">
                       <Button className="btn-secondary w-full">
                         Direct Bellen
-                      </Button>
-                    </a>
-                    <a href="https://wa.me/31401234567" target="_blank" rel="noopener noreferrer">
-                      <Button className="btn-secondary w-full">
-                        WhatsApp Chat
                       </Button>
                     </a>
                   </div>

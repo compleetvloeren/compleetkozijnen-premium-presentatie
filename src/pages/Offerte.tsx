@@ -336,7 +336,7 @@ const Offerte = () => {
                       onChange={(e) => handleInputChange('phone', e.target.value)}
                       required
                       className={`mt-1 ${errors.phone ? 'border-red-500' : ''}`}
-                      placeholder="06-12345678 of +31612345678"
+                      placeholder="085-2502359 of +31852502359"
                     />
                     {errors.phone && (
                       <p className="text-sm text-red-500 mt-1">{errors.phone}</p>

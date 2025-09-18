@@ -17,16 +17,8 @@ const CTASection = () => {
       icon: Phone,
       title: 'Direct Contact',
       description: 'Bel ons voor een persoonlijk advies over uw kozijnproject.',
-      action: 'Bel: 085-1234567',
-      link: 'tel:0851234567',
-      variant: 'secondary'
-    },
-    {
-      icon: MessageCircle,
-      title: 'WhatsApp Chat',
-      description: 'Stel uw vragen direct via WhatsApp voor snelle antwoorden.',
-      action: 'Start Chat',
-      link: 'https://wa.me/31851234567',
+      action: 'Bel: 085-2502359',
+      link: 'tel:0852502359',
       variant: 'secondary'
     }
   ];
