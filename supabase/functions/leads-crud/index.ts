@@ -279,15 +279,6 @@ serve(async (req) => {
             headers: { ...corsHeaders, 'Content-Type': 'application/json' },
           });
         }
-        // Support deletion via POST (functions.invoke uses POST)
-        const postData = bodyData || {};
-        const postLeadId = postData.leadId || leadId;
-        if (!postLeadId) {
-          return new Response(JSON.stringify({ error: 'Lead ID required for deletion' }), {
-            status: 400,
-            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          });
-        }
         // If no specific action, return error
         return new Response(JSON.stringify({ error: 'Missing or invalid action' }), {
           status: 400,
