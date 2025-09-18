@@ -90,7 +90,7 @@ const CookieConsent = () => {
   return (
     <>
       {/* Cookie Banner */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 p-4">
+      <div className="fixed bottom-0 left-0 right-0 z-[9999] p-4">
         <Card className="mx-auto max-w-4xl border-border bg-background/95 backdrop-blur-sm shadow-lg">
           <CardContent className="p-6">
             <div className="flex items-start gap-4">
