@@ -5,7 +5,7 @@ import ResponsiveBreadcrumb from '@/components/ResponsiveBreadcrumb';
 import Footer from '@/components/Footer';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Building, Award, Star, Eye } from 'lucide-react';
-import gealanImage from '@/assets/gealan-s9000-base.png';
+import gealanImage from '@/assets/gealan-house-modern.jpg';
 import schuecoImage from '@/assets/schueco-windows-modern.jpg';
 
 const Producten = () => {
