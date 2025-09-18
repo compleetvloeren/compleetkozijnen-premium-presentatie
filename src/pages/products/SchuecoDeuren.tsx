@@ -431,7 +431,7 @@ const SchuecoDeuren = () => {
               <Card className="card-tesla-hero border-l-4 border-l-secondary">
                 <CardContent className="p-6">
                   <div className="flex items-center mb-4">
-                    <div className="bg-secondary text-secondary-foreground rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3">
+                    <div className="bg-gradient-to-br from-primary to-accent text-white rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3">
                       4
                     </div>
                     <h3 className="text-xl font-semibold">RC4 Ultra</h3>
