@@ -29,6 +29,7 @@ import { LeadCard } from '@/components/dashboard/LeadCard';
 import { LeadDetailDialog } from '@/components/dashboard/LeadDetailDialog';
 import { DeleteLeadDialog } from '@/components/dashboard/DeleteLeadDialog';
 import { DeleteContactDialog } from '@/components/dashboard/DeleteContactDialog';
+import { ContactDetailDialog } from '@/components/dashboard/ContactDetailDialog';
 import { SearchAndFilters } from '@/components/dashboard/SearchAndFilters';
 import { NotificationCenter } from '@/components/dashboard/NotificationCenter';
 import { ExportOptions } from '@/components/dashboard/ExportOptions';
@@ -81,7 +82,9 @@ const Dashboard: React.FC = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+  const [selectedContact, setSelectedContact] = useState<ContactSubmission | null>(null);
   const [showLeadDetail, setShowLeadDetail] = useState(false);
+  const [showContactDetail, setShowContactDetail] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showExportOptions, setShowExportOptions] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -227,6 +230,11 @@ const Dashboard: React.FC = () => {
   const handleViewLeadDetails = (lead: Lead) => {
     setSelectedLead(lead);
     setShowLeadDetail(true);
+  };
+
+  const handleViewContactDetails = (contact: ContactSubmission) => {
+    setSelectedContact(contact);
+    setShowContactDetail(true);
   };
 
   const handleResetFilters = () => {
@@ -719,7 +727,11 @@ const Dashboard: React.FC = () => {
                           </p>
                         </div>
                         <div className="flex space-x-2">
-                          <Button variant="outline" size="sm">
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => handleViewContactDetails(contact)}
+                          >
                             Bekijken
                           </Button>
                           <Button 
@@ -770,6 +782,13 @@ const Dashboard: React.FC = () => {
         onOpenChange={setShowDeleteDialog}
         onConfirmDelete={handleConfirmDelete}
         isDeleting={isDeleting}
+      />
+
+      {/* Contact Detail Dialog */}
+      <ContactDetailDialog
+        contact={selectedContact}
+        open={showContactDetail}
+        onOpenChange={setShowContactDetail}
       />
 
       {/* Delete Contact Dialog */}
