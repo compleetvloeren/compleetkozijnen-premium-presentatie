@@ -260,12 +260,14 @@ serve(async (req) => {
               headers: { ...corsHeaders, 'Content-Type': 'application/json' },
             });
           }
+          console.log('Contact delete password verified for contact:', contactId);
+          
           const { error: contactDelErr } = await adminClient
             .from('contact_submissions')
             .delete()
             .eq('id', contactId);
           if (contactDelErr) {
-            console.error('Database error:', contactDelErr);
+            console.error('Database error deleting contact:', contactDelErr);
             return new Response(JSON.stringify({ error: 'Failed to delete contact submission' }), {
               status: 500,
               headers: { ...corsHeaders, 'Content-Type': 'application/json' },

@@ -366,17 +366,23 @@ const Dashboard: React.FC = () => {
     } catch (error: any) {
       console.error('Error deleting contact:', error);
       
+      let errorMessage = 'Er is een fout opgetreden bij het verwijderen.';
+      
       if (error.message === 'Invalid delete password') {
-        throw new Error('Onjuist wachtwoord');
+        errorMessage = 'Onjuist wachtwoord';
+      } else if (error.message.includes('Failed to send')) {
+        errorMessage = 'Verbindingsprobleem met de server. Probeer het opnieuw.';
+      } else if (error.message.includes('Contact ID required')) {
+        errorMessage = 'Contact ID ontbreekt';
       }
       
       toast({
         title: "Verwijderen mislukt",
-        description: error.message || "Er is een fout opgetreden bij het verwijderen.",
+        description: errorMessage,
         variant: "destructive"
       });
       
-      throw error;
+      throw new Error(errorMessage);
     } finally {
       setIsDeletingContact(false);
     }
