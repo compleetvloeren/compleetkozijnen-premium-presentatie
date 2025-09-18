@@ -136,9 +136,9 @@ const FeaturesSection = () => {
         </div>
 
         {/* Features Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mb-12 md:mb-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-20">
           {features.map((feature, index) => (
-            <Card key={feature.title} className="relative overflow-hidden h-64 group cursor-pointer border-0">
+            <Card key={feature.title} className="relative overflow-hidden h-80 group cursor-pointer border-0 rounded-2xl">
               {/* Background Image */}
               <div 
                 className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 group-hover:scale-110"
@@ -148,7 +148,7 @@ const FeaturesSection = () => {
                                  `url(${installationImage})`
                 }}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/30" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
               
               {/* Icon and Title */}
               <div className="absolute top-6 left-6 z-10">
@@ -161,7 +161,7 @@ const FeaturesSection = () => {
               
               {/* Hover Content */}
               <div className="absolute inset-x-6 bottom-6 z-10 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
+                <div className="bg-white/15 backdrop-blur-lg rounded-xl p-4 border border-white/30 shadow-xl">
                   <p className="text-white text-sm leading-relaxed">{feature.description}</p>
                 </div>
               </div>
