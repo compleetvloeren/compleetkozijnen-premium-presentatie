@@ -493,7 +493,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
           <CardContent className="px-3 sm:px-6 pb-3 sm:pb-6">
             <div className="text-lg sm:text-2xl font-bold text-blue-600">{webAnalytics.visitors}</div>
             <p className="text-[10px] sm:text-xs text-muted-foreground">
-              {timeRange === '7d' ? '7 dagen' : timeRange === '30d' ? '30 dagen' : '90 dagen'}
+              {getTimeRangeLabel()}
             </p>
           </CardContent>
         </Card>
