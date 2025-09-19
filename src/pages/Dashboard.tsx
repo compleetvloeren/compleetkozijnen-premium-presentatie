@@ -463,16 +463,24 @@ const Dashboard: React.FC = () => {
                 </Button>
                 
                 {showNotifications && (
-                  <div className="absolute right-0 top-full mt-2 w-72 sm:w-80 z-50 animate-scale-in">
-                    <div className="bg-white rounded-lg shadow-xl border border-border/50 p-4">
-                      <NotificationCenter
-                        notifications={notifications}
-                        onMarkAsRead={markAsRead}
-                        onMarkAllAsRead={markAllAsRead}
-                        onDismiss={dismissNotification}
-                      />
+                  <>
+                    {/* Mobile backdrop */}
+                    <div 
+                      className="sm:hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-[90]"
+                      onClick={() => setShowNotifications(false)}
+                    />
+                    
+                    <div className="fixed inset-x-4 top-20 sm:absolute sm:right-0 sm:top-full sm:inset-x-auto sm:mt-2 w-auto sm:w-80 z-[100] animate-scale-in">
+                      <div className="bg-background/95 backdrop-blur-sm rounded-lg shadow-xl border border-border/50 p-4 max-h-[80vh] overflow-y-auto">
+                        <NotificationCenter
+                          notifications={notifications}
+                          onMarkAsRead={markAsRead}
+                          onMarkAllAsRead={markAllAsRead}
+                          onDismiss={dismissNotification}
+                        />
+                      </div>
                     </div>
-                  </div>
+                  </>
                 )}
               </div>
 
