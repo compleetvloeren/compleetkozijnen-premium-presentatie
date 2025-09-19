@@ -34,6 +34,7 @@ import { SearchAndFilters } from '@/components/dashboard/SearchAndFilters';
 import { NotificationCenter } from '@/components/dashboard/NotificationCenter';
 import { ExportOptions } from '@/components/dashboard/ExportOptions';
 import { DashboardLoadingSkeleton, StatCardSkeleton, LeadCardSkeleton } from '@/components/dashboard/LoadingSkeletons';
+import { AnalyticsSection } from '@/components/dashboard/AnalyticsSection';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useNotifications, useLeadNotifications } from '@/hooks/useNotifications';
@@ -611,8 +612,12 @@ const Dashboard: React.FC = () => {
           </Card>
         </div>
 
-        <Tabs defaultValue="leads" className="space-y-4 sm:space-y-6">
+        <Tabs defaultValue="analytics" className="space-y-4 sm:space-y-6">
           <TabsList className="bg-white/60 backdrop-blur-sm border border-border/50 w-full sm:w-auto">
+            <TabsTrigger value="analytics" className="relative text-xs sm:text-sm flex-1 sm:flex-none">
+              <span className="hidden sm:inline">Analytics</span>
+              <span className="sm:hidden">Analytics</span>
+            </TabsTrigger>
             <TabsTrigger value="leads" className="relative text-xs sm:text-sm flex-1 sm:flex-none">
               <span className="hidden sm:inline">Leads ({stats.totalLeads})</span>
               <span className="sm:hidden">Leads</span>
@@ -632,6 +637,10 @@ const Dashboard: React.FC = () => {
               )}
             </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="analytics" className="space-y-4 sm:space-y-6">
+            <AnalyticsSection leads={leads} />
+          </TabsContent>
 
           <TabsContent value="leads" className="space-y-4 sm:space-y-6">
             <Card className="dashboard-card">
