@@ -2,12 +2,16 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from '@/components/ui/chart';
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
-import { TrendingUp, TrendingDown, Users, Calendar, Target, Zap, Eye, Clock, Globe, Smartphone, Monitor, MapPin, RefreshCw } from 'lucide-react';
+import { TrendingUp, TrendingDown, Users, Calendar as CalendarIcon, Target, Zap, Eye, Clock, Globe, Smartphone, Monitor, MapPin, RefreshCw } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { format, subDays, startOfDay, subMonths, subYears, isWithinInterval } from 'date-fns';
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { nl } from 'date-fns/locale';
 
 interface Lead {
   id: string;
@@ -80,10 +84,69 @@ const chartConfig = {
 
 export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => {
   const [timeRange, setTimeRange] = useState('7d');
+  const [customDateRange, setCustomDateRange] = useState<{from: Date | undefined; to: Date | undefined}>({ from: undefined, to: undefined });
+  const [showCustomRange, setShowCustomRange] = useState(false);
   const [webAnalytics, setWebAnalytics] = useState<WebAnalytics | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const { toast } = useToast();
+
+  // Get display label for current selection
+  const getTimeRangeLabel = () => {
+    if (timeRange === 'custom' && customDateRange.from && customDateRange.to) {
+      return `${format(customDateRange.from, 'd MMM', { locale: nl })} - ${format(customDateRange.to, 'd MMM', { locale: nl })}`;
+    }
+    
+    const labels: { [key: string]: string } = {
+      '1d': '1 dag',
+      '7d': '7 dagen',
+      '14d': '14 dagen', 
+      '30d': '30 dagen',
+      '90d': '90 dagen',
+      '6m': '6 maanden',
+      '1y': '1 jaar'
+    };
+    
+    return labels[timeRange] || timeRange;
+  };
+
+  // Calculate actual date range for API calls
+  const getActualDateRange = () => {
+    if (timeRange === 'custom' && customDateRange.from && customDateRange.to) {
+      return {
+        startDate: format(customDateRange.from, 'yyyy-MM-dd'),
+        endDate: format(customDateRange.to, 'yyyy-MM-dd')
+      };
+    }
+    
+    const now = new Date();
+    let startDate: Date;
+    
+    switch (timeRange) {
+      case '1d':
+        startDate = subDays(now, 1);
+        break;
+      case '14d':
+        startDate = subDays(now, 14);
+        break;
+      case '90d':
+        startDate = subDays(now, 90);
+        break;
+      case '6m':
+        startDate = subMonths(now, 6);
+        break;
+      case '1y':
+        startDate = subYears(now, 1);
+        break;
+      default:
+        startDate = subDays(now, 7);
+    }
+    
+    return {
+      startDate: format(startDate, 'yyyy-MM-dd'),
+      endDate: format(now, 'yyyy-MM-dd')
+    };
+  };
 
   const fetchAnalytics = async (isRefresh = false) => {
     try {
@@ -93,10 +156,15 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
         setLoading(true);
       }
 
-      console.log('Fetching analytics for time range:', timeRange);
+      const dateRange = getActualDateRange();
+      console.log('Fetching analytics for date range:', dateRange);
 
       const { data, error } = await supabase.functions.invoke('website-analytics', {
-        body: { timeRange },
+        body: { 
+          timeRange: timeRange === 'custom' ? 'custom' : timeRange,
+          startDate: dateRange.startDate,
+          endDate: dateRange.endDate
+        },
         headers: {
           'Content-Type': 'application/json',
         },
@@ -315,17 +383,91 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
             <RefreshCw className={`h-3 w-3 sm:h-4 sm:w-4 ${refreshing ? 'animate-spin' : ''} sm:mr-2`} />
             <span className="hidden sm:inline">{refreshing ? 'Laden...' : 'Vernieuwen'}</span>
           </Button>
-          <Select value={timeRange} onValueChange={setTimeRange}>
-            <SelectTrigger className="w-20 sm:w-32 h-8 sm:h-9 text-xs sm:text-sm">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="7d">7d</SelectItem>
-              <SelectItem value="30d">30d</SelectItem>
-              <SelectItem value="90d">90d</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+          <Select 
+            value={timeRange} 
+            onValueChange={(value) => {
+              setTimeRange(value);
+              if (value === 'custom') {
+                setShowCustomRange(true);
+              } else {
+                setShowCustomRange(false);
+                setCustomDateRange({ from: undefined, to: undefined });
+              }
+            }}
+          >
+              <SelectTrigger className="w-24 sm:w-40 h-8 sm:h-9 text-xs sm:text-sm">
+                <SelectValue>
+                  <span className="truncate">{getTimeRangeLabel()}</span>
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="1d">1 dag</SelectItem>
+                <SelectItem value="7d">7 dagen</SelectItem>
+                <SelectItem value="14d">14 dagen</SelectItem>
+                <SelectItem value="30d">30 dagen</SelectItem>
+                <SelectItem value="90d">90 dagen</SelectItem>
+                <SelectItem value="6m">6 maanden</SelectItem>
+                <SelectItem value="1y">1 jaar</SelectItem>
+                <SelectItem value="custom">Aangepast</SelectItem>
+              </SelectContent>
+            </Select>
+            
+            {timeRange === 'custom' && (
+              <Popover open={showCustomRange} onOpenChange={setShowCustomRange}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm" 
+                    className="h-8 sm:h-9 px-2"
+                  >
+                    <CalendarIcon className="h-3 w-3 sm:h-4 sm:w-4" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0 z-50" align="end">
+                  <div className="p-4 space-y-4">
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium">Van datum:</p>
+                      <Calendar
+                        mode="single"
+                        selected={customDateRange.from}
+                        onSelect={(date) => setCustomDateRange(prev => ({ ...prev, from: date }))}
+                        disabled={(date) => date > new Date() || date < new Date('2020-01-01')}
+                        initialFocus
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium">Tot datum:</p>
+                      <Calendar
+                        mode="single"
+                        selected={customDateRange.to}
+                        onSelect={(date) => setCustomDateRange(prev => ({ ...prev, to: date }))}
+                        disabled={(date) => date > new Date() || date < new Date('2020-01-01') || (customDateRange.from && date < customDateRange.from)}
+                      />
+                    </div>
+                    <div className="flex gap-2">
+                      <Button 
+                        size="sm" 
+                        onClick={() => setShowCustomRange(false)}
+                        disabled={!customDateRange.from || !customDateRange.to}
+                      >
+                        Toepassen
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        onClick={() => {
+                          setCustomDateRange({ from: undefined, to: undefined });
+                          setShowCustomRange(false);
+                        }}
+                      >
+                        Annuleren
+                      </Button>
+                    </div>
+                  </div>
+                </PopoverContent>
+              </Popover>
+            )}
+          </div>
       </div>
       {/* Key Metrics Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-4">
