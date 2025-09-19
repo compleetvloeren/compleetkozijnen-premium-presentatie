@@ -405,9 +405,9 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
               Aantal bezoekers en paginaweergaven over tijd
             </CardDescription>
           </CardHeader>
-          <CardContent className="px-2 sm:px-6">
-            <ChartContainer config={chartConfig} className="h-[250px] sm:h-[300px]">
-              <LineChart data={webAnalytics.trend}>
+          <CardContent className="px-2 sm:px-6 overflow-hidden">
+            <ChartContainer config={chartConfig} className="h-[250px] sm:h-[300px] w-full overflow-hidden">
+              <LineChart data={webAnalytics.trend} margin={{ top: 5, right: 10, left: 5, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis 
                   dataKey="date"
