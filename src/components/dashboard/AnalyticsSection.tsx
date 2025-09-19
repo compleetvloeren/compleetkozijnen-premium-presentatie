@@ -324,101 +324,102 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
         </div>
       </div>
       {/* Key Metrics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Bezoekers</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-4">
+        <Card className="col-span-1">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 sm:pb-2 px-3 sm:px-6 pt-3 sm:pt-6">
+            <CardTitle className="text-xs font-medium truncate">Bezoekers</CardTitle>
+            <Users className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-blue-600">{webAnalytics.visitors}</div>
-            <p className="text-xs text-muted-foreground">
-              Laatste {timeRange === '7d' ? '7 dagen' : timeRange === '30d' ? '30 dagen' : '90 dagen'}
+          <CardContent className="px-3 sm:px-6 pb-3 sm:pb-6">
+            <div className="text-lg sm:text-2xl font-bold text-blue-600">{webAnalytics.visitors}</div>
+            <p className="text-[10px] sm:text-xs text-muted-foreground">
+              {timeRange === '7d' ? '7 dagen' : timeRange === '30d' ? '30 dagen' : '90 dagen'}
             </p>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Paginaweergaven</CardTitle>
-            <Eye className="h-4 w-4 text-muted-foreground" />
+        <Card className="col-span-1">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 sm:pb-2 px-3 sm:px-6 pt-3 sm:pt-6">
+            <CardTitle className="text-xs font-medium truncate">Pagina's</CardTitle>
+            <Eye className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-600">{webAnalytics.pageviews}</div>
-            <p className="text-xs text-muted-foreground">
-              {webAnalytics.viewsPerVisit.toFixed(2)} per bezoek
+          <CardContent className="px-3 sm:px-6 pb-3 sm:pb-6">
+            <div className="text-lg sm:text-2xl font-bold text-green-600">{webAnalytics.pageviews}</div>
+            <p className="text-[10px] sm:text-xs text-muted-foreground">
+              {webAnalytics.viewsPerVisit.toFixed(1)} per bezoek
             </p>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Bounce Rate</CardTitle>
-            <TrendingDown className="h-4 w-4 text-muted-foreground" />
+        <Card className="col-span-2 sm:col-span-1">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 sm:pb-2 px-3 sm:px-6 pt-3 sm:pt-6">
+            <CardTitle className="text-xs font-medium truncate">Bounce Rate</CardTitle>
+            <TrendingDown className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-orange-600">{webAnalytics.bounceRate}%</div>
-            <p className="text-xs text-muted-foreground">
-              Verlatingspercentage
+          <CardContent className="px-3 sm:px-6 pb-3 sm:pb-6">
+            <div className="text-lg sm:text-2xl font-bold text-orange-600">{webAnalytics.bounceRate}%</div>
+            <p className="text-[10px] sm:text-xs text-muted-foreground">
+              Verlating
             </p>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Sessieduur</CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
+        <Card className="col-span-1">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 sm:pb-2 px-3 sm:px-6 pt-3 sm:pt-6">
+            <CardTitle className="text-xs font-medium truncate">Sessie</CardTitle>
+            <Clock className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-purple-600">{formatDuration(webAnalytics.avgSessionDuration)}</div>
-            <p className="text-xs text-muted-foreground">
+          <CardContent className="px-3 sm:px-6 pb-3 sm:pb-6">
+            <div className="text-lg sm:text-2xl font-bold text-purple-600">{formatDuration(webAnalytics.avgSessionDuration)}</div>
+            <p className="text-[10px] sm:text-xs text-muted-foreground">
               Gemiddeld
             </p>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Conversie Rate</CardTitle>
-            <Target className="h-4 w-4 text-muted-foreground" />
+        <Card className="col-span-1">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 sm:pb-2 px-3 sm:px-6 pt-3 sm:pt-6">
+            <CardTitle className="text-xs font-medium truncate">Conversie</CardTitle>
+            <Target className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-red-600">{webAnalytics.leadMetrics.conversionRate.toFixed(1)}%</div>
-            <p className="text-xs text-muted-foreground">
-              {webAnalytics.leadMetrics.totalLeads} leads van {webAnalytics.visitors} bezoekers
+          <CardContent className="px-3 sm:px-6 pb-3 sm:pb-6">
+            <div className="text-lg sm:text-2xl font-bold text-red-600">{webAnalytics.leadMetrics.conversionRate.toFixed(1)}%</div>
+            <p className="text-[10px] sm:text-xs text-muted-foreground truncate">
+              {webAnalytics.leadMetrics.totalLeads} leads
             </p>
           </CardContent>
         </Card>
       </div>
 
       {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-4 sm:gap-6">
         {/* Visitors Trend */}
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle>Bezoekers Trend</CardTitle>
-            <CardDescription>
+        <Card>
+          <CardHeader className="pb-2 sm:pb-4">
+            <CardTitle className="text-base sm:text-lg">Bezoekers Trend</CardTitle>
+            <CardDescription className="text-xs sm:text-sm">
               Aantal bezoekers en paginaweergaven over tijd
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <ChartContainer config={chartConfig} className="h-[300px]">
+          <CardContent className="px-2 sm:px-6">
+            <ChartContainer config={chartConfig} className="h-[250px] sm:h-[300px]">
               <LineChart data={webAnalytics.trend}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis 
                   dataKey="date"
                   tickFormatter={(value) => new Date(value).toLocaleDateString('nl-NL', { month: 'short', day: 'numeric' })}
-                  tick={{ fontSize: 12 }}
+                  tick={{ fontSize: 10 }}
+                  interval="preserveStartEnd"
                 />
-                <YAxis />
+                <YAxis tick={{ fontSize: 10 }} />
                 <ChartTooltip 
                   content={({ active, payload, label }) => {
                     if (active && payload && payload.length) {
                       return (
-                        <div className="bg-background border rounded-lg p-3 shadow-lg">
+                        <div className="bg-background border rounded-lg p-2 sm:p-3 shadow-lg text-xs sm:text-sm">
                           <p className="font-medium">{new Date(label).toLocaleDateString('nl-NL')}</p>
                           {payload.map((entry, index) => (
-                            <p key={index} className="text-sm" style={{ color: entry.color }}>
+                            <p key={index} className="text-xs" style={{ color: entry.color }}>
                               {entry.name === 'visitors' ? 'Bezoekers' : 'Paginaweergaven'}: {entry.value}
                             </p>
                           ))}
@@ -432,8 +433,8 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
                   type="monotone" 
                   dataKey="visitors" 
                   stroke="hsl(var(--primary))" 
-                  strokeWidth={3}
-                  dot={{ fill: "hsl(var(--primary))", strokeWidth: 2 }}
+                  strokeWidth={2}
+                  dot={{ fill: "hsl(var(--primary))", strokeWidth: 1, r: 3 }}
                   name="visitors"
                 />
                 <Line 
@@ -441,119 +442,123 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
                   dataKey="pageviews" 
                   stroke="hsl(var(--chart-2))" 
                   strokeWidth={2}
-                  dot={{ fill: "hsl(var(--chart-2))", strokeWidth: 2 }}
+                  dot={{ fill: "hsl(var(--chart-2))", strokeWidth: 1, r: 3 }}
                   name="pageviews"
                 />
               </LineChart>
             </ChartContainer>
           </CardContent>
         </Card>
-        {/* Traffic Sources */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Verkeersbronnen</CardTitle>
-            <CardDescription>
-              Waar komen je bezoekers vandaan
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {webAnalytics.sources.map((source, index) => (
-              <div key={source.source} className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <div 
-                    className="w-3 h-3 rounded-full"
-                    style={{ backgroundColor: chartConfig[Object.keys(chartConfig)[index % Object.keys(chartConfig).length] as keyof typeof chartConfig]?.color || 'hsl(var(--muted))' }}
-                  />
-                  <span className="font-medium">{source.source}</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Badge variant="secondary">{source.percentage}%</Badge>
-                  <span className="text-sm text-muted-foreground">{source.visitors}</span>
-                </div>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
 
-        {/* Top Pages */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Populaire Pagina's</CardTitle>
-            <CardDescription>
-              Meest bezochte pagina's op je website
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {webAnalytics.pages.map((page, index) => (
-              <div key={page.page} className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center">
-                    <span className="text-xs font-bold">{index + 1}</span>
+        {/* Bottom row - responsive grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Traffic Sources */}
+          <Card className="sm:col-span-1 lg:col-span-1">
+            <CardHeader className="pb-2 sm:pb-4">
+              <CardTitle className="text-sm sm:text-base">Verkeersbronnen</CardTitle>
+              <CardDescription className="text-xs sm:text-sm">
+                Waar bezoekers vandaan komen
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2 sm:space-y-3 px-3 sm:px-6">
+              {webAnalytics.sources.slice(0, 4).map((source, index) => (
+                <div key={source.source} className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <div 
+                      className="w-2 h-2 sm:w-3 sm:h-3 rounded-full flex-shrink-0"
+                      style={{ backgroundColor: chartConfig[Object.keys(chartConfig)[index % Object.keys(chartConfig).length] as keyof typeof chartConfig]?.color || 'hsl(var(--muted))' }}
+                    />
+                    <span className="font-medium text-xs sm:text-sm truncate">{source.source}</span>
                   </div>
-                  <div>
-                    <span className="font-medium">{page.page}</span>
-                    <div className="text-xs text-muted-foreground">
-                      {page.percentage}% van totaal verkeer
+                  <div className="flex items-center space-x-1 flex-shrink-0">
+                    <Badge variant="secondary" className="text-[10px] sm:text-xs px-1 sm:px-2">{source.percentage}%</Badge>
+                    <span className="text-[10px] sm:text-xs text-muted-foreground">{source.visitors}</span>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+
+          {/* Top Pages */}
+          <Card className="sm:col-span-1 lg:col-span-1">
+            <CardHeader className="pb-2 sm:pb-4">
+              <CardTitle className="text-sm sm:text-base">Populaire Pagina's</CardTitle>
+              <CardDescription className="text-xs sm:text-sm">
+                Meest bezochte pagina's
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2 sm:space-y-3 px-3 sm:px-6">
+              {webAnalytics.pages.slice(0, 4).map((page, index) => (
+                <div key={page.page} className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded bg-muted flex items-center justify-center flex-shrink-0">
+                      <span className="text-[9px] sm:text-xs font-bold">{index + 1}</span>
+                    </div>
+                    <div className="min-w-0">
+                      <span className="font-medium text-xs sm:text-sm block truncate">{page.page}</span>
+                      <div className="text-[9px] sm:text-xs text-muted-foreground">
+                        {page.percentage}%
+                      </div>
                     </div>
                   </div>
+                  <span className="text-xs sm:text-sm font-medium flex-shrink-0">{page.visitors}</span>
                 </div>
-                <span className="text-sm font-medium">{page.visitors}</span>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
+              ))}
+            </CardContent>
+          </Card>
 
-        {/* Geographic Distribution */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Geografische Verdeling</CardTitle>
-            <CardDescription>
-              Bezoekers per land
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {webAnalytics.countries.map((country) => (
-              <div key={country.country} className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <span className="text-lg">{country.flag}</span>
-                  <span className="font-medium">{country.country}</span>
+          {/* Geographic Distribution */}
+          <Card className="sm:col-span-1 lg:col-span-1">
+            <CardHeader className="pb-2 sm:pb-4">
+              <CardTitle className="text-sm sm:text-base">Landen</CardTitle>
+              <CardDescription className="text-xs sm:text-sm">
+                Bezoekers per land
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2 sm:space-y-3 px-3 sm:px-6">
+              {webAnalytics.countries.slice(0, 4).map((country) => (
+                <div key={country.country} className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm sm:text-base">{country.flag}</span>
+                    <span className="font-medium text-xs sm:text-sm truncate">{country.country}</span>
+                  </div>
+                  <div className="flex items-center space-x-1 flex-shrink-0">
+                    <span className="text-xs sm:text-sm font-medium">{country.visitors}</span>
+                    <MapPin className="h-2 w-2 sm:h-3 sm:w-3 text-muted-foreground" />
+                  </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm font-medium">{country.visitors}</span>
-                  <MapPin className="h-3 w-3 text-muted-foreground" />
-                </div>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
+              ))}
+            </CardContent>
+          </Card>
 
-        {/* Device Breakdown */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Apparaten</CardTitle>
-            <CardDescription>
-              Verdeling van bezoekers per apparaattype
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {webAnalytics.devices.map((device) => (
-              <div key={device.device} className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  {device.device.includes('Mobile') ? (
-                    <Smartphone className="h-4 w-4 text-muted-foreground" />
-                  ) : (
-                    <Monitor className="h-4 w-4 text-muted-foreground" />
-                  )}
-                  <span className="font-medium">{device.device}</span>
+          {/* Device Breakdown */}
+          <Card className="sm:col-span-1 lg:col-span-1">
+            <CardHeader className="pb-2 sm:pb-4">
+              <CardTitle className="text-sm sm:text-base">Apparaten</CardTitle>
+              <CardDescription className="text-xs sm:text-sm">
+                Per apparaattype
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2 sm:space-y-3 px-3 sm:px-6">
+              {webAnalytics.devices.slice(0, 4).map((device) => (
+                <div key={device.device} className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    {device.device.includes('Mobile') ? (
+                      <Smartphone className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
+                    ) : (
+                      <Monitor className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
+                    )}
+                    <span className="font-medium text-xs sm:text-sm truncate">{device.device}</span>
+                  </div>
+                  <div className="flex items-center space-x-1 flex-shrink-0">
+                    <Badge variant="outline" className="text-[10px] sm:text-xs px-1 sm:px-2">{device.percentage}%</Badge>
+                    <span className="text-[10px] sm:text-xs text-muted-foreground">{device.visitors}</span>
+                  </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Badge variant="outline">{device.percentage}%</Badge>
-                  <span className="text-sm text-muted-foreground">{device.visitors}</span>
-                </div>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
+              ))}
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

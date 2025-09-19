@@ -65,74 +65,74 @@ export const LeadCard: React.FC<LeadCardProps> = ({ lead, onViewDetails, onDelet
 
   return (
     <Card className="hover:shadow-md transition-shadow duration-200">
-      <CardContent className="p-6">
-        <div className="flex justify-between items-start mb-4">
-          <div className="flex items-center space-x-3">
-            <div>
-              <h3 className="font-semibold text-lg">{lead.name}</h3>
+      <CardContent className="p-3 sm:p-4 lg:p-6">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-3 sm:mb-4 gap-2">
+          <div className="flex items-start space-x-2 sm:space-x-3 min-w-0">
+            <div className="min-w-0 flex-1">
+              <h3 className="font-semibold text-sm sm:text-base lg:text-lg truncate">{lead.name}</h3>
               {lead.company && (
-                <p className="text-sm text-muted-foreground">{lead.company}</p>
+                <p className="text-xs sm:text-sm text-muted-foreground truncate">{lead.company}</p>
               )}
             </div>
           </div>
-          <Badge className={getStatusColor(lead.status)}>
+          <Badge className={`${getStatusColor(lead.status)} flex-shrink-0 text-[10px] sm:text-xs`}>
             {lead.status.replace('_', ' ')}
           </Badge>
         </div>
 
-        <div className="space-y-2 mb-4">
-          <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-            <Mail className="h-4 w-4" />
-            <span>{lead.email}</span>
+        <div className="space-y-1.5 sm:space-y-2 mb-3 sm:mb-4">
+          <div className="flex items-center space-x-2 text-xs sm:text-sm text-muted-foreground">
+            <Mail className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+            <span className="break-all text-[11px] sm:text-sm">{lead.email}</span>
           </div>
           
           {lead.phone && (
-            <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-              <Phone className="h-4 w-4" />
-              <span>{lead.phone}</span>
+            <div className="flex items-center space-x-2 text-xs sm:text-sm text-muted-foreground">
+              <Phone className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+              <span className="text-[11px] sm:text-sm">{lead.phone}</span>
             </div>
           )}
           
           {lead.location && (
-            <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-              <MapPin className="h-4 w-4" />
-              <span>{lead.location}</span>
+            <div className="flex items-center space-x-2 text-xs sm:text-sm text-muted-foreground">
+              <MapPin className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+              <span className="text-[11px] sm:text-sm truncate">{lead.location}</span>
             </div>
           )}
           
-          <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-            <Calendar className="h-4 w-4" />
-            <span>{new Date(lead.created_at).toLocaleDateString('nl-NL')}</span>
+          <div className="flex items-center space-x-2 text-xs sm:text-sm text-muted-foreground">
+            <Calendar className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+            <span className="text-[11px] sm:text-sm">{new Date(lead.created_at).toLocaleDateString('nl-NL')}</span>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+        <div className="grid grid-cols-1 gap-2 sm:gap-3 mb-3 sm:mb-4">
           {lead.project_type && (
             <div>
-              <span className="text-xs font-medium text-muted-foreground">Project Type</span>
-              <p className="text-sm">{getProjectTypeLabel(lead.project_type)}</p>
+              <span className="text-[10px] sm:text-xs font-medium text-muted-foreground">Project Type</span>
+              <p className="text-xs sm:text-sm">{getProjectTypeLabel(lead.project_type)}</p>
             </div>
           )}
           
           {lead.budget_range && (
             <div>
-              <span className="text-xs font-medium text-muted-foreground">Budget</span>
-              <p className="text-sm">{getBudgetLabel(lead.budget_range)}</p>
+              <span className="text-[10px] sm:text-xs font-medium text-muted-foreground">Budget</span>
+              <p className="text-xs sm:text-sm">{getBudgetLabel(lead.budget_range)}</p>
             </div>
           )}
           
           {lead.timeline && (
             <div>
-              <span className="text-xs font-medium text-muted-foreground">Timeline</span>
-              <p className="text-sm">{lead.timeline}</p>
+              <span className="text-[10px] sm:text-xs font-medium text-muted-foreground">Timeline</span>
+              <p className="text-xs sm:text-sm">{lead.timeline}</p>
             </div>
           )}
           
           {/* Show project details summary if available */}
           {lead.project_details && (
-            <div className="md:col-span-2">
-              <span className="text-xs font-medium text-muted-foreground">Woning Info</span>
-              <p className="text-sm line-clamp-2 text-muted-foreground">
+            <div>
+              <span className="text-[10px] sm:text-xs font-medium text-muted-foreground">Woning Info</span>
+              <p className="text-xs sm:text-sm line-clamp-2 text-muted-foreground">
                 {lead.project_details.split('\n').join(' • ')}
               </p>
             </div>
@@ -140,32 +140,32 @@ export const LeadCard: React.FC<LeadCardProps> = ({ lead, onViewDetails, onDelet
         </div>
 
         {lead.description && (
-          <div className="mb-4">
-            <p className="text-sm text-muted-foreground line-clamp-2">
+          <div className="mb-3 sm:mb-4">
+            <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2">
               {lead.description}
             </p>
           </div>
         )}
 
-        <div className="flex justify-between items-center">
+        <div className="flex gap-2 pt-2 border-t border-border/50">
           <Button
             variant="outline"
             size="sm"
             onClick={() => onDelete(lead)}
-            className="flex items-center space-x-2 text-destructive hover:text-destructive"
+            className="flex items-center space-x-1 sm:space-x-2 text-destructive hover:text-destructive text-xs flex-1 sm:flex-initial h-8 sm:h-9"
           >
-            <Trash2 className="h-4 w-4" />
-            <span>Verwijderen</span>
+            <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
+            <span className="hidden sm:inline">Verwijderen</span>
           </Button>
           
           <Button
             variant="outline"
             size="sm"
             onClick={() => onViewDetails(lead)}
-            className="flex items-center space-x-2"
+            className="flex items-center space-x-1 sm:space-x-2 text-xs flex-1 h-8 sm:h-9"
           >
-            <Eye className="h-4 w-4" />
-            <span>Details bekijken</span>
+            <Eye className="h-3 w-3 sm:h-4 sm:w-4" />
+            <span>Details</span>
           </Button>
         </div>
       </CardContent>

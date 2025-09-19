@@ -535,19 +535,20 @@ const Dashboard: React.FC = () => {
 
         {/* Export Options Popup */}
         {showExportOptions && (
-          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center animate-fade-in-up">
-            <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 animate-scale-in">
-              <div className="flex justify-between items-center p-4 border-b">
-                <h3 className="font-semibold">Export Leads</h3>
+          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-3 animate-fade-in-up">
+            <div className="bg-white dark:bg-background rounded-lg shadow-xl max-w-sm w-full animate-scale-in">
+              <div className="flex justify-between items-center p-3 sm:p-4 border-b">
+                <h3 className="font-semibold text-sm sm:text-base">Export Leads</h3>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setShowExportOptions(false)}
+                  className="h-8 w-8 p-0"
                 >
                   ×
                 </Button>
               </div>
-              <div className="p-4">
+              <div className="p-3 sm:p-4">
                 <ExportOptions
                   leads={leads}
                   filteredLeads={filteredLeads}

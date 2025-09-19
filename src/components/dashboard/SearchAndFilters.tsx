@@ -35,22 +35,22 @@ export const SearchAndFilters: React.FC<SearchAndFiltersProps> = ({
   const hasFilters = statusFilter !== 'all' || projectTypeFilter !== 'all' || budgetFilter !== 'all' || searchTerm.length > 0;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3 sm:space-y-4">
       {/* Search Bar */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
         <Input
-          placeholder="Zoek op naam, email, bedrijf of locatie..."
+          placeholder="Zoek op naam, email, bedrijf..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="pl-10"
+          className="pl-8 sm:pl-10 text-sm h-9 sm:h-10"
         />
       </div>
 
       {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3">
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-full sm:w-[180px]">
+          <SelectTrigger className="h-9 sm:h-10 text-xs sm:text-sm">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent>
@@ -64,8 +64,8 @@ export const SearchAndFilters: React.FC<SearchAndFiltersProps> = ({
         </Select>
 
         <Select value={projectTypeFilter} onValueChange={setProjectTypeFilter}>
-          <SelectTrigger className="w-full sm:w-[180px]">
-            <SelectValue placeholder="Project Type" />
+          <SelectTrigger className="h-9 sm:h-10 text-xs sm:text-sm">
+            <SelectValue placeholder="Type" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Alle types</SelectItem>
@@ -78,76 +78,79 @@ export const SearchAndFilters: React.FC<SearchAndFiltersProps> = ({
         </Select>
 
         <Select value={budgetFilter} onValueChange={setBudgetFilter}>
-          <SelectTrigger className="w-full sm:w-[180px]">
+          <SelectTrigger className="h-9 sm:h-10 text-xs sm:text-sm">
             <SelectValue placeholder="Budget" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Alle budgetten</SelectItem>
-            <SelectItem value="tot_5k">&lt; €5.000</SelectItem>
-            <SelectItem value="5k_15k">€5.000 - €15.000</SelectItem>
-            <SelectItem value="15k_30k">€15.000 - €30.000</SelectItem>
-            <SelectItem value="boven_30k">&gt; €30.000</SelectItem>
+            <SelectItem value="tot_5k">&lt; €5k</SelectItem>
+            <SelectItem value="5k_15k">€5k - €15k</SelectItem>
+            <SelectItem value="15k_30k">€15k - €30k</SelectItem>
+            <SelectItem value="boven_30k">&gt; €30k</SelectItem>
           </SelectContent>
         </Select>
 
         {hasFilters && (
-          <Button variant="outline" onClick={onReset} className="flex items-center space-x-2">
-            <RotateCcw className="h-4 w-4" />
-            <span>Reset</span>
+          <Button variant="outline" onClick={onReset} className="h-9 sm:h-10 text-xs sm:text-sm px-2 sm:px-4">
+            <RotateCcw className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-1" />
+            <span className="hidden sm:inline">Reset</span>
           </Button>
         )}
       </div>
 
-      {/* Active Filters and Results Count */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-        <div className="flex flex-wrap gap-2">
+      {/* Active Filters */}
+      {hasFilters && (
+        <div className="flex flex-wrap gap-1 sm:gap-2">
           {statusFilter !== 'all' && (
-            <Badge variant="secondary" className="flex items-center space-x-1">
+            <Badge variant="secondary" className="flex items-center space-x-1 text-[10px] sm:text-xs px-1 sm:px-2 py-0.5 sm:py-1">
               <span>Status: {statusFilter.replace('_', ' ')}</span>
               <X 
-                className="h-3 w-3 cursor-pointer" 
+                className="h-2 w-2 sm:h-3 sm:w-3 cursor-pointer ml-1" 
                 onClick={() => setStatusFilter('all')} 
               />
             </Badge>
           )}
           
           {projectTypeFilter !== 'all' && (
-            <Badge variant="secondary" className="flex items-center space-x-1">
+            <Badge variant="secondary" className="flex items-center space-x-1 text-[10px] sm:text-xs px-1 sm:px-2 py-0.5 sm:py-1">
               <span>Type: {projectTypeFilter}</span>
               <X 
-                className="h-3 w-3 cursor-pointer" 
+                className="h-2 w-2 sm:h-3 sm:w-3 cursor-pointer ml-1" 
                 onClick={() => setProjectTypeFilter('all')} 
               />
             </Badge>
           )}
           
           {budgetFilter !== 'all' && (
-            <Badge variant="secondary" className="flex items-center space-x-1">
+            <Badge variant="secondary" className="flex items-center space-x-1 text-[10px] sm:text-xs px-1 sm:px-2 py-0.5 sm:py-1">
               <span>Budget: {budgetFilter}</span>
               <X 
-                className="h-3 w-3 cursor-pointer" 
+                className="h-2 w-2 sm:h-3 sm:w-3 cursor-pointer ml-1" 
                 onClick={() => setBudgetFilter('all')} 
               />
             </Badge>
           )}
           
           {searchTerm && (
-            <Badge variant="secondary" className="flex items-center space-x-1">
+            <Badge variant="secondary" className="flex items-center space-x-1 text-[10px] sm:text-xs px-1 sm:px-2 py-0.5 sm:py-1">
               <span>"{searchTerm}"</span>
               <X 
-                className="h-3 w-3 cursor-pointer" 
+                className="h-2 w-2 sm:h-3 sm:w-3 cursor-pointer ml-1" 
                 onClick={() => setSearchTerm('')} 
               />
             </Badge>
           )}
         </div>
+      )}
 
-        <div className="text-sm text-muted-foreground">
+      {/* Results Counter */}
+      <div className="flex justify-between items-center text-xs sm:text-sm text-muted-foreground">
+        <span>
           {filteredResults} van {totalResults} leads
           {hasFilters && filteredResults !== totalResults && (
             <span className="ml-1">(gefilterd)</span>
           )}
-        </div>
+        </span>
       </div>
     </div>
   );
