@@ -96,7 +96,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
       console.log('Fetching analytics for time range:', timeRange);
 
       const { data, error } = await supabase.functions.invoke('website-analytics', {
-        body: {},
+        body: { timeRange },
         headers: {
           'Content-Type': 'application/json',
         },

@@ -75,16 +75,19 @@ serve(async (req) => {
       });
     }
 
-    if (req.method !== 'GET') {
-      return new Response(JSON.stringify({ error: 'Method not allowed' }), {
-        status: 405,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
-
-    // Get time range from query params
-    const url = new URL(req.url);
-    const timeRange = url.searchParams.get('timeRange') || '7d';
+    // Determine time range from POST body or query params
+    let timeRange = '7d';
+    try {
+      if (req.method === 'POST') {
+        const body = await req.json().catch(() => null);
+        if (body && typeof body.timeRange === 'string') {
+          timeRange = body.timeRange;
+        }
+      } else if (req.method === 'GET') {
+        const url = new URL(req.url);
+        timeRange = url.searchParams.get('timeRange') || '7d';
+      }
+    } catch (_) {}
     console.log('Fetching analytics for time range:', timeRange);
 
     // Calculate date range
