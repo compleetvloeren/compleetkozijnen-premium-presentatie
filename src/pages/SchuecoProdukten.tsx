@@ -24,10 +24,8 @@ const SchuecoProdukten = () => {
           loop
           muted
           playsInline
-          poster={heroImage}
         >
           <source src="https://www.schueco.com/resource/blob/352482/7e31236a24d1fba017bb903d4f767cd5/morethanaview-stage-video-data.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
         </video>
         <div className="absolute inset-0 bg-black/40" />
         <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center min-h-[70vh]">
