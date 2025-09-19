@@ -1,8 +1,10 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from '@/components/ui/chart';
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
-import { TrendingUp, TrendingDown, Users, Calendar, Target, Zap } from 'lucide-react';
+import { TrendingUp, TrendingDown, Users, Calendar, Target, Zap, Eye, Clock, Globe, Smartphone, Monitor, MapPin } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
 
 interface Lead {
   id: string;
@@ -22,6 +24,19 @@ interface Lead {
   preferred_contact_time?: string;
   special_requirements?: string;
   notes?: string;
+}
+
+interface WebAnalytics {
+  visitors: number;
+  pageviews: number;
+  bounceRate: number;
+  avgSessionDuration: number;
+  viewsPerVisit: number;
+  sources: Array<{ source: string; visitors: number; percentage: number }>;
+  pages: Array<{ page: string; visitors: number; percentage: number }>;
+  countries: Array<{ country: string; visitors: number; flag: string }>;
+  devices: Array<{ device: string; visitors: number; percentage: number }>;
+  trend: Array<{ date: string; visitors: number; pageviews: number }>;
 }
 
 interface AnalyticsSectionProps {
@@ -52,6 +67,74 @@ const chartConfig = {
 };
 
 export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => {
+  const [timeRange, setTimeRange] = useState('7d');
+  const [webAnalytics, setWebAnalytics] = useState<WebAnalytics | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate web analytics data - in real implementation, this would come from your analytics service
+    const simulateWebAnalytics = (): WebAnalytics => {
+      const baseVisitors = timeRange === '7d' ? 180 : timeRange === '30d' ? 720 : 2160;
+      
+      return {
+        visitors: baseVisitors + Math.floor(Math.random() * 50),
+        pageviews: Math.floor((baseVisitors + Math.floor(Math.random() * 50)) * 2.8),
+        bounceRate: 28 + Math.floor(Math.random() * 15),
+        avgSessionDuration: 13 * 60 + 17 + Math.floor(Math.random() * 300), // in seconds
+        viewsPerVisit: 2.1 + Math.random() * 2,
+        sources: [
+          { source: 'Direct', visitors: Math.floor(baseVisitors * 0.45), percentage: 45 },
+          { source: 'Google Search', visitors: Math.floor(baseVisitors * 0.35), percentage: 35 },
+          { source: 'Social Media', visitors: Math.floor(baseVisitors * 0.12), percentage: 12 },
+          { source: 'Referrals', visitors: Math.floor(baseVisitors * 0.08), percentage: 8 },
+        ],
+        pages: [
+          { page: '/', visitors: Math.floor(baseVisitors * 0.28), percentage: 28 },
+          { page: '/producten', visitors: Math.floor(baseVisitors * 0.22), percentage: 22 },
+          { page: '/producten/gealan', visitors: Math.floor(baseVisitors * 0.18), percentage: 18 },
+          { page: '/offerte', visitors: Math.floor(baseVisitors * 0.15), percentage: 15 },
+          { page: '/over-ons', visitors: Math.floor(baseVisitors * 0.10), percentage: 10 },
+          { page: '/contact', visitors: Math.floor(baseVisitors * 0.07), percentage: 7 },
+        ],
+        countries: [
+          { country: 'Nederland', visitors: Math.floor(baseVisitors * 0.68), flag: '🇳🇱' },
+          { country: 'België', visitors: Math.floor(baseVisitors * 0.15), flag: '🇧🇪' },
+          { country: 'Duitsland', visitors: Math.floor(baseVisitors * 0.12), flag: '🇩🇪' },
+          { country: 'Overig', visitors: Math.floor(baseVisitors * 0.05), flag: '🌍' },
+        ],
+        devices: [
+          { device: 'Mobile - iOS', visitors: Math.floor(baseVisitors * 0.42), percentage: 42 },
+          { device: 'Desktop', visitors: Math.floor(baseVisitors * 0.35), percentage: 35 },
+          { device: 'Mobile - Android', visitors: Math.floor(baseVisitors * 0.18), percentage: 18 },
+          { device: 'Tablet', visitors: Math.floor(baseVisitors * 0.05), percentage: 5 },
+        ],
+        trend: Array.from({ length: timeRange === '7d' ? 7 : timeRange === '30d' ? 30 : 90 }, (_, i) => {
+          const date = new Date();
+          date.setDate(date.getDate() - (timeRange === '7d' ? 6 - i : timeRange === '30d' ? 29 - i : 89 - i));
+          const dailyVisitors = Math.floor(baseVisitors / (timeRange === '7d' ? 7 : timeRange === '30d' ? 30 : 90)) + Math.floor(Math.random() * 20);
+          
+          return {
+            date: date.toISOString().split('T')[0],
+            visitors: dailyVisitors,
+            pageviews: Math.floor(dailyVisitors * (2.5 + Math.random())),
+          };
+        }),
+      };
+    };
+
+    setLoading(true);
+    // Simulate API delay
+    setTimeout(() => {
+      setWebAnalytics(simulateWebAnalytics());
+      setLoading(false);
+    }, 500);
+  }, [timeRange]);
+
+  const formatDuration = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}m ${remainingSeconds}s`;
+  };
   const analyticsData = useMemo(() => {
     // Status distribution
     const statusCounts = leads.reduce((acc, lead) => {
@@ -145,64 +228,107 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
     };
   }, [leads]);
 
+  if (loading || !webAnalytics) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-bold">Website Analytics</h2>
+            <p className="text-muted-foreground">Overzicht van website prestaties en bezoekers</p>
+          </div>
+          <div className="animate-pulse bg-muted h-10 w-32 rounded-md"></div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="animate-pulse bg-muted h-24 rounded-lg"></div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
+      {/* Header with Time Range Selector */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold">Website Analytics</h2>
+          <p className="text-muted-foreground">Overzicht van website prestaties en bezoekers</p>
+        </div>
+        <Select value={timeRange} onValueChange={setTimeRange}>
+          <SelectTrigger className="w-32">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="7d">7 dagen</SelectItem>
+            <SelectItem value="30d">30 dagen</SelectItem>
+            <SelectItem value="90d">90 dagen</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
       {/* Key Metrics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Totaal Leads</CardTitle>
+            <CardTitle className="text-sm font-medium">Bezoekers</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{analyticsData.metrics.totalLeads}</div>
+            <div className="text-2xl font-bold text-blue-600">{webAnalytics.visitors}</div>
             <p className="text-xs text-muted-foreground">
-              Alle tijd
+              Laatste {timeRange === '7d' ? '7 dagen' : timeRange === '30d' ? '30 dagen' : '90 dagen'}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Conversie Ratio</CardTitle>
+            <CardTitle className="text-sm font-medium">Paginaweergaven</CardTitle>
+            <Eye className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-green-600">{webAnalytics.pageviews}</div>
+            <p className="text-xs text-muted-foreground">
+              {webAnalytics.viewsPerVisit.toFixed(2)} per bezoek
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Bounce Rate</CardTitle>
+            <TrendingDown className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-orange-600">{webAnalytics.bounceRate}%</div>
+            <p className="text-xs text-muted-foreground">
+              Verlatingspercentage
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Sessieduur</CardTitle>
+            <Clock className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-purple-600">{formatDuration(webAnalytics.avgSessionDuration)}</div>
+            <p className="text-xs text-muted-foreground">
+              Gemiddeld
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Conversie Rate</CardTitle>
             <Target className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{analyticsData.metrics.conversionRate}%</div>
+            <div className="text-2xl font-bold text-red-600">{((leads.length / webAnalytics.visitors) * 100).toFixed(1)}%</div>
             <p className="text-xs text-muted-foreground">
-              Gewonnen / Totaal
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Actieve Leads</CardTitle>
-            <Zap className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{analyticsData.metrics.activeLeads}</div>
-            <p className="text-xs text-muted-foreground">
-              In behandeling
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Wekelijkse Groei</CardTitle>
-            {analyticsData.metrics.weeklyGrowth >= 0 ? (
-              <TrendingUp className="h-4 w-4 text-green-600" />
-            ) : (
-              <TrendingDown className="h-4 w-4 text-red-600" />
-            )}
-          </CardHeader>
-          <CardContent>
-            <div className={`text-2xl font-bold ${analyticsData.metrics.weeklyGrowth >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-              {analyticsData.metrics.weeklyGrowth > 0 ? '+' : ''}{analyticsData.metrics.weeklyGrowth}%
-            </div>
-            <p className="text-xs text-muted-foreground">
-              vs vorige week
+              Bezoeker → Lead
             </p>
           </CardContent>
         </Card>
@@ -210,107 +336,165 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Status Distribution Pie Chart */}
-        <Card>
+        {/* Visitors Trend */}
+        <Card className="lg:col-span-2">
           <CardHeader>
-            <CardTitle>Lead Status Verdeling</CardTitle>
+            <CardTitle>Bezoekers Trend</CardTitle>
             <CardDescription>
-              Huidige verdeling van alle leads per status
+              Aantal bezoekers en paginaweergaven over tijd
             </CardDescription>
           </CardHeader>
           <CardContent>
             <ChartContainer config={chartConfig} className="h-[300px]">
-              <PieChart>
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <Pie
-                  data={analyticsData.statusData}
-                  dataKey="count"
-                  nameKey="label"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={80}
-                  label={({ label, count }) => `${label}: ${count}`}
-                >
-                  {analyticsData.statusData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.fill} />
-                  ))}
-                </Pie>
-                <ChartLegend content={<ChartLegendContent />} />
-              </PieChart>
-            </ChartContainer>
-          </CardContent>
-        </Card>
-
-        {/* Daily Leads Trend */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Leads Trend (30 dagen)</CardTitle>
-            <CardDescription>
-              Aantal nieuwe leads per dag in de afgelopen 30 dagen
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ChartContainer config={chartConfig} className="h-[300px]">
-              <LineChart data={analyticsData.dailyLeads}>
+              <LineChart data={webAnalytics.trend}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis 
-                  dataKey="formattedDate" 
-                  interval="preserveStartEnd"
+                  dataKey="date"
+                  tickFormatter={(value) => new Date(value).toLocaleDateString('nl-NL', { month: 'short', day: 'numeric' })}
                   tick={{ fontSize: 12 }}
                 />
                 <YAxis />
-                <ChartTooltip content={<ChartTooltipContent />} />
+                <ChartTooltip 
+                  content={({ active, payload, label }) => {
+                    if (active && payload && payload.length) {
+                      return (
+                        <div className="bg-background border rounded-lg p-3 shadow-lg">
+                          <p className="font-medium">{new Date(label).toLocaleDateString('nl-NL')}</p>
+                          {payload.map((entry, index) => (
+                            <p key={index} className="text-sm" style={{ color: entry.color }}>
+                              {entry.name === 'visitors' ? 'Bezoekers' : 'Paginaweergaven'}: {entry.value}
+                            </p>
+                          ))}
+                        </div>
+                      );
+                    }
+                    return null;
+                  }}
+                />
                 <Line 
                   type="monotone" 
-                  dataKey="leads" 
+                  dataKey="visitors" 
                   stroke="hsl(var(--primary))" 
+                  strokeWidth={3}
+                  dot={{ fill: "hsl(var(--primary))", strokeWidth: 2 }}
+                  name="visitors"
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="pageviews" 
+                  stroke="hsl(var(--chart-2))" 
                   strokeWidth={2}
-                  dot={{ fill: "hsl(var(--primary))" }}
+                  dot={{ fill: "hsl(var(--chart-2))", strokeWidth: 2 }}
+                  name="pageviews"
                 />
               </LineChart>
             </ChartContainer>
           </CardContent>
         </Card>
-
-        {/* Project Type Distribution */}
+        {/* Traffic Sources */}
         <Card>
           <CardHeader>
-            <CardTitle>Project Types</CardTitle>
+            <CardTitle>Verkeersbronnen</CardTitle>
             <CardDescription>
-              Verdeling van leads per project type
+              Waar komen je bezoekers vandaan
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <ChartContainer config={chartConfig} className="h-[300px]">
-              <BarChart data={analyticsData.projectTypeData} layout="horizontal">
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis type="number" />
-                <YAxis dataKey="type" type="category" width={100} />
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <Bar dataKey="count" fill="hsl(var(--primary))" />
-              </BarChart>
-            </ChartContainer>
+          <CardContent className="space-y-4">
+            {webAnalytics.sources.map((source, index) => (
+              <div key={source.source} className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div 
+                    className="w-3 h-3 rounded-full"
+                    style={{ backgroundColor: chartConfig[Object.keys(chartConfig)[index % Object.keys(chartConfig).length] as keyof typeof chartConfig]?.color || 'hsl(var(--muted))' }}
+                  />
+                  <span className="font-medium">{source.source}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Badge variant="secondary">{source.percentage}%</Badge>
+                  <span className="text-sm text-muted-foreground">{source.visitors}</span>
+                </div>
+              </div>
+            ))}
           </CardContent>
         </Card>
 
-        {/* Conversion Funnel */}
+        {/* Top Pages */}
         <Card>
           <CardHeader>
-            <CardTitle>Conversie Funnel</CardTitle>
+            <CardTitle>Populaire Pagina's</CardTitle>
             <CardDescription>
-              Leads per fase van het verkoopproces
+              Meest bezochte pagina's op je website
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <ChartContainer config={chartConfig} className="h-[300px]">
-              <BarChart data={analyticsData.conversionData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="stage" />
-                <YAxis />
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <Bar dataKey="count" fill="hsl(var(--primary))" />
-              </BarChart>
-            </ChartContainer>
+          <CardContent className="space-y-4">
+            {webAnalytics.pages.map((page, index) => (
+              <div key={page.page} className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center">
+                    <span className="text-xs font-bold">{index + 1}</span>
+                  </div>
+                  <div>
+                    <span className="font-medium">{page.page}</span>
+                    <div className="text-xs text-muted-foreground">
+                      {page.percentage}% van totaal verkeer
+                    </div>
+                  </div>
+                </div>
+                <span className="text-sm font-medium">{page.visitors}</span>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+
+        {/* Geographic Distribution */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Geografische Verdeling</CardTitle>
+            <CardDescription>
+              Bezoekers per land
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {webAnalytics.countries.map((country) => (
+              <div key={country.country} className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <span className="text-lg">{country.flag}</span>
+                  <span className="font-medium">{country.country}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm font-medium">{country.visitors}</span>
+                  <MapPin className="h-3 w-3 text-muted-foreground" />
+                </div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+
+        {/* Device Breakdown */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Apparaten</CardTitle>
+            <CardDescription>
+              Verdeling van bezoekers per apparaattype
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {webAnalytics.devices.map((device) => (
+              <div key={device.device} className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  {device.device.includes('Mobile') ? (
+                    <Smartphone className="h-4 w-4 text-muted-foreground" />
+                  ) : (
+                    <Monitor className="h-4 w-4 text-muted-foreground" />
+                  )}
+                  <span className="font-medium">{device.device}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Badge variant="outline">{device.percentage}%</Badge>
+                  <span className="text-sm text-muted-foreground">{device.visitors}</span>
+                </div>
+              </div>
+            ))}
           </CardContent>
         </Card>
       </div>
