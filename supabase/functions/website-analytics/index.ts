@@ -163,8 +163,11 @@ serve(async (req) => {
       startDate.setHours(0, 0, 0, 0);
     }
     
+    // Calculate daysDiff for logging and calculations
+    const daysDiff = Math.max(1, Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)));
+    
     console.log('Fetching analytics for time range:', timeRange, 'from', startDate.toISOString(), 'to', endDate.toISOString());
-    console.log('Date range spans', daysDiff || 1, 'day(s)');
+    console.log('Date range spans', daysDiff, 'day(s)');
 
     // Fetch real leads data for analytics
     const { data: leadsData, error: leadsError } = await supabase
@@ -270,7 +273,6 @@ serve(async (req) => {
       
       // Create trend data based on actual date range
       const trendData = [];
-      const daysDiff = Math.max(1, Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)));
       
       // For single day selections, create realistic daily variations
       if (timeRange === 'vandaag' || timeRange === 'gisteren' || timeRange === 'eergisteren') {
