@@ -291,14 +291,17 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header with Time Range Selector */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold">Website Analytics</h2>
-          <p className="text-muted-foreground">
-            Realtime overzicht van website prestaties • 
-            Laatste update: {webAnalytics?.lastUpdated ? new Date(webAnalytics.lastUpdated).toLocaleTimeString('nl-NL') : 'Onbekend'}
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+        <div className="min-w-0 flex-1">
+          <h2 className="text-lg sm:text-xl lg:text-2xl font-bold">Website Analytics</h2>
+          <p className="text-xs sm:text-sm text-muted-foreground">
+            <span className="hidden sm:inline">Realtime overzicht van website prestaties • </span>
+            Update: {webAnalytics?.lastUpdated ? new Date(webAnalytics.lastUpdated).toLocaleTimeString('nl-NL', { 
+              hour: '2-digit', 
+              minute: '2-digit' 
+            }) : 'Onbekend'}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -307,18 +310,19 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
             size="sm"
             onClick={() => fetchAnalytics(true)}
             disabled={refreshing}
+            className="h-8 sm:h-9"
           >
-            <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''} mr-2`} />
-            {refreshing ? 'Laden...' : 'Vernieuwen'}
+            <RefreshCw className={`h-3 w-3 sm:h-4 sm:w-4 ${refreshing ? 'animate-spin' : ''} sm:mr-2`} />
+            <span className="hidden sm:inline">{refreshing ? 'Laden...' : 'Vernieuwen'}</span>
           </Button>
           <Select value={timeRange} onValueChange={setTimeRange}>
-            <SelectTrigger className="w-32">
+            <SelectTrigger className="w-20 sm:w-32 h-8 sm:h-9 text-xs sm:text-sm">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="7d">7 dagen</SelectItem>
-              <SelectItem value="30d">30 dagen</SelectItem>
-              <SelectItem value="90d">90 dagen</SelectItem>
+              <SelectItem value="7d">7d</SelectItem>
+              <SelectItem value="30d">30d</SelectItem>
+              <SelectItem value="90d">90d</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -451,28 +455,28 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
         </Card>
 
         {/* Bottom row - responsive grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 gap-3 sm:gap-4">
           {/* Traffic Sources */}
-          <Card className="sm:col-span-1 lg:col-span-1">
-            <CardHeader className="pb-2 sm:pb-4">
+          <Card>
+            <CardHeader className="pb-2 sm:pb-4 px-3 sm:px-6 pt-3 sm:pt-6">
               <CardTitle className="text-sm sm:text-base">Verkeersbronnen</CardTitle>
               <CardDescription className="text-xs sm:text-sm">
                 Waar bezoekers vandaan komen
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-2 sm:space-y-3 px-3 sm:px-6">
+            <CardContent className="space-y-1.5 sm:space-y-2 px-3 sm:px-6 pb-3 sm:pb-6">
               {webAnalytics.sources.slice(0, 4).map((source, index) => (
-                <div key={source.source} className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
+                <div key={source.source} className="flex items-center justify-between py-1">
+                  <div className="flex items-center space-x-2 min-w-0 flex-1">
                     <div 
-                      className="w-2 h-2 sm:w-3 sm:h-3 rounded-full flex-shrink-0"
+                      className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full flex-shrink-0"
                       style={{ backgroundColor: chartConfig[Object.keys(chartConfig)[index % Object.keys(chartConfig).length] as keyof typeof chartConfig]?.color || 'hsl(var(--muted))' }}
                     />
                     <span className="font-medium text-xs sm:text-sm truncate">{source.source}</span>
                   </div>
-                  <div className="flex items-center space-x-1 flex-shrink-0">
-                    <Badge variant="secondary" className="text-[10px] sm:text-xs px-1 sm:px-2">{source.percentage}%</Badge>
-                    <span className="text-[10px] sm:text-xs text-muted-foreground">{source.visitors}</span>
+                  <div className="flex items-center space-x-2 flex-shrink-0">
+                    <Badge variant="secondary" className="text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5">{source.percentage}%</Badge>
+                    <span className="text-xs sm:text-sm font-medium min-w-[20px] text-right">{source.visitors}</span>
                   </div>
                 </div>
               ))}
@@ -480,51 +484,51 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
           </Card>
 
           {/* Top Pages */}
-          <Card className="sm:col-span-1 lg:col-span-1">
-            <CardHeader className="pb-2 sm:pb-4">
+          <Card>
+            <CardHeader className="pb-2 sm:pb-4 px-3 sm:px-6 pt-3 sm:pt-6">
               <CardTitle className="text-sm sm:text-base">Populaire Pagina's</CardTitle>
               <CardDescription className="text-xs sm:text-sm">
                 Meest bezochte pagina's
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-2 sm:space-y-3 px-3 sm:px-6">
+            <CardContent className="space-y-1.5 sm:space-y-2 px-3 sm:px-6 pb-3 sm:pb-6">
               {webAnalytics.pages.slice(0, 4).map((page, index) => (
-                <div key={page.page} className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
+                <div key={page.page} className="flex items-center justify-between py-1">
+                  <div className="flex items-center space-x-2 min-w-0 flex-1">
                     <div className="w-5 h-5 sm:w-6 sm:h-6 rounded bg-muted flex items-center justify-center flex-shrink-0">
-                      <span className="text-[9px] sm:text-xs font-bold">{index + 1}</span>
+                      <span className="text-[10px] sm:text-xs font-bold">{index + 1}</span>
                     </div>
-                    <div className="min-w-0">
+                    <div className="min-w-0 flex-1">
                       <span className="font-medium text-xs sm:text-sm block truncate">{page.page}</span>
-                      <div className="text-[9px] sm:text-xs text-muted-foreground">
-                        {page.percentage}%
+                      <div className="text-[10px] sm:text-xs text-muted-foreground">
+                        {page.percentage}% van totaal
                       </div>
                     </div>
                   </div>
-                  <span className="text-xs sm:text-sm font-medium flex-shrink-0">{page.visitors}</span>
+                  <span className="text-xs sm:text-sm font-medium flex-shrink-0 min-w-[30px] text-right">{page.visitors}</span>
                 </div>
               ))}
             </CardContent>
           </Card>
 
           {/* Geographic Distribution */}
-          <Card className="sm:col-span-1 lg:col-span-1">
-            <CardHeader className="pb-2 sm:pb-4">
-              <CardTitle className="text-sm sm:text-base">Landen</CardTitle>
+          <Card>
+            <CardHeader className="pb-2 sm:pb-4 px-3 sm:px-6 pt-3 sm:pt-6">
+              <CardTitle className="text-sm sm:text-base">Geografische Verdeling</CardTitle>
               <CardDescription className="text-xs sm:text-sm">
                 Bezoekers per land
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-2 sm:space-y-3 px-3 sm:px-6">
+            <CardContent className="space-y-1.5 sm:space-y-2 px-3 sm:px-6 pb-3 sm:pb-6">
               {webAnalytics.countries.slice(0, 4).map((country) => (
-                <div key={country.country} className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-sm sm:text-base">{country.flag}</span>
+                <div key={country.country} className="flex items-center justify-between py-1">
+                  <div className="flex items-center space-x-2 min-w-0 flex-1">
+                    <span className="text-sm sm:text-base flex-shrink-0">{country.flag}</span>
                     <span className="font-medium text-xs sm:text-sm truncate">{country.country}</span>
                   </div>
-                  <div className="flex items-center space-x-1 flex-shrink-0">
-                    <span className="text-xs sm:text-sm font-medium">{country.visitors}</span>
-                    <MapPin className="h-2 w-2 sm:h-3 sm:w-3 text-muted-foreground" />
+                  <div className="flex items-center space-x-2 flex-shrink-0">
+                    <span className="text-xs sm:text-sm font-medium min-w-[20px] text-right">{country.visitors}</span>
+                    <MapPin className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
                   </div>
                 </div>
               ))}
@@ -532,17 +536,17 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
           </Card>
 
           {/* Device Breakdown */}
-          <Card className="sm:col-span-1 lg:col-span-1">
-            <CardHeader className="pb-2 sm:pb-4">
+          <Card>
+            <CardHeader className="pb-2 sm:pb-4 px-3 sm:px-6 pt-3 sm:pt-6">
               <CardTitle className="text-sm sm:text-base">Apparaten</CardTitle>
               <CardDescription className="text-xs sm:text-sm">
-                Per apparaattype
+                Verdeling per apparaattype
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-2 sm:space-y-3 px-3 sm:px-6">
+            <CardContent className="space-y-1.5 sm:space-y-2 px-3 sm:px-6 pb-3 sm:pb-6">
               {webAnalytics.devices.slice(0, 4).map((device) => (
-                <div key={device.device} className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
+                <div key={device.device} className="flex items-center justify-between py-1">
+                  <div className="flex items-center space-x-2 min-w-0 flex-1">
                     {device.device.includes('Mobile') ? (
                       <Smartphone className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0" />
                     ) : (
@@ -550,9 +554,9 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
                     )}
                     <span className="font-medium text-xs sm:text-sm truncate">{device.device}</span>
                   </div>
-                  <div className="flex items-center space-x-1 flex-shrink-0">
-                    <Badge variant="outline" className="text-[10px] sm:text-xs px-1 sm:px-2">{device.percentage}%</Badge>
-                    <span className="text-[10px] sm:text-xs text-muted-foreground">{device.visitors}</span>
+                  <div className="flex items-center space-x-2 flex-shrink-0">
+                    <Badge variant="outline" className="text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5">{device.percentage}%</Badge>
+                    <span className="text-xs sm:text-sm font-medium min-w-[20px] text-right">{device.visitors}</span>
                   </div>
                 </div>
               ))}
