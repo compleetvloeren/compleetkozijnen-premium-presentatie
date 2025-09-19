@@ -76,25 +76,77 @@ serve(async (req) => {
     }
 
     // Determine time range from POST body or query params
-    let timeRange = '7d';
+    let timeRange = 'vandaag';
+    let startDate: Date, endDate: Date;
+    
     try {
       if (req.method === 'POST') {
         const body = await req.json().catch(() => null);
         if (body && typeof body.timeRange === 'string') {
           timeRange = body.timeRange;
         }
+        
+        // Handle custom date ranges
+        if (body && body.startDate && body.endDate) {
+          startDate = new Date(body.startDate);
+          endDate = new Date(body.endDate);
+        } else {
+          // Calculate date range based on timeRange
+          endDate = new Date();
+          startDate = new Date();
+          
+          switch (timeRange) {
+            case 'vandaag':
+              startDate.setHours(0, 0, 0, 0); // Start of today
+              break;
+            case 'gisteren':
+              startDate.setDate(endDate.getDate() - 1);
+              startDate.setHours(0, 0, 0, 0);
+              endDate.setDate(endDate.getDate() - 1);
+              endDate.setHours(23, 59, 59, 999);
+              break;
+            case 'eergisteren':
+              startDate.setDate(endDate.getDate() - 2);
+              startDate.setHours(0, 0, 0, 0);
+              endDate.setDate(endDate.getDate() - 2);
+              endDate.setHours(23, 59, 59, 999);
+              break;
+            case '14d':
+              startDate.setDate(endDate.getDate() - 14);
+              break;
+            case '30d':
+              startDate.setDate(endDate.getDate() - 30);
+              break;
+            case '90d':
+              startDate.setDate(endDate.getDate() - 90);
+              break;
+            case '6m':
+              startDate.setMonth(endDate.getMonth() - 6);
+              break;
+            case '1y':
+              startDate.setFullYear(endDate.getFullYear() - 1);
+              break;
+            default: // 7d
+              startDate.setDate(endDate.getDate() - 7);
+          }
+        }
       } else if (req.method === 'GET') {
         const url = new URL(req.url);
-        timeRange = url.searchParams.get('timeRange') || '7d';
+        timeRange = url.searchParams.get('timeRange') || 'vandaag';
+        
+        endDate = new Date();
+        startDate = new Date();
+        const days = timeRange === '7d' ? 7 : timeRange === '30d' ? 30 : 90;
+        startDate.setDate(endDate.getDate() - days);
       }
-    } catch (_) {}
-    console.log('Fetching analytics for time range:', timeRange);
-
-    // Calculate date range
-    const endDate = new Date();
-    const startDate = new Date();
-    const days = timeRange === '7d' ? 7 : timeRange === '30d' ? 30 : 90;
-    startDate.setDate(endDate.getDate() - days);
+    } catch (_) {
+      // Fallback to today
+      endDate = new Date();
+      startDate = new Date();
+      startDate.setHours(0, 0, 0, 0);
+    }
+    
+    console.log('Fetching analytics for time range:', timeRange, 'from', startDate.toISOString(), 'to', endDate.toISOString());
 
     // Fetch real leads data for analytics
     const { data: leadsData, error: leadsError } = await supabase
@@ -198,11 +250,13 @@ serve(async (req) => {
       const estimatedVisitors = Math.max(leadCount * 150, 50);
       const estimatedPageviews = Math.floor(estimatedVisitors * 2.8);
       
-      // Create trend data based on actual leads and contacts
+      // Create trend data based on actual date range
       const trendData = [];
-      for (let i = days - 1; i >= 0; i--) {
-        const date = new Date();
-        date.setDate(date.getDate() - i);
+      const daysDiff = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+      
+      for (let i = 0; i < daysDiff; i++) {
+        const date = new Date(startDate);
+        date.setDate(startDate.getDate() + i);
         const dateStr = date.toISOString().split('T')[0];
         
         // Count actual leads and contacts for this day
@@ -215,7 +269,7 @@ serve(async (req) => {
         ).length || 0;
         
         // Estimate visitors based on activity (minimum baseline)
-        const dayVisitors = Math.max((dayLeads + dayContacts) * 50, Math.floor(estimatedVisitors / days));
+        const dayVisitors = Math.max((dayLeads + dayContacts) * 50, Math.floor(estimatedVisitors / Math.max(daysDiff, 1)));
         
         trendData.push({
           date: dateStr,

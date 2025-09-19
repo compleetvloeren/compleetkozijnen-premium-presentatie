@@ -83,7 +83,7 @@ const chartConfig = {
 };
 
 export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => {
-  const [timeRange, setTimeRange] = useState('7d');
+  const [timeRange, setTimeRange] = useState('vandaag');
   const [customDateRange, setCustomDateRange] = useState<{from: Date | undefined; to: Date | undefined}>({ from: undefined, to: undefined });
   const [showCustomRange, setShowCustomRange] = useState(false);
   const [webAnalytics, setWebAnalytics] = useState<WebAnalytics | null>(null);
@@ -98,7 +98,9 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
     }
     
     const labels: { [key: string]: string } = {
-      '1d': '1 dag',
+      'vandaag': 'Vandaag',
+      'gisteren': 'Gisteren', 
+      'eergisteren': 'Eergisteren',
       '7d': '7 dagen',
       '14d': '14 dagen', 
       '30d': '30 dagen',
@@ -121,10 +123,20 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
     
     const now = new Date();
     let startDate: Date;
+    let endDate: Date = now;
     
     switch (timeRange) {
-      case '1d':
-        startDate = subDays(now, 1);
+      case 'vandaag':
+        startDate = startOfDay(now);
+        endDate = now;
+        break;
+      case 'gisteren':
+        startDate = startOfDay(subDays(now, 1));
+        endDate = startOfDay(now);
+        break;
+      case 'eergisteren':
+        startDate = startOfDay(subDays(now, 2));
+        endDate = startOfDay(subDays(now, 1));
         break;
       case '14d':
         startDate = subDays(now, 14);
@@ -144,7 +156,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
     
     return {
       startDate: format(startDate, 'yyyy-MM-dd'),
-      endDate: format(now, 'yyyy-MM-dd')
+      endDate: format(endDate, 'yyyy-MM-dd')
     };
   };
 
@@ -401,7 +413,9 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="1d">1 dag</SelectItem>
+                <SelectItem value="vandaag">Vandaag</SelectItem>
+                <SelectItem value="gisteren">Gisteren</SelectItem>
+                <SelectItem value="eergisteren">Eergisteren</SelectItem>
                 <SelectItem value="7d">7 dagen</SelectItem>
                 <SelectItem value="14d">14 dagen</SelectItem>
                 <SelectItem value="30d">30 dagen</SelectItem>
