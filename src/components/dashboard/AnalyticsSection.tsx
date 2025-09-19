@@ -2,9 +2,12 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from '@/components/ui/chart';
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
-import { TrendingUp, TrendingDown, Users, Calendar, Target, Zap, Eye, Clock, Globe, Smartphone, Monitor, MapPin } from 'lucide-react';
+import { TrendingUp, TrendingDown, Users, Calendar, Target, Zap, Eye, Clock, Globe, Smartphone, Monitor, MapPin, RefreshCw } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 interface Lead {
   id: string;
@@ -37,6 +40,15 @@ interface WebAnalytics {
   countries: Array<{ country: string; visitors: number; flag: string }>;
   devices: Array<{ device: string; visitors: number; percentage: number }>;
   trend: Array<{ date: string; visitors: number; pageviews: number }>;
+  leadMetrics: {
+    totalLeads: number;
+    conversionRate: number;
+    newLeads: number;
+    inProgress: number;
+    converted: number;
+    totalContacts: number;
+  };
+  lastUpdated: string;
 }
 
 interface AnalyticsSectionProps {
@@ -70,65 +82,96 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
   const [timeRange, setTimeRange] = useState('7d');
   const [webAnalytics, setWebAnalytics] = useState<WebAnalytics | null>(null);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const { toast } = useToast();
+
+  const fetchAnalytics = async (isRefresh = false) => {
+    try {
+      if (isRefresh) {
+        setRefreshing(true);
+      } else {
+        setLoading(true);
+      }
+
+      console.log('Fetching analytics for time range:', timeRange);
+
+      const { data, error } = await supabase.functions.invoke('website-analytics', {
+        body: {},
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (error) {
+        console.error('Error fetching analytics:', error);
+        throw error;
+      }
+
+      console.log('Analytics data received:', data);
+      setWebAnalytics(data);
+
+      if (isRefresh) {
+        toast({
+          title: "Analytics bijgewerkt",
+          description: "De nieuwste gegevens zijn geladen.",
+        });
+      }
+    } catch (error) {
+      console.error('Failed to fetch analytics:', error);
+      toast({
+        title: "Fout bij laden analytics",
+        description: "Kon analytics niet laden. Probeer het opnieuw.",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
 
   useEffect(() => {
-    // Simulate web analytics data - in real implementation, this would come from your analytics service
-    const simulateWebAnalytics = (): WebAnalytics => {
-      const baseVisitors = timeRange === '7d' ? 180 : timeRange === '30d' ? 720 : 2160;
-      
-      return {
-        visitors: baseVisitors + Math.floor(Math.random() * 50),
-        pageviews: Math.floor((baseVisitors + Math.floor(Math.random() * 50)) * 2.8),
-        bounceRate: 28 + Math.floor(Math.random() * 15),
-        avgSessionDuration: 13 * 60 + 17 + Math.floor(Math.random() * 300), // in seconds
-        viewsPerVisit: 2.1 + Math.random() * 2,
-        sources: [
-          { source: 'Direct', visitors: Math.floor(baseVisitors * 0.45), percentage: 45 },
-          { source: 'Google Search', visitors: Math.floor(baseVisitors * 0.35), percentage: 35 },
-          { source: 'Social Media', visitors: Math.floor(baseVisitors * 0.12), percentage: 12 },
-          { source: 'Referrals', visitors: Math.floor(baseVisitors * 0.08), percentage: 8 },
-        ],
-        pages: [
-          { page: '/', visitors: Math.floor(baseVisitors * 0.28), percentage: 28 },
-          { page: '/producten', visitors: Math.floor(baseVisitors * 0.22), percentage: 22 },
-          { page: '/producten/gealan', visitors: Math.floor(baseVisitors * 0.18), percentage: 18 },
-          { page: '/offerte', visitors: Math.floor(baseVisitors * 0.15), percentage: 15 },
-          { page: '/over-ons', visitors: Math.floor(baseVisitors * 0.10), percentage: 10 },
-          { page: '/contact', visitors: Math.floor(baseVisitors * 0.07), percentage: 7 },
-        ],
-        countries: [
-          { country: 'Nederland', visitors: Math.floor(baseVisitors * 0.68), flag: '🇳🇱' },
-          { country: 'België', visitors: Math.floor(baseVisitors * 0.15), flag: '🇧🇪' },
-          { country: 'Duitsland', visitors: Math.floor(baseVisitors * 0.12), flag: '🇩🇪' },
-          { country: 'Overig', visitors: Math.floor(baseVisitors * 0.05), flag: '🌍' },
-        ],
-        devices: [
-          { device: 'Mobile - iOS', visitors: Math.floor(baseVisitors * 0.42), percentage: 42 },
-          { device: 'Desktop', visitors: Math.floor(baseVisitors * 0.35), percentage: 35 },
-          { device: 'Mobile - Android', visitors: Math.floor(baseVisitors * 0.18), percentage: 18 },
-          { device: 'Tablet', visitors: Math.floor(baseVisitors * 0.05), percentage: 5 },
-        ],
-        trend: Array.from({ length: timeRange === '7d' ? 7 : timeRange === '30d' ? 30 : 90 }, (_, i) => {
-          const date = new Date();
-          date.setDate(date.getDate() - (timeRange === '7d' ? 6 - i : timeRange === '30d' ? 29 - i : 89 - i));
-          const dailyVisitors = Math.floor(baseVisitors / (timeRange === '7d' ? 7 : timeRange === '30d' ? 30 : 90)) + Math.floor(Math.random() * 20);
-          
-          return {
-            date: date.toISOString().split('T')[0],
-            visitors: dailyVisitors,
-            pageviews: Math.floor(dailyVisitors * (2.5 + Math.random())),
-          };
-        }),
-      };
-    };
-
-    setLoading(true);
-    // Simulate API delay
-    setTimeout(() => {
-      setWebAnalytics(simulateWebAnalytics());
-      setLoading(false);
-    }, 500);
+    fetchAnalytics();
   }, [timeRange]);
+
+  // Set up real-time updates for leads and contacts
+  useEffect(() => {
+    const leadsChannel = supabase
+      .channel('leads-analytics')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'leads'
+        },
+        () => {
+          console.log('Leads changed, refreshing analytics');
+          fetchAnalytics(true);
+        }
+      )
+      .subscribe();
+
+    const contactsChannel = supabase
+      .channel('contacts-analytics')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'contact_submissions'
+        },
+        () => {
+          console.log('Contacts changed, refreshing analytics');
+          fetchAnalytics(true);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(leadsChannel);
+      supabase.removeChannel(contactsChannel);
+    };
+  }, []);
 
   const formatDuration = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -253,18 +296,32 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold">Website Analytics</h2>
-          <p className="text-muted-foreground">Overzicht van website prestaties en bezoekers</p>
+          <p className="text-muted-foreground">
+            Realtime overzicht van website prestaties • 
+            Laatste update: {webAnalytics?.lastUpdated ? new Date(webAnalytics.lastUpdated).toLocaleTimeString('nl-NL') : 'Onbekend'}
+          </p>
         </div>
-        <Select value={timeRange} onValueChange={setTimeRange}>
-          <SelectTrigger className="w-32">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="7d">7 dagen</SelectItem>
-            <SelectItem value="30d">30 dagen</SelectItem>
-            <SelectItem value="90d">90 dagen</SelectItem>
-          </SelectContent>
-        </Select>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => fetchAnalytics(true)}
+            disabled={refreshing}
+          >
+            <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''} mr-2`} />
+            {refreshing ? 'Laden...' : 'Vernieuwen'}
+          </Button>
+          <Select value={timeRange} onValueChange={setTimeRange}>
+            <SelectTrigger className="w-32">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="7d">7 dagen</SelectItem>
+              <SelectItem value="30d">30 dagen</SelectItem>
+              <SelectItem value="90d">90 dagen</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
       {/* Key Metrics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -326,9 +383,9 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
             <Target className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">{((leads.length / webAnalytics.visitors) * 100).toFixed(1)}%</div>
+            <div className="text-2xl font-bold text-red-600">{webAnalytics.leadMetrics.conversionRate.toFixed(1)}%</div>
             <p className="text-xs text-muted-foreground">
-              Bezoeker → Lead
+              {webAnalytics.leadMetrics.totalLeads} leads van {webAnalytics.visitors} bezoekers
             </p>
           </CardContent>
         </Card>
