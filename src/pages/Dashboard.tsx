@@ -436,16 +436,16 @@ const Dashboard: React.FC = () => {
       
       {/* Dashboard Header */}
       <header className="dashboard-header">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="container mx-auto px-4 py-4 sm:py-6">
+          <div className="flex flex-col gap-4">
             <div className="animate-fade-in-up">
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
+              <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
                 Dashboard
               </h1>
-              <p className="text-muted-foreground">Welkom terug, {user?.email}</p>
+              <p className="text-muted-foreground text-sm sm:text-base">Welkom terug, {user?.email}</p>
             </div>
             
-            <div className="flex items-center space-x-3">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
               {/* Notifications */}
               <div className="relative">
                 <Button
@@ -463,7 +463,7 @@ const Dashboard: React.FC = () => {
                 </Button>
                 
                 {showNotifications && (
-                  <div className="absolute right-0 top-full mt-2 w-80 z-50 animate-scale-in">
+                  <div className="absolute right-0 top-full mt-2 w-72 sm:w-80 z-50 animate-scale-in">
                     <div className="bg-white rounded-lg shadow-xl border border-border/50 p-4">
                       <NotificationCenter
                         notifications={notifications}
@@ -482,9 +482,10 @@ const Dashboard: React.FC = () => {
                 size="sm"
                 onClick={() => setShowExportOptions(!showExportOptions)}
                 disabled={filteredLeads.length === 0}
+                className="flex-shrink-0"
               >
-                <Download className="h-4 w-4 mr-2" />
-                Export
+                <Download className="h-4 w-4 sm:mr-2" />
+                <span className="hidden sm:inline">Export</span>
               </Button>
 
               {/* Refresh */}
@@ -493,21 +494,22 @@ const Dashboard: React.FC = () => {
                 size="sm"
                 onClick={handleRefresh}
                 disabled={refreshing}
+                className="flex-shrink-0"
               >
-                <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
-                {refreshing ? 'Laden...' : 'Verversen'}
+                <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''} sm:mr-2`} />
+                <span className="hidden sm:inline">{refreshing ? 'Laden...' : 'Verversen'}</span>
               </Button>
 
               {/* Logout */}
-              <Button variant="ghost" size="sm" onClick={signOut}>
-                Uitloggen
+              <Button variant="ghost" size="sm" onClick={signOut} className="flex-shrink-0">
+                <span className="text-sm">Uitloggen</span>
               </Button>
             </div>
           </div>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8 space-y-8">
+      <main className="container mx-auto px-4 py-4 sm:py-8 space-y-4 sm:space-y-8">
 
         {/* Export Options Popup */}
         {showExportOptions && (
@@ -547,14 +549,14 @@ const Dashboard: React.FC = () => {
         )}
 
         {/* Statistics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-4 sm:mb-8">
           <Card className="dashboard-stat-card">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Totaal Leads</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-xs sm:text-sm font-medium">Totaal Leads</CardTitle>
+              <Users className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-primary">{stats.totalLeads}</div>
+            <CardContent className="pb-3 sm:pb-6">
+              <div className="text-lg sm:text-2xl font-bold text-primary">{stats.totalLeads}</div>
               <p className="text-xs text-muted-foreground">
                 +{stats.recentLeads} deze week
               </p>
@@ -563,11 +565,11 @@ const Dashboard: React.FC = () => {
 
           <Card className="dashboard-stat-card">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Nieuwe Leads</CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-xs sm:text-sm font-medium">Nieuwe Leads</CardTitle>
+              <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-blue-600">{stats.newLeads}</div>
+            <CardContent className="pb-3 sm:pb-6">
+              <div className="text-lg sm:text-2xl font-bold text-blue-600">{stats.newLeads}</div>
               <p className="text-xs text-muted-foreground">
                 Nog niet behandeld
               </p>
@@ -576,11 +578,11 @@ const Dashboard: React.FC = () => {
 
           <Card className="dashboard-stat-card">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">In Behandeling</CardTitle>
-              <Clock className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-xs sm:text-sm font-medium">In Behandeling</CardTitle>
+              <Clock className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-amber-600">{stats.inProgress}</div>
+            <CardContent className="pb-3 sm:pb-6">
+              <div className="text-lg sm:text-2xl font-bold text-amber-600">{stats.inProgress}</div>
               <p className="text-xs text-muted-foreground">
                 Actieve projecten
               </p>
@@ -589,11 +591,11 @@ const Dashboard: React.FC = () => {
 
           <Card className="dashboard-stat-card">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Geconverteerd</CardTitle>
-              <Calendar className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-xs sm:text-sm font-medium">Geconverteerd</CardTitle>
+              <Calendar className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-green-600">{stats.converted}</div>
+            <CardContent className="pb-3 sm:pb-6">
+              <div className="text-lg sm:text-2xl font-bold text-green-600">{stats.converted}</div>
               <p className="text-xs text-muted-foreground">
                 Succesvol afgesloten
               </p>
@@ -601,47 +603,49 @@ const Dashboard: React.FC = () => {
           </Card>
         </div>
 
-        <Tabs defaultValue="leads" className="space-y-6">
-          <TabsList className="bg-white/60 backdrop-blur-sm border border-border/50">
-            <TabsTrigger value="leads" className="relative">
-              Leads ({stats.totalLeads})
+        <Tabs defaultValue="leads" className="space-y-4 sm:space-y-6">
+          <TabsList className="bg-white/60 backdrop-blur-sm border border-border/50 w-full sm:w-auto">
+            <TabsTrigger value="leads" className="relative text-xs sm:text-sm flex-1 sm:flex-none">
+              <span className="hidden sm:inline">Leads ({stats.totalLeads})</span>
+              <span className="sm:hidden">Leads</span>
               {stats.newLeads > 0 && (
-                <span className="ml-2 bg-primary text-primary-foreground text-xs px-2 py-0.5 rounded-full">
-                  {stats.newLeads} nieuw
+                <span className="ml-1 sm:ml-2 bg-primary text-primary-foreground text-xs px-1 sm:px-2 py-0.5 rounded-full">
+                  {stats.newLeads}
                 </span>
               )}
             </TabsTrigger>
-            <TabsTrigger value="contacts">
-              Contact Berichten ({stats.unreadContacts > 0 ? stats.unreadContacts : stats.totalContacts})
+            <TabsTrigger value="contacts" className="text-xs sm:text-sm flex-1 sm:flex-none">
+              <span className="hidden sm:inline">Contact Berichten ({stats.unreadContacts > 0 ? stats.unreadContacts : stats.totalContacts})</span>
+              <span className="sm:hidden">Contact</span>
               {stats.unreadContacts > 0 && (
-                <span className="ml-2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full">
+                <span className="ml-1 sm:ml-2 bg-orange-500 text-white text-xs px-1 sm:px-2 py-0.5 rounded-full">
                   {stats.unreadContacts}
                 </span>
               )}
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="leads" className="space-y-6">
+          <TabsContent value="leads" className="space-y-4 sm:space-y-6">
             <Card className="dashboard-card">
-              <CardHeader>
-                <div className="flex justify-between items-center">
+              <CardHeader className="pb-4">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
                   <div>
-                    <CardTitle className="flex items-center space-x-2">
-                      <BarChart3 className="h-5 w-5" />
+                    <CardTitle className="flex items-center space-x-2 text-lg sm:text-xl">
+                      <BarChart3 className="h-4 w-4 sm:h-5 sm:w-5" />
                       <span>Leads Overzicht</span>
                     </CardTitle>
-                    <CardDescription>
+                    <CardDescription className="text-sm">
                       Beheer en bekijk alle aanvragen voor offertes
                     </CardDescription>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Badge variant="secondary" className="bg-primary/10 text-primary">
+                    <Badge variant="secondary" className="bg-primary/10 text-primary text-xs">
                       {filteredLeads.length} zichtbaar
                     </Badge>
                   </div>
                 </div>
               </CardHeader>
-                <CardContent>
+                <CardContent className="px-4 sm:px-6">
                   <SearchAndFilters
                     searchTerm={searchTerm}
                     setSearchTerm={setSearchTerm}
@@ -659,7 +663,7 @@ const Dashboard: React.FC = () => {
               </Card>
 
               {filteredLeads.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
                   {filteredLeads.map((lead, index) => (
                     <div key={lead.id} className="animate-fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
                       <LeadCard
@@ -702,56 +706,57 @@ const Dashboard: React.FC = () => {
               </CardHeader>
               <CardContent>
                 {contacts.length > 0 ? (
-                  <div className="space-y-4">
-                    {contacts.map((contact) => (
-                      <div key={contact.id} className="flex items-center justify-between p-4 border rounded-lg">
-                        <div className="space-y-1">
-                          <div className="flex items-center space-x-2">
-                            <h4 className="font-medium">{contact.name}</h4>
-                            <Badge className={getStatusColor(contact.status)}>
-                              {contact.status}
-                            </Badge>
-                          </div>
-                          <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                            <div className="flex items-center space-x-1">
-                              <Mail className="h-3 w-3" />
-                              <span>{contact.email}</span>
-                            </div>
-                            {contact.phone && (
-                              <div className="flex items-center space-x-1">
-                                <Phone className="h-3 w-3" />
-                                <span>{contact.phone}</span>
-                              </div>
-                            )}
-                          </div>
-                          {contact.subject && (
-                            <p className="text-sm font-medium">{contact.subject}</p>
-                          )}
-                          <p className="text-sm text-muted-foreground line-clamp-2">{contact.message}</p>
-                          <p className="text-sm text-muted-foreground">
-                            {new Date(contact.created_at).toLocaleDateString('nl-NL')}
-                          </p>
-                        </div>
-                        <div className="flex space-x-2">
-                          <Button 
-                            variant="outline" 
-                            size="sm"
-                            onClick={() => handleViewContactDetails(contact)}
-                          >
-                            Bekijken
-                          </Button>
-                          <Button 
-                            variant="outline" 
-                            size="sm"
-                            onClick={() => handleDeleteContact(contact)}
-                            className="text-destructive hover:text-destructive"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                   <div className="space-y-4">
+                     {contacts.map((contact) => (
+                       <div key={contact.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 border rounded-lg gap-3">
+                         <div className="space-y-1 flex-1">
+                           <div className="flex flex-wrap items-center gap-2">
+                             <h4 className="font-medium text-sm sm:text-base">{contact.name}</h4>
+                             <Badge className={getStatusColor(contact.status)}>
+                               {contact.status}
+                             </Badge>
+                           </div>
+                           <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm text-muted-foreground">
+                             <div className="flex items-center space-x-1">
+                               <Mail className="h-3 w-3" />
+                               <span className="break-all">{contact.email}</span>
+                             </div>
+                             {contact.phone && (
+                               <div className="flex items-center space-x-1">
+                                 <Phone className="h-3 w-3" />
+                                 <span>{contact.phone}</span>
+                               </div>
+                             )}
+                           </div>
+                           {contact.subject && (
+                             <p className="text-sm font-medium">{contact.subject}</p>
+                           )}
+                           <p className="text-sm text-muted-foreground line-clamp-2">{contact.message}</p>
+                           <p className="text-sm text-muted-foreground">
+                             {new Date(contact.created_at).toLocaleDateString('nl-NL')}
+                           </p>
+                         </div>
+                         <div className="flex space-x-2 sm:flex-col sm:space-x-0 sm:space-y-2 lg:flex-row lg:space-y-0 lg:space-x-2">
+                           <Button 
+                             variant="outline" 
+                             size="sm"
+                             onClick={() => handleViewContactDetails(contact)}
+                             className="flex-1 sm:flex-none"
+                           >
+                             Bekijken
+                           </Button>
+                           <Button 
+                             variant="outline" 
+                             size="sm"
+                             onClick={() => handleDeleteContact(contact)}
+                             className="text-destructive hover:text-destructive flex-1 sm:flex-none"
+                           >
+                             <Trash2 className="h-4 w-4" />
+                           </Button>
+                         </div>
+                       </div>
+                     ))}
+                   </div>
                 ) : (
                   <div className="text-center py-8">
                     <Mail className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
