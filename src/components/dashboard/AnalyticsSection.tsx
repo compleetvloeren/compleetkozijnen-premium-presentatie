@@ -562,25 +562,45 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
             </CardDescription>
           </CardHeader>
           <CardContent className="px-2 sm:px-6 overflow-hidden">
-            <ChartContainer config={chartConfig} className="h-[250px] sm:h-[300px] w-full overflow-hidden">
-              <LineChart data={webAnalytics.trend} margin={{ top: 5, right: 10, left: 5, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" />
+            <ChartContainer 
+              config={{
+                visitors: {
+                  label: "Bezoekers",
+                  color: "hsl(var(--primary))",
+                },
+                pageviews: {
+                  label: "Paginaweergaven", 
+                  color: "hsl(var(--chart-2))",
+                }
+              }} 
+              className="h-[250px] sm:h-[300px] w-full overflow-hidden"
+            >
+              <LineChart 
+                data={webAnalytics.trend} 
+                margin={{ top: 5, right: 10, left: 5, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                 <XAxis 
                   dataKey="date"
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }}
                   tickFormatter={(value) => new Date(value).toLocaleDateString('nl-NL', { month: 'short', day: 'numeric' })}
-                  tick={{ fontSize: 10 }}
-                  interval="preserveStartEnd"
                 />
-                <YAxis tick={{ fontSize: 10 }} />
+                <YAxis 
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }}
+                />
                 <ChartTooltip 
-                  content={({ active, payload, label }) => {
-                    if (active && payload && payload.length) {
+                  content={({ label, payload }) => {
+                    if (payload && payload.length > 0) {
                       return (
-                        <div className="bg-background border rounded-lg p-2 sm:p-3 shadow-lg text-xs sm:text-sm">
-                          <p className="font-medium">{new Date(label).toLocaleDateString('nl-NL')}</p>
+                        <div className="rounded-lg border bg-background p-3 shadow-md">
+                          <p className="font-medium text-sm mb-1">{new Date(label).toLocaleDateString('nl-NL')}</p>
                           {payload.map((entry, index) => (
-                            <p key={index} className="text-xs" style={{ color: entry.color }}>
-                              {entry.name === 'visitors' ? 'Bezoekers' : 'Paginaweergaven'}: {entry.value}
+                            <p key={index} className="text-sm" style={{ color: entry.color }}>
+                              {entry.name === 'visitors' ? 'Bezoekers' : 'Paginaweergaven'}: <span className="font-semibold">{entry.value}</span>
                             </p>
                           ))}
                         </div>
@@ -593,17 +613,47 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
                   type="monotone" 
                   dataKey="visitors" 
                   stroke="hsl(var(--primary))" 
-                  strokeWidth={2}
-                  dot={{ fill: "hsl(var(--primary))", strokeWidth: 1, r: 3 }}
+                  strokeWidth={3}
+                  connectNulls={false}
+                  dot={{ 
+                    fill: "hsl(var(--primary))", 
+                    strokeWidth: 2, 
+                    r: 4,
+                    className: "animate-scale-in"
+                  }}
+                  activeDot={{ 
+                    r: 6, 
+                    stroke: "hsl(var(--primary))",
+                    strokeWidth: 2,
+                    fill: "hsl(var(--background))",
+                    className: "drop-shadow-lg animate-pulse"
+                  }}
                   name="visitors"
+                  animationDuration={1200}
+                  animationEasing="ease-in-out"
                 />
                 <Line 
                   type="monotone" 
                   dataKey="pageviews" 
                   stroke="hsl(var(--chart-2))" 
-                  strokeWidth={2}
-                  dot={{ fill: "hsl(var(--chart-2))", strokeWidth: 1, r: 3 }}
+                  strokeWidth={3}
+                  connectNulls={false}
+                  dot={{ 
+                    fill: "hsl(var(--chart-2))", 
+                    strokeWidth: 2, 
+                    r: 4,
+                    className: "animate-scale-in"
+                  }}
+                  activeDot={{ 
+                    r: 6, 
+                    stroke: "hsl(var(--chart-2))",
+                    strokeWidth: 2,
+                    fill: "hsl(var(--background))",
+                    className: "drop-shadow-lg animate-pulse"
+                  }}
                   name="pageviews"
+                  animationDuration={1400}
+                  animationEasing="ease-in-out"
                 />
               </LineChart>
             </ChartContainer>
