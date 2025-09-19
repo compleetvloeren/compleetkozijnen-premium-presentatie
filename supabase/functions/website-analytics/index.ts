@@ -102,18 +102,18 @@ serve(async (req) => {
               break;
             case 'gisteren':
               startDate = new Date(now);
-              startDate.setDate(now.getDate() - 1);
+              startDate.setDate(startDate.getDate() - 1);
               startDate.setHours(0, 0, 0, 0);
               endDate = new Date(now);
-              endDate.setDate(now.getDate() - 1);
+              endDate.setDate(endDate.getDate() - 1);
               endDate.setHours(23, 59, 59, 999);
               break;
             case 'eergisteren':
               startDate = new Date(now);
-              startDate.setDate(now.getDate() - 2);
+              startDate.setDate(startDate.getDate() - 2);
               startDate.setHours(0, 0, 0, 0);
               endDate = new Date(now);
-              endDate.setDate(now.getDate() - 2);
+              endDate.setDate(endDate.getDate() - 2);
               endDate.setHours(23, 59, 59, 999);
               break;
             case '14d':
