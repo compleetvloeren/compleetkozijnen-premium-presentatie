@@ -94,54 +94,68 @@ serve(async (req) => {
           // Calculate date range based on timeRange
           const now = new Date();
           
-          switch (timeRange) {
-            case 'today':
-              startDate = new Date(now);
-              startDate.setHours(0, 0, 0, 0);
-              endDate = new Date(now);
-              break;
-            case 'yesterday':
-              startDate = new Date(now);
-              startDate.setDate(startDate.getDate() - 1);
-              startDate.setHours(0, 0, 0, 0);
-              endDate = new Date(now);
-              endDate.setDate(endDate.getDate() - 1);
-              endDate.setHours(23, 59, 59, 999);
-              break;
-            case 'last24hours':
-              startDate = new Date(now);
-              startDate.setHours(startDate.getHours() - 24);
-              endDate = new Date(now);
-              break;
-            case 'last7days':
-              startDate = new Date(now);
-              startDate.setDate(now.getDate() - 7);
-              endDate = new Date(now);
-              break;
-            case 'last14days':
-              startDate = new Date(now);
-              startDate.setDate(now.getDate() - 14);
-              endDate = new Date(now);
-              break;
-            case 'last30days':
-              startDate = new Date(now);
-              startDate.setDate(now.getDate() - 30);
-              endDate = new Date(now);
-              break;
-            case 'last90days':
-              startDate = new Date(now);
-              startDate.setDate(now.getDate() - 90);
-              endDate = new Date(now);
-              break;
-            case 'thismonth':
-              startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-              endDate = new Date(now);
-              break;
-            default: // fallback to last 7 days
-              startDate = new Date(now);
-              startDate.setDate(now.getDate() - 7);
-              endDate = new Date(now);
-          }
+            switch (timeRange.toLowerCase()) {
+              case 'today':
+              case 'vandaag':
+                startDate = new Date(now);
+                startDate.setHours(0, 0, 0, 0);
+                endDate = new Date(now);
+                break;
+              case 'yesterday':
+              case 'gisteren':
+                startDate = new Date(now);
+                startDate.setDate(startDate.getDate() - 1);
+                startDate.setHours(0, 0, 0, 0);
+                endDate = new Date(now);
+                endDate.setDate(endDate.getDate() - 1);
+                endDate.setHours(23, 59, 59, 999);
+                break;
+              case 'last24hours':
+              case 'last_24_hours':
+              case 'laatste24uur':
+              case '24uur':
+                startDate = new Date(now);
+                startDate.setHours(startDate.getHours() - 24);
+                endDate = new Date(now);
+                break;
+              case 'last7days':
+              case 'laatste7dagen':
+              case '7d':
+                startDate = new Date(now);
+                startDate.setDate(now.getDate() - 7);
+                endDate = new Date(now);
+                break;
+              case 'last14days':
+              case 'laatste14dagen':
+              case '14d':
+                startDate = new Date(now);
+                startDate.setDate(now.getDate() - 14);
+                endDate = new Date(now);
+                break;
+              case 'last30days':
+              case 'laatste30dagen':
+              case '30d':
+                startDate = new Date(now);
+                startDate.setDate(now.getDate() - 30);
+                endDate = new Date(now);
+                break;
+              case 'last90days':
+              case 'laatste90dagen':
+              case '90d':
+                startDate = new Date(now);
+                startDate.setDate(now.getDate() - 90);
+                endDate = new Date(now);
+                break;
+              case 'thismonth':
+              case 'dezemaand':
+                startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+                endDate = new Date(now);
+                break;
+              default: // fallback to last 7 days
+                startDate = new Date(now);
+                startDate.setDate(now.getDate() - 7);
+                endDate = new Date(now);
+            }
         }
       } else if (req.method === 'GET') {
         const url = new URL(req.url);
@@ -202,8 +216,37 @@ serve(async (req) => {
     try {
       // Calculate granularity based on date range
       const granularity = daysDiff <= 1 ? 'hourly' : 'daily';
-      
-      const response = await fetch(`https://api.lovable.dev/v1/analytics/project/${Deno.env.get('SUPABASE_URL')?.split('//')[1]?.split('.')[0] || 'unknown'}`, {
+
+      // Determine Lovable Project ID from request headers (Origin / X-Forwarded-Host),
+      // fallback to optional env var LOVABLE_PROJECT_ID
+      const getLovableProjectId = (): string => {
+        const origin = req.headers.get('Origin') || req.headers.get('Referer') || '';
+        const candidates: string[] = [];
+        try {
+          if (origin) candidates.push(new URL(origin).host);
+        } catch (_) {
+          // ignore URL parse errors
+        }
+        const xfHost = req.headers.get('X-Forwarded-Host') || '';
+        const host = req.headers.get('Host') || '';
+        if (xfHost) candidates.push(xfHost);
+        if (host) candidates.push(host);
+
+        for (const c of candidates) {
+          if (c && c.endsWith('.lovableproject.com')) {
+            return c.split('.')[0];
+          }
+        }
+        return Deno.env.get('LOVABLE_PROJECT_ID') || '';
+      };
+
+      const lovableProjectId = getLovableProjectId();
+      if (!lovableProjectId) {
+        console.error('Lovable project id not found from headers or env');
+        throw new Error('Missing Lovable project id');
+      }
+
+      const response = await fetch(`https://api.lovable.dev/v1/analytics/project/${lovableProjectId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -212,7 +255,7 @@ serve(async (req) => {
         body: JSON.stringify({
           startdate: startDate.toISOString().split('T')[0],
           enddate: endDate.toISOString().split('T')[0],
-          granularity: granularity
+          granularity
         })
       });
 
