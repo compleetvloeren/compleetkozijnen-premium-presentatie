@@ -80,7 +80,7 @@ const chartConfig = {
 };
 
 export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => {
-  const [timeRange, setTimeRange] = useState('vandaag');
+  const [timeRange, setTimeRange] = useState('last7days');
   const [webAnalytics, setWebAnalytics] = useState<WebAnalytics | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -88,10 +88,14 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
 
   const getTimeRangeLabel = () => {
     const labels: { [key: string]: string } = {
-      'vandaag': 'Vandaag',
-      '7d': '7 dagen',
-      '30d': '30 dagen',
-      '90d': '90 dagen'
+      'today': 'Today',
+      'yesterday': 'Yesterday',
+      'last24hours': 'Last 24 hours',
+      'last7days': 'Last 7 days',
+      'last14days': 'Last 14 days',
+      'last30days': 'Last 30 days',
+      'last90days': 'Last 90 days',
+      'thismonth': 'This month'
     };
     
     return labels[timeRange] || timeRange;
@@ -104,18 +108,33 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
     let endDate: Date = now;
     
     switch (timeRange) {
-      case 'vandaag':
+      case 'today':
         startDate = startOfDay(now);
         endDate = now;
         break;
-      case '7d':
+      case 'yesterday':
+        startDate = startOfDay(subDays(now, 1));
+        endDate = startOfDay(now);
+        break;
+      case 'last24hours':
+        startDate = subDays(now, 1);
+        endDate = now;
+        break;
+      case 'last7days':
         startDate = subDays(now, 7);
         break;
-      case '30d':
+      case 'last14days':
+        startDate = subDays(now, 14);
+        break;
+      case 'last30days':
         startDate = subDays(now, 30);
         break;
-      case '90d':
+      case 'last90days':
         startDate = subDays(now, 90);
+        break;
+      case 'thismonth':
+        startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+        endDate = now;
         break;
       default:
         startDate = subDays(now, 7);
@@ -372,10 +391,14 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="vandaag">Vandaag</SelectItem>
-                <SelectItem value="7d">7 dagen</SelectItem>
-                <SelectItem value="30d">30 dagen</SelectItem>
-                <SelectItem value="90d">90 dagen</SelectItem>
+                <SelectItem value="today">Today</SelectItem>
+                <SelectItem value="yesterday">Yesterday</SelectItem>
+                <SelectItem value="last24hours">Last 24 hours</SelectItem>
+                <SelectItem value="last7days">Last 7 days</SelectItem>
+                <SelectItem value="last14days">Last 14 days</SelectItem>
+                <SelectItem value="last30days">Last 30 days</SelectItem>
+                <SelectItem value="last90days">Last 90 days</SelectItem>
+                <SelectItem value="thismonth">This month</SelectItem>
               </SelectContent>
             </Select>
           </div>

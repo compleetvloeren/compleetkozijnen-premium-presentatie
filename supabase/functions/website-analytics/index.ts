@@ -95,12 +95,12 @@ serve(async (req) => {
           const now = new Date();
           
           switch (timeRange) {
-            case 'vandaag':
+            case 'today':
               startDate = new Date(now);
-              startDate.setHours(0, 0, 0, 0); // Start of today
-              endDate = new Date(now); // End is now (current time)
+              startDate.setHours(0, 0, 0, 0);
+              endDate = new Date(now);
               break;
-            case 'gisteren':
+            case 'yesterday':
               startDate = new Date(now);
               startDate.setDate(startDate.getDate() - 1);
               startDate.setHours(0, 0, 0, 0);
@@ -108,47 +108,38 @@ serve(async (req) => {
               endDate.setDate(endDate.getDate() - 1);
               endDate.setHours(23, 59, 59, 999);
               break;
-            case 'eergisteren':
+            case 'last24hours':
               startDate = new Date(now);
-              startDate.setDate(startDate.getDate() - 2);
-              startDate.setHours(0, 0, 0, 0);
-              endDate = new Date(now);
-              endDate.setDate(endDate.getDate() - 2);
-              endDate.setHours(23, 59, 59, 999);
-              break;
-            case '14d':
-              startDate = new Date(now);
-              startDate.setDate(now.getDate() - 14);
+              startDate.setHours(startDate.getHours() - 24);
               endDate = new Date(now);
               break;
-            case '30d':
-              startDate = new Date(now);
-              startDate.setDate(now.getDate() - 30);
-              endDate = new Date(now);
-              break;
-            case '90d':
-              startDate = new Date(now);
-              startDate.setDate(now.getDate() - 90);
-              endDate = new Date(now);
-              break;
-            case '6m':
-              startDate = new Date(now);
-              startDate.setMonth(now.getMonth() - 6);
-              endDate = new Date(now);
-              break;
-            case '1y':
-              startDate = new Date(now);
-              startDate.setFullYear(now.getFullYear() - 1);
-              endDate = new Date(now);
-              break;
-            case '7d':
+            case 'last7days':
               startDate = new Date(now);
               startDate.setDate(now.getDate() - 7);
               endDate = new Date(now);
               break;
-            default: // fallback to today
+            case 'last14days':
               startDate = new Date(now);
-              startDate.setHours(0, 0, 0, 0);
+              startDate.setDate(now.getDate() - 14);
+              endDate = new Date(now);
+              break;
+            case 'last30days':
+              startDate = new Date(now);
+              startDate.setDate(now.getDate() - 30);
+              endDate = new Date(now);
+              break;
+            case 'last90days':
+              startDate = new Date(now);
+              startDate.setDate(now.getDate() - 90);
+              endDate = new Date(now);
+              break;
+            case 'thismonth':
+              startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+              endDate = new Date(now);
+              break;
+            default: // fallback to last 7 days
+              startDate = new Date(now);
+              startDate.setDate(now.getDate() - 7);
               endDate = new Date(now);
           }
         }
