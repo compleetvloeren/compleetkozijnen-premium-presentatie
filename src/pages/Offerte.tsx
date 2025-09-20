@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useAnalytics } from '@/components/AnalyticsProvider';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -18,6 +19,8 @@ import { AddressSearch } from '@/components/AddressSearch';
 
 const Offerte = () => {
   const { toast } = useToast();
+  const { trackFormConversion } = useAnalytics();
+  const [formStartTime] = useState(Date.now());
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({

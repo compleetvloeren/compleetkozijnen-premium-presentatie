@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useAnalytics } from '@/components/AnalyticsProvider';
 import { Mail, Phone, MapPin, Clock, MessageCircle, Calendar, Loader2 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -16,6 +17,8 @@ import { validateEmail, validateDutchPhone, validateName } from '@/lib/formValid
 
 const Contact = () => {
   const { toast } = useToast();
+  const { trackFormConversion } = useAnalytics();
+  const [formStartTime] = useState(Date.now());
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({

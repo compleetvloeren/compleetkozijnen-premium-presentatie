@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLeadTracking } from '@/hooks/useLeadTracking';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -73,6 +74,7 @@ interface ContactSubmission {
 
 const Dashboard: React.FC = () => {
   const { user, signOut } = useAuth();
+  useLeadTracking(); // Enable real-time tracking
   const { toast } = useToast();
   const { notifications, unreadCount, addNotification, markAsRead, markAllAsRead, dismissNotification } = useNotifications();
   const { simulateExportComplete, simulateSystemError } = useLeadNotifications();

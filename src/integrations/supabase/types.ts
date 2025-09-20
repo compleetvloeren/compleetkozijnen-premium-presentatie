@@ -14,6 +14,47 @@ export type Database = {
   }
   public: {
     Tables: {
+      contact_events: {
+        Row: {
+          contact_id: string | null
+          created_at: string
+          created_by: string | null
+          event_type: string
+          id: string
+          metadata: Json | null
+          new_value: string | null
+          old_value: string | null
+        }
+        Insert: {
+          contact_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          event_type: string
+          id?: string
+          metadata?: Json | null
+          new_value?: string | null
+          old_value?: string | null
+        }
+        Update: {
+          contact_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          event_type?: string
+          id?: string
+          metadata?: Json | null
+          new_value?: string | null
+          old_value?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contact_events_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contact_submissions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contact_submissions: {
         Row: {
           assigned_to: string | null
@@ -61,6 +102,80 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      form_conversions: {
+        Row: {
+          abandonment_step: string | null
+          conversion_funnel: Json | null
+          created_at: string
+          form_type: string
+          id: string
+          page_path: string
+          session_id: string
+          time_to_convert: number | null
+        }
+        Insert: {
+          abandonment_step?: string | null
+          conversion_funnel?: Json | null
+          created_at?: string
+          form_type: string
+          id?: string
+          page_path: string
+          session_id: string
+          time_to_convert?: number | null
+        }
+        Update: {
+          abandonment_step?: string | null
+          conversion_funnel?: Json | null
+          created_at?: string
+          form_type?: string
+          id?: string
+          page_path?: string
+          session_id?: string
+          time_to_convert?: number | null
+        }
+        Relationships: []
+      }
+      lead_events: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          event_type: string
+          id: string
+          lead_id: string | null
+          metadata: Json | null
+          new_value: string | null
+          old_value: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          event_type: string
+          id?: string
+          lead_id?: string | null
+          metadata?: Json | null
+          new_value?: string | null
+          old_value?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          event_type?: string
+          id?: string
+          lead_id?: string | null
+          metadata?: Json | null
+          new_value?: string | null
+          old_value?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lead_events_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -138,6 +253,48 @@ export type Database = {
           },
         ]
       }
+      page_performance: {
+        Row: {
+          created_at: string
+          cumulative_layout_shift: number | null
+          dom_content_loaded: number | null
+          first_contentful_paint: number | null
+          first_input_delay: number | null
+          id: string
+          largest_contentful_paint: number | null
+          load_time: number | null
+          page_path: string
+          session_id: string
+          total_blocking_time: number | null
+        }
+        Insert: {
+          created_at?: string
+          cumulative_layout_shift?: number | null
+          dom_content_loaded?: number | null
+          first_contentful_paint?: number | null
+          first_input_delay?: number | null
+          id?: string
+          largest_contentful_paint?: number | null
+          load_time?: number | null
+          page_path: string
+          session_id: string
+          total_blocking_time?: number | null
+        }
+        Update: {
+          created_at?: string
+          cumulative_layout_shift?: number | null
+          dom_content_loaded?: number | null
+          first_contentful_paint?: number | null
+          first_input_delay?: number | null
+          id?: string
+          largest_contentful_paint?: number | null
+          load_time?: number | null
+          page_path?: string
+          session_id?: string
+          total_blocking_time?: number | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -165,6 +322,105 @@ export type Database = {
           updated_at?: string
           user_id?: string
           username?: string
+        }
+        Relationships: []
+      }
+      website_analytics: {
+        Row: {
+          browser: string | null
+          city: string | null
+          country_code: string | null
+          created_at: string
+          device_type: string | null
+          entry_page: boolean | null
+          exit_page: boolean | null
+          id: string
+          ip_address: unknown | null
+          is_bounce: boolean | null
+          is_desktop: boolean | null
+          is_mobile: boolean | null
+          is_tablet: boolean | null
+          os: string | null
+          page_path: string
+          page_title: string | null
+          page_views_in_session: number | null
+          referrer: string | null
+          screen_resolution: string | null
+          session_duration: number | null
+          session_id: string
+          updated_at: string
+          user_agent: string | null
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
+          viewport_size: string | null
+          visitor_id: string
+        }
+        Insert: {
+          browser?: string | null
+          city?: string | null
+          country_code?: string | null
+          created_at?: string
+          device_type?: string | null
+          entry_page?: boolean | null
+          exit_page?: boolean | null
+          id?: string
+          ip_address?: unknown | null
+          is_bounce?: boolean | null
+          is_desktop?: boolean | null
+          is_mobile?: boolean | null
+          is_tablet?: boolean | null
+          os?: string | null
+          page_path: string
+          page_title?: string | null
+          page_views_in_session?: number | null
+          referrer?: string | null
+          screen_resolution?: string | null
+          session_duration?: number | null
+          session_id: string
+          updated_at?: string
+          user_agent?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+          viewport_size?: string | null
+          visitor_id: string
+        }
+        Update: {
+          browser?: string | null
+          city?: string | null
+          country_code?: string | null
+          created_at?: string
+          device_type?: string | null
+          entry_page?: boolean | null
+          exit_page?: boolean | null
+          id?: string
+          ip_address?: unknown | null
+          is_bounce?: boolean | null
+          is_desktop?: boolean | null
+          is_mobile?: boolean | null
+          is_tablet?: boolean | null
+          os?: string | null
+          page_path?: string
+          page_title?: string | null
+          page_views_in_session?: number | null
+          referrer?: string | null
+          screen_resolution?: string | null
+          session_duration?: number | null
+          session_id?: string
+          updated_at?: string
+          user_agent?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+          viewport_size?: string | null
+          visitor_id?: string
         }
         Relationships: []
       }
