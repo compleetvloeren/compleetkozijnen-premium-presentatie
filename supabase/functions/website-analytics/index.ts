@@ -204,115 +204,126 @@ serve(async (req) => {
       console.error('Error fetching contacts:', contactsError);
     }
 
-    // Use fallback analytics since real API integration requires specific setup
+    // Fetch real analytics from Lovable Analytics API
     let realAnalytics: AnalyticsData | null = null;
-    console.log('Using fallback analytics data for demo purposes');
+    console.log('Fetching real analytics from Lovable API');
 
-    // Generate realistic analytics data based on time range
-    const generateAnalyticsData = (startDate: Date, endDate: Date, timeRange: string) => {
-      const daysDiff = Math.max(1, Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)));
-      console.log('Generating analytics for', daysDiff, 'days');
+    try {
+      // Calculate granularity based on date range
+      const granularity = daysDiff <= 1 ? 'hourly' : 'daily';
       
-      // Base daily averages (realistic for a local business website)
-      let baseDailyVisitors = 8;
-      let baseDailyPageviews = 25;
-      
-      // Adjust for time period (longer periods tend to have lower daily averages due to seasonality)
-      if (daysDiff > 90) {
-        baseDailyVisitors = 6;
-        baseDailyPageviews = 18;
-      } else if (daysDiff > 30) {
-        baseDailyVisitors = 7;
-        baseDailyPageviews = 22;
+      const response = await fetch(`https://api.lovable.dev/v1/analytics/project/${Deno.env.get('SUPABASE_URL')?.split('//')[1]?.split('.')[0] || 'unknown'}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': authHeader,
+        },
+        body: JSON.stringify({
+          startdate: startDate.toISOString().split('T')[0],
+          enddate: endDate.toISOString().split('T')[0],
+          granularity: granularity
+        })
+      });
+
+      if (!response.ok) {
+        console.error('Lovable Analytics API failed:', response.status, response.statusText);
+        throw new Error(`Analytics API failed: ${response.status}`);
       }
-      
-      const totalVisitors = Math.round(baseDailyVisitors * daysDiff * (0.8 + Math.random() * 0.4));
-      const totalPageviews = Math.round(baseDailyPageviews * daysDiff * (0.8 + Math.random() * 0.4));
-      
-      // Generate trend data
+
+      const analyticsData = await response.json();
+      console.log('Raw analytics data:', JSON.stringify(analyticsData));
+
+      if (!analyticsData || !analyticsData.summary) {
+        throw new Error('Invalid analytics data structure');
+      }
+
+      const summary = analyticsData.summary;
+      const breakdown = analyticsData.breakdown || {};
+
+      // Extract trend data
       const trendData = [];
-      const currentDate = new Date(startDate);
-      
-      while (currentDate <= endDate) {
-        const dateStr = currentDate.toISOString().split('T')[0];
-        
-        // Simulate realistic daily variation (weekends lower, some random variation)
-        const dayOfWeek = currentDate.getDay();
-        let dayMultiplier = 1.0;
-        
-        // Weekend effect (Saturday = 6, Sunday = 0)
-        if (dayOfWeek === 0 || dayOfWeek === 6) {
-          dayMultiplier = 0.4 + Math.random() * 0.3; // 40-70% of weekday traffic
-        } else {
-          dayMultiplier = 0.7 + Math.random() * 0.6; // 70-130% variation
-        }
-        
-        const dailyVisitors = Math.round(baseDailyVisitors * dayMultiplier);
-        const dailyPageviews = Math.round(dailyVisitors * (2.8 + Math.random() * 1.4)); // 2.8-4.2 pages per visitor
-        
-        trendData.push({
-          date: dateStr,
-          visitors: dailyVisitors,
-          pageviews: dailyPageviews,
+      if (summary.visitors && summary.visitors.data) {
+        summary.visitors.data.forEach((item: any) => {
+          const pageviewItem = summary.pageviews?.data?.find((p: any) => p.date === item.date);
+          trendData.push({
+            date: item.date,
+            visitors: item.value || 0,
+            pageviews: pageviewItem?.value || 0
+          });
         });
-        
-        currentDate.setDate(currentDate.getDate() + 1);
       }
-      
-      // Calculate metrics
-      const bounceRate = Math.round(25 + Math.random() * 20); // 25-45%
-      const avgSessionDuration = Math.round(180 + Math.random() * 240); // 3-7 minutes
-      const viewsPerVisit = totalVisitors > 0 ? parseFloat((totalPageviews / totalVisitors).toFixed(1)) : 0;
-      
-      // Generate traffic sources (realistic distribution for a local business)
-      const sources = [
-        { source: 'Direct', visitors: Math.round(totalVisitors * 0.45), percentage: 45 },
-        { source: 'Google', visitors: Math.round(totalVisitors * 0.35), percentage: 35 },
-        { source: 'Social Media', visitors: Math.round(totalVisitors * 0.12), percentage: 12 },
-        { source: 'Referrals', visitors: Math.round(totalVisitors * 0.08), percentage: 8 }
-      ];
-      
-      // Generate top pages
-      const pages = [
-        { page: '/', visitors: Math.round(totalVisitors * 0.35), percentage: 35 },
-        { page: '/producten', visitors: Math.round(totalVisitors * 0.25), percentage: 25 },
-        { page: '/offerte', visitors: Math.round(totalVisitors * 0.18), percentage: 18 },
-        { page: '/contact', visitors: Math.round(totalVisitors * 0.12), percentage: 12 },
-        { page: '/over-ons', visitors: Math.round(totalVisitors * 0.10), percentage: 10 }
-      ];
-      
-      // Generate countries (Netherlands-focused)
-      const countries = [
-        { country: 'Nederland', visitors: Math.round(totalVisitors * 0.85), flag: '🇳🇱' },
-        { country: 'België', visitors: Math.round(totalVisitors * 0.10), flag: '🇧🇪' },
-        { country: 'Duitsland', visitors: Math.round(totalVisitors * 0.05), flag: '🇩🇪' }
-      ];
-      
-      // Generate devices (modern distribution)
-      const devices = [
-        { device: 'Desktop', visitors: Math.round(totalVisitors * 0.52), percentage: 52 },
-        { device: 'Mobile - iOS', visitors: Math.round(totalVisitors * 0.28), percentage: 28 },
-        { device: 'Mobile - Android', visitors: Math.round(totalVisitors * 0.15), percentage: 15 },
-        { device: 'Tablet', visitors: Math.round(totalVisitors * 0.05), percentage: 5 }
-      ];
-      
-      return {
-        visitors: totalVisitors,
-        pageviews: totalPageviews,
-        bounceRate,
-        avgSessionDuration,
-        viewsPerVisit,
-        sources,
-        pages,
-        countries,
-        devices,
+
+      // Process breakdown data
+      const processBreakdown = (breakdownArray: any[], type: 'source' | 'page' | 'device' | 'country') => {
+        if (!breakdownArray || !Array.isArray(breakdownArray)) return [];
+        
+        const totalVisitors = summary.visitors?.total || 1;
+        return breakdownArray.map((item: any) => {
+          const result: any = {
+            [type]: item.value || item.name || 'Unknown',
+            visitors: item.count || 0
+          };
+          
+          if (type !== 'country') {
+            result.percentage = Math.round((result.visitors / totalVisitors) * 100);
+          }
+          
+          if (type === 'country') {
+            // Map country codes to flags
+            const countryFlags: Record<string, string> = {
+              'NL': '🇳🇱',
+              'BE': '🇧🇪', 
+              'DE': '🇩🇪',
+              'FR': '🇫🇷',
+              'US': '🇺🇸',
+              'GB': '🇬🇧'
+            };
+            result.flag = countryFlags[result.country] || '🌍';
+          }
+          
+          return result;
+        }).sort((a: any, b: any) => b.visitors - a.visitors);
+      };
+
+      realAnalytics = {
+        visitors: summary.visitors?.total || 0,
+        pageviews: summary.pageviews?.total || 0,
+        bounceRate: Math.round(summary.bounceRate?.total || 0),
+        avgSessionDuration: Math.round(summary.sessionDuration?.total || 0),
+        viewsPerVisit: parseFloat((summary.pageviewsPerVisit?.total || 0).toFixed(1)),
+        sources: processBreakdown(breakdown.source, 'source'),
+        pages: processBreakdown(breakdown.page, 'page'),
+        countries: processBreakdown(breakdown.country, 'country'),
+        devices: processBreakdown(breakdown.device, 'device'),
         trend: trendData
       };
-    };
 
-    // Generate analytics data based on the time range
-    realAnalytics = generateAnalyticsData(startDate, endDate, timeRange);
-    console.log('Generated analytics data - Visitors:', realAnalytics.visitors, 'Pageviews:', realAnalytics.pageviews, 'for range:', timeRange);
+      console.log('Processed analytics - Visitors:', realAnalytics.visitors, 'Pageviews:', realAnalytics.pageviews);
+
+    } catch (error) {
+      console.error('Error fetching real analytics:', error);
+      
+      // Return error instead of fallback data
+      return new Response(JSON.stringify({ 
+        error: 'Analytics data unavailable',
+        message: 'Unable to fetch real analytics data from Lovable API',
+        details: error.message
+      }), {
+        status: 503,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Ensure we have valid analytics data
+    if (!realAnalytics) {
+      return new Response(JSON.stringify({ 
+        error: 'No analytics data',
+        message: 'Analytics data is not available for the selected time period'
+      }), {
+        status: 404,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
 
     // Real analytics data is now always available above
 
