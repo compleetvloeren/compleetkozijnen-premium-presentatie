@@ -72,6 +72,7 @@ export const SearchAndFilters: React.FC<SearchAndFiltersProps> = ({
             <SelectItem value="ramen">Ramen</SelectItem>
             <SelectItem value="deuren">Deuren</SelectItem>
             <SelectItem value="schuifdeuren">Schuifdeuren</SelectItem>
+            <SelectItem value="kozijnen">Kozijnen</SelectItem>
             <SelectItem value="renovatie">Renovatie</SelectItem>
             <SelectItem value="nieuwbouw">Nieuwbouw</SelectItem>
           </SelectContent>
@@ -83,10 +84,11 @@ export const SearchAndFilters: React.FC<SearchAndFiltersProps> = ({
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Alle budgetten</SelectItem>
-            <SelectItem value="tot_5k">&lt; €5k</SelectItem>
-            <SelectItem value="5k_15k">€5k - €15k</SelectItem>
-            <SelectItem value="15k_30k">€15k - €30k</SelectItem>
-            <SelectItem value="boven_30k">&gt; €30k</SelectItem>
+            <SelectItem value="onbekend">Onbekend</SelectItem>
+            <SelectItem value="5000-10000">€5.000 - €10.000</SelectItem>
+            <SelectItem value="10000-25000">€10.000 - €25.000</SelectItem>
+            <SelectItem value="25000-50000">€25.000 - €50.000</SelectItem>
+            <SelectItem value="50000+">€50.000+</SelectItem>
           </SelectContent>
         </Select>
 
