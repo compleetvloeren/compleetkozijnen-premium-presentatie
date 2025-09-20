@@ -193,7 +193,7 @@ const Contact = () => {
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="h-5 w-5 text-primary" />
-                <span>Heel Zuid-Nederland</span>
+                <span>Heel Nederland</span>
               </div>
             </div>
           </div>
