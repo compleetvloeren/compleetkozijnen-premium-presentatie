@@ -169,6 +169,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const { error } = await supabase.auth.signOut();
     if (error) {
       console.error('Error signing out:', error);
+    } else {
+      // Immediately update local state for responsive UI
+      setUser(null);
+      setSession(null);
+      setIsAdmin(false);
     }
   };
 

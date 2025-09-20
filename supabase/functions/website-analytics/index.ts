@@ -199,52 +199,9 @@ serve(async (req) => {
       console.error('Error fetching contacts:', contactsError);
     }
 
-    // Fetch real analytics from Lovable's analytics API
+    // Use fallback analytics since real API integration requires specific setup
     let realAnalytics: AnalyticsData | null = null;
-    
-    console.log('Fetching real analytics data from Lovable for project');
-    
-    try {
-      // Use the analytics API to fetch real project data
-      const analyticsApiUrl = 'https://api.lovable.dev/v1/analytics';
-      const projectId = '8147cac1-8bd3-4bff-8528-d23620246e24'; // Current project ID
-      
-      const response = await fetch(`${analyticsApiUrl}/${projectId}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': authHeader, // Pass through the user's auth
-        },
-        body: JSON.stringify({
-          startDate: startDate.toISOString(),
-          endDate: endDate.toISOString(),
-          granularity: daysDiff <= 1 ? 'hourly' : 'daily'
-        })
-      });
-
-      if (response.ok) {
-        const lovableAnalytics = await response.json();
-        console.log('Successfully fetched Lovable analytics:', lovableAnalytics);
-        
-        // Transform Lovable analytics to our format
-        realAnalytics = {
-          visitors: lovableAnalytics.total_visitors || 0,
-          pageviews: lovableAnalytics.total_pageviews || 0,
-          bounceRate: lovableAnalytics.bounce_rate || 0,
-          avgSessionDuration: lovableAnalytics.avg_session_duration || 0,
-          viewsPerVisit: lovableAnalytics.views_per_visit || 0,
-          sources: lovableAnalytics.sources || [],
-          pages: lovableAnalytics.pages || [],
-          countries: lovableAnalytics.countries || [],
-          devices: lovableAnalytics.devices || [],
-          trend: lovableAnalytics.trend || [],
-        };
-      } else {
-        console.warn('Lovable analytics API failed, falling back to local data:', response.status);
-      }
-    } catch (error) {
-      console.warn('Error fetching Lovable analytics, falling back to local data:', error);
-    }
+    console.log('Using fallback analytics data for demo purposes');
 
     // Fallback to mock data if API fails or returns no data
     let realAnalyticsData: Record<string, any> = {};

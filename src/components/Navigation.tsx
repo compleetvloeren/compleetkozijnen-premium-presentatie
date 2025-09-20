@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
 import logo from '@/assets/compleet-kozijnen-logo.png';
+import { LoginDialog } from '@/components/LoginDialog';
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -48,8 +49,9 @@ const Navigation = () => {
             ))}
           </div>
 
-          {/* CTA Button */}
-          <div className="hidden md:flex">
+          {/* CTA Button and Login */}
+          <div className="hidden md:flex items-center space-x-4">
+            <LoginDialog />
             <Link to="/offerte">
               <Button className="btn-hero text-sm">
                 Gratis Offerte
@@ -90,7 +92,10 @@ const Navigation = () => {
                   {item.name}
                 </Link>
               ))}
-              <div className="pt-4 border-t border-border/20">
+              <div className="pt-4 border-t border-border/20 space-y-3">
+                <div className="flex justify-center">
+                  <LoginDialog />
+                </div>
                 <Link to="/offerte" onClick={() => setIsMenuOpen(false)}>
                   <Button className="btn-hero w-full text-base py-4 rounded-2xl hover:scale-[1.02] transition-transform">
                     Gratis Offerte
