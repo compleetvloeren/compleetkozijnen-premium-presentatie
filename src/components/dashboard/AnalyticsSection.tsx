@@ -80,7 +80,7 @@ const chartConfig = {
 };
 
 export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => {
-  const [timeRange, setTimeRange] = useState('today');
+  const [timeRange, setTimeRange] = useState('last7days');
   const [webAnalytics, setWebAnalytics] = useState<WebAnalytics | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -88,7 +88,14 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
 
   const getTimeRangeLabel = () => {
     const labels: { [key: string]: string } = {
-      'today': 'Vandaag'
+      'today': 'Today',
+      'yesterday': 'Yesterday',
+      'last24hours': 'Last 24 hours',
+      'last7days': 'Last 7 days',
+      'last14days': 'Last 14 days',
+      'last30days': 'Last 30 days',
+      'last90days': 'Last 90 days',
+      'thismonth': 'This month'
     };
     
     return labels[timeRange] || timeRange;
@@ -384,7 +391,14 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="today">Vandaag</SelectItem>
+                <SelectItem value="today">Today</SelectItem>
+                <SelectItem value="yesterday">Yesterday</SelectItem>
+                <SelectItem value="last24hours">Last 24 hours</SelectItem>
+                <SelectItem value="last7days">Last 7 days</SelectItem>
+                <SelectItem value="last14days">Last 14 days</SelectItem>
+                <SelectItem value="last30days">Last 30 days</SelectItem>
+                <SelectItem value="last90days">Last 90 days</SelectItem>
+                <SelectItem value="thismonth">This month</SelectItem>
               </SelectContent>
             </Select>
           </div>
