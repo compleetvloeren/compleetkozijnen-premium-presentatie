@@ -138,8 +138,14 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
         startDate = startOfDay(subDays(now, 2));
         endDate = startOfDay(subDays(now, 1));
         break;
+      case '7d':
+        startDate = subDays(now, 7);
+        break;
       case '14d':
         startDate = subDays(now, 14);
+        break;
+      case '30d':
+        startDate = subDays(now, 30);
         break;
       case '90d':
         startDate = subDays(now, 90);

@@ -141,9 +141,14 @@ serve(async (req) => {
               startDate.setFullYear(now.getFullYear() - 1);
               endDate = new Date(now);
               break;
-            default: // 7d
+            case '7d':
               startDate = new Date(now);
               startDate.setDate(now.getDate() - 7);
+              endDate = new Date(now);
+              break;
+            default: // fallback to today
+              startDate = new Date(now);
+              startDate.setHours(0, 0, 0, 0);
               endDate = new Date(now);
           }
         }
