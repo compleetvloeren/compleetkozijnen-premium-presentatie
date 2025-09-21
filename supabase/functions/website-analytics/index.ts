@@ -86,76 +86,79 @@ serve(async (req) => {
           timeRange = body.timeRange;
         }
         
-        // Handle custom date ranges
+        // Handle custom date ranges from frontend
         if (body && body.startDate && body.endDate) {
-          startDate = new Date(body.startDate);
-          endDate = new Date(body.endDate);
+          startDate = new Date(body.startDate + 'T00:00:00.000Z');
+          endDate = new Date(body.endDate + 'T23:59:59.999Z');
         } else {
           // Calculate date range based on timeRange
           const now = new Date();
           
-            switch (timeRange.toLowerCase()) {
-              case 'today':
-              case 'vandaag':
-                startDate = new Date(now);
-                startDate.setHours(0, 0, 0, 0);
-                endDate = new Date(now);
-                break;
-              case 'yesterday':
-              case 'gisteren':
-                startDate = new Date(now);
-                startDate.setDate(startDate.getDate() - 1);
-                startDate.setHours(0, 0, 0, 0);
-                endDate = new Date(now);
-                endDate.setDate(endDate.getDate() - 1);
-                endDate.setHours(23, 59, 59, 999);
-                break;
-              case 'last24hours':
-              case 'last_24_hours':
-              case 'laatste24uur':
-              case '24uur':
-                startDate = new Date(now);
-                startDate.setHours(startDate.getHours() - 24);
-                endDate = new Date(now);
-                break;
-              case 'last7days':
-              case 'laatste7dagen':
-              case '7d':
-                startDate = new Date(now);
-                startDate.setDate(now.getDate() - 7);
-                endDate = new Date(now);
-                break;
-              case 'last14days':
-              case 'laatste14dagen':
-              case '14d':
-                startDate = new Date(now);
-                startDate.setDate(now.getDate() - 14);
-                endDate = new Date(now);
-                break;
-              case 'last30days':
-              case 'laatste30dagen':
-              case '30d':
-                startDate = new Date(now);
-                startDate.setDate(now.getDate() - 30);
-                endDate = new Date(now);
-                break;
-              case 'last90days':
-              case 'laatste90dagen':
-              case '90d':
-                startDate = new Date(now);
-                startDate.setDate(now.getDate() - 90);
-                endDate = new Date(now);
-                break;
-              case 'thismonth':
-              case 'dezemaand':
-                startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-                endDate = new Date(now);
-                break;
-              default: // fallback to last 7 days
-                startDate = new Date(now);
-                startDate.setDate(now.getDate() - 7);
-                endDate = new Date(now);
-            }
+          switch (timeRange.toLowerCase()) {
+            case 'today':
+            case 'vandaag':
+              startDate = new Date(now);
+              startDate.setHours(0, 0, 0, 0);
+              endDate = new Date(now);
+              break;
+            case 'yesterday':
+            case 'gisteren':
+              startDate = new Date(now);
+              startDate.setDate(startDate.getDate() - 1);
+              startDate.setHours(0, 0, 0, 0);
+              endDate = new Date(startDate);
+              endDate.setHours(23, 59, 59, 999);
+              break;
+            case 'last24hours':
+            case 'last_24_hours':
+            case 'laatste24uur':
+              startDate = new Date(now.getTime() - (24 * 60 * 60 * 1000));
+              endDate = new Date(now);
+              break;
+            case 'last7days':
+            case 'laatste7dagen':
+            case '7d':
+              startDate = new Date(now);
+              startDate.setDate(now.getDate() - 7);
+              startDate.setHours(0, 0, 0, 0);
+              endDate = new Date(now);
+              break;
+            case 'last14days':
+            case 'laatste14dagen':
+            case '14d':
+              startDate = new Date(now);
+              startDate.setDate(now.getDate() - 14);
+              startDate.setHours(0, 0, 0, 0);
+              endDate = new Date(now);
+              break;
+            case 'last30days':
+            case 'laatste30dagen':
+            case '30d':
+              startDate = new Date(now);
+              startDate.setDate(now.getDate() - 30);
+              startDate.setHours(0, 0, 0, 0);
+              endDate = new Date(now);
+              break;
+            case 'last90days':
+            case 'laatste90dagen':
+            case '90d':
+              startDate = new Date(now);
+              startDate.setDate(now.getDate() - 90);
+              startDate.setHours(0, 0, 0, 0);
+              endDate = new Date(now);
+              break;
+            case 'thismonth':
+            case 'dezemaand':
+              startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+              startDate.setHours(0, 0, 0, 0);
+              endDate = new Date(now);
+              break;
+            default: // fallback to last 7 days
+              startDate = new Date(now);
+              startDate.setDate(now.getDate() - 7);
+              startDate.setHours(0, 0, 0, 0);
+              endDate = new Date(now);
+          }
         }
       } else if (req.method === 'GET') {
         const url = new URL(req.url);
@@ -390,6 +393,10 @@ serve(async (req) => {
         pageviews: dailyPageviews
       };
     });
+
+    // Log trend data for debugging
+    const trendSummary = trend.map(t => `${t.date}: ${t.visitors}v`).join(' ');
+    console.log(`Trend data points: ${dayKeys.length} days: ${trendSummary}`);
 
     console.log('Generated analytics from real data - Visitors:', uniqueVisitors, 'Pageviews:', totalPageviews);
 

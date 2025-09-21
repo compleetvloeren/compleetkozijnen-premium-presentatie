@@ -81,7 +81,7 @@ const chartConfig = {
 };
 
 export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => {
-  const [timeRange, setTimeRange] = useState('last7days');
+  const [timeRange, setTimeRange] = useState('today');
   const [webAnalytics, setWebAnalytics] = useState<WebAnalytics | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -89,14 +89,14 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
 
   const getTimeRangeLabel = () => {
     const labels: { [key: string]: string } = {
-      'today': 'Today',
-      'yesterday': 'Yesterday',
-      'last24hours': 'Last 24 hours',
-      'last7days': 'Last 7 days',
-      'last14days': 'Last 14 days',
-      'last30days': 'Last 30 days',
-      'last90days': 'Last 90 days',
-      'thismonth': 'This month'
+      'today': 'Vandaag',
+      'yesterday': 'Gisteren',
+      'last24hours': 'Laatste 24 uur',
+      'last7days': 'Laatste 7 dagen',
+      'last14days': 'Laatste 14 dagen',
+      'last30days': 'Laatste 30 dagen',
+      'last90days': 'Laatste 90 dagen',
+      'thismonth': 'Deze maand'
     };
     
     return labels[timeRange] || timeRange;
@@ -392,14 +392,14 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="today">Today</SelectItem>
-                <SelectItem value="yesterday">Yesterday</SelectItem>
-                <SelectItem value="last24hours">Last 24 hours</SelectItem>
-                <SelectItem value="last7days">Last 7 days</SelectItem>
-                <SelectItem value="last14days">Last 14 days</SelectItem>
-                <SelectItem value="last30days">Last 30 days</SelectItem>
-                <SelectItem value="last90days">Last 90 days</SelectItem>
-                <SelectItem value="thismonth">This month</SelectItem>
+                <SelectItem value="today">Vandaag</SelectItem>
+                <SelectItem value="yesterday">Gisteren</SelectItem>
+                <SelectItem value="last24hours">Laatste 24 uur</SelectItem>
+                <SelectItem value="last7days">Laatste 7 dagen</SelectItem>
+                <SelectItem value="last14days">Laatste 14 dagen</SelectItem>
+                <SelectItem value="last30days">Laatste 30 dagen</SelectItem>
+                <SelectItem value="last90days">Laatste 90 dagen</SelectItem>
+                <SelectItem value="thismonth">Deze maand</SelectItem>
               </SelectContent>
             </Select>
           </div>

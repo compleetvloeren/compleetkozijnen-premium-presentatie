@@ -128,50 +128,38 @@ class AnalyticsTracker {
 
   private async getLocationData() {
     try {
-      // Try to get location from browser's geolocation API first (more accurate for city)
-      if (navigator.geolocation) {
-        const position = await new Promise<GeolocationPosition>((resolve, reject) => {
-          navigator.geolocation.getCurrentPosition(resolve, reject, {
-            timeout: 5000,
-            maximumAge: 600000, // 10 minutes cache
-            enableHighAccuracy: false
-          });
-        });
-        
-        // Use reverse geocoding to get country and city from coordinates
-        try {
-          const response = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}&localityLanguage=nl`);
-          const data = await response.json();
-          
-          return {
-            country_code: data.countryCode,
-            city: data.city || data.locality || data.principalSubdivision
-          };
-        } catch (geocodeError) {
-          console.warn('Reverse geocoding failed:', geocodeError);
-        }
+      // Use reliable IP-based geolocation service
+      const response = await fetch('https://ipapi.co/json/');
+      if (response.ok) {
+        const data = await response.json();
+        return {
+          country_code: data.country_code || 'NL',
+          city: data.city || 'Amsterdam'
+        };
       }
-    } catch (geoError) {
-      // Geolocation failed or denied, fallback to IP-based location
-      console.warn('Geolocation failed, using IP-based location:', geoError);
+    } catch (error) {
+      console.warn('Primary IP geolocation failed, trying fallback');
     }
 
-    // Fallback to IP-based geolocation
+    // Fallback service
     try {
       const response = await fetch('https://api.bigdatacloud.net/data/client-ip');
-      const data = await response.json();
-      
-      return {
-        country_code: data.countryCode,
-        city: data.city || data.locality
-      };
-    } catch (ipError) {
-      console.warn('IP geolocation failed:', ipError);
-      return {
-        country_code: undefined,
-        city: undefined
-      };
+      if (response.ok) {
+        const data = await response.json();
+        return {
+          country_code: data.countryCode || 'NL',
+          city: data.city || data.locality || 'Amsterdam'
+        };
+      }
+    } catch (error) {
+      console.warn('All geolocation services failed');
     }
+
+    // Default fallback for Netherlands
+    return {
+      country_code: 'NL',
+      city: 'Amsterdam'
+    };
   }
 
   private getUTMParameters(): Record<string, string> {
