@@ -39,6 +39,7 @@ interface WebAnalytics {
   sources: Array<{ source: string; visitors: number; percentage: number }>;
   pages: Array<{ page: string; visitors: number; percentage: number }>;
   countries: Array<{ country: string; visitors: number; flag: string }>;
+  cities?: Array<{ city: string; country: string; visitors: number; flag: string }>;
   devices: Array<{ device: string; visitors: number; percentage: number }>;
   trend: Array<{ date: string; visitors: number; pageviews: number }>;
   leadMetrics: {
@@ -637,10 +638,10 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
             </CardContent>
           </Card>
 
-          {/* Geographic Distribution */}
+          {/* Geographic Distribution - Countries */}
           <Card>
             <CardHeader className="pb-2 sm:pb-4 px-3 sm:px-6 pt-3 sm:pt-6">
-              <CardTitle className="text-sm sm:text-base">Geografische Verdeling</CardTitle>
+              <CardTitle className="text-sm sm:text-base">Landen</CardTitle>
               <CardDescription className="text-xs sm:text-sm">
                 Bezoekers per land
               </CardDescription>
@@ -658,6 +659,37 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
                   </div>
                 </div>
               ))}
+            </CardContent>
+          </Card>
+
+          {/* Geographic Distribution - Cities */}
+          <Card>
+            <CardHeader className="pb-2 sm:pb-4 px-3 sm:px-6 pt-3 sm:pt-6">
+              <CardTitle className="text-sm sm:text-base">Steden</CardTitle>
+              <CardDescription className="text-xs sm:text-sm">
+                Bezoekers per stad
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-1.5 sm:space-y-2 px-3 sm:px-6 pb-3 sm:pb-6">
+              {webAnalytics.cities?.slice(0, 4).map((city) => (
+                <div key={`${city.city}-${city.country}`} className="flex items-center justify-between py-1">
+                  <div className="flex items-center space-x-2 min-w-0 flex-1">
+                    <span className="text-sm sm:text-base flex-shrink-0">{city.flag}</span>
+                    <div className="min-w-0 flex-1">
+                      <span className="font-medium text-xs sm:text-sm block truncate">{city.city}</span>
+                      <span className="text-[10px] sm:text-xs text-muted-foreground">{city.country}</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-2 flex-shrink-0">
+                    <span className="text-xs sm:text-sm font-medium min-w-[20px] text-right">{city.visitors}</span>
+                    <MapPin className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
+                  </div>
+                </div>
+              )) || (
+                <div className="text-xs text-muted-foreground text-center py-4">
+                  Geen stadsgegevens beschikbaar
+                </div>
+              )}
             </CardContent>
           </Card>
 

@@ -307,6 +307,15 @@ serve(async (req) => {
       return acc;
     }, {} as Record<string, number>);
 
+    // Calculate city distribution from real data
+    const cities = analytics.reduce((acc, curr) => {
+      if (curr.city && curr.country_code) {
+        const cityKey = `${curr.city}, ${curr.country_code}`;
+        acc[cityKey] = (acc[cityKey] || 0) + 1;
+      }
+      return acc;
+    }, {} as Record<string, number>);
+
     const countryFlags: Record<string, string> = {
       'NL': '🇳🇱',
       'BE': '🇧🇪',
@@ -316,11 +325,33 @@ serve(async (req) => {
       'US': '🇺🇸'
     };
 
+    const getCountryName = (code: string) => {
+      const names: Record<string, string> = {
+        'NL': 'Nederland',
+        'BE': 'België',
+        'DE': 'Duitsland',
+        'FR': 'Frankrijk',
+        'UK': 'Verenigd Koninkrijk',
+        'US': 'Verenigde Staten'
+      };
+      return names[code] || code;
+    };
+
     const countryData = Object.entries(countries).map(([country, count]) => ({
-      country,
+      country: getCountryName(country),
       visitors: count,
       flag: countryFlags[country] || '🌍'
     }));
+
+    const cityData = Object.entries(cities).map(([cityCountry, count]) => {
+      const [city, countryCode] = cityCountry.split(', ');
+      return {
+        city,
+        country: getCountryName(countryCode),
+        visitors: count,
+        flag: countryFlags[countryCode] || '🌍'
+      };
+    }).sort((a, b) => b.visitors - a.visitors);
 
     // Calculate device breakdown from real data
     const devices = analytics.reduce((acc, curr) => {
@@ -368,6 +399,7 @@ serve(async (req) => {
     let finalSources = sourceData;
     let finalPages = pageData;
     let finalCountries = countryData;
+    let finalCities = cityData;
     let finalDevices = deviceData;
     let finalBounceRate = bounceRate;
     let finalAvgSessionDuration = avgSessionDuration;
@@ -419,9 +451,16 @@ serve(async (req) => {
       ].filter(p => p.visitors > 0);
 
       finalCountries = [
-        { country: 'NL', visitors: Math.floor(finalVisitors * 0.8), flag: '🇳🇱' },
-        { country: 'BE', visitors: Math.floor(finalVisitors * 0.15), flag: '🇧🇪' },
-        { country: 'DE', visitors: Math.floor(finalVisitors * 0.05), flag: '🇩🇪' }
+        { country: 'Nederland', visitors: Math.floor(finalVisitors * 0.8), flag: '🇳🇱' },
+        { country: 'België', visitors: Math.floor(finalVisitors * 0.15), flag: '🇧🇪' },
+        { country: 'Duitsland', visitors: Math.floor(finalVisitors * 0.05), flag: '🇩🇪' }
+      ].filter(c => c.visitors > 0);
+
+      finalCities = [
+        { city: 'Amsterdam', country: 'Nederland', visitors: Math.floor(finalVisitors * 0.3), flag: '🇳🇱' },
+        { city: 'Rotterdam', country: 'Nederland', visitors: Math.floor(finalVisitors * 0.2), flag: '🇳🇱' },
+        { city: 'Utrecht', country: 'Nederland', visitors: Math.floor(finalVisitors * 0.15), flag: '🇳🇱' },
+        { city: 'Brussel', country: 'België', visitors: Math.floor(finalVisitors * 0.1), flag: '🇧🇪' }
       ].filter(c => c.visitors > 0);
 
       finalDevices = [
@@ -440,6 +479,7 @@ serve(async (req) => {
       sources: finalSources,
       pages: finalPages,
       countries: finalCountries,
+      cities: finalCities,
       devices: finalDevices,
       trend
     };

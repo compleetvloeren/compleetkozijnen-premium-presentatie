@@ -126,6 +126,54 @@ class AnalyticsTracker {
     };
   }
 
+  private async getLocationData() {
+    try {
+      // Try to get location from browser's geolocation API first (more accurate for city)
+      if (navigator.geolocation) {
+        const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject, {
+            timeout: 5000,
+            maximumAge: 600000, // 10 minutes cache
+            enableHighAccuracy: false
+          });
+        });
+        
+        // Use reverse geocoding to get country and city from coordinates
+        try {
+          const response = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}&localityLanguage=nl`);
+          const data = await response.json();
+          
+          return {
+            country_code: data.countryCode,
+            city: data.city || data.locality || data.principalSubdivision
+          };
+        } catch (geocodeError) {
+          console.warn('Reverse geocoding failed:', geocodeError);
+        }
+      }
+    } catch (geoError) {
+      // Geolocation failed or denied, fallback to IP-based location
+      console.warn('Geolocation failed, using IP-based location:', geoError);
+    }
+
+    // Fallback to IP-based geolocation
+    try {
+      const response = await fetch('https://api.bigdatacloud.net/data/client-ip');
+      const data = await response.json();
+      
+      return {
+        country_code: data.countryCode,
+        city: data.city || data.locality
+      };
+    } catch (ipError) {
+      console.warn('IP geolocation failed:', ipError);
+      return {
+        country_code: undefined,
+        city: undefined
+      };
+    }
+  }
+
   private getUTMParameters(): Record<string, string> {
     const urlParams = new URLSearchParams(window.location.search);
     return {
@@ -186,6 +234,7 @@ class AnalyticsTracker {
   async trackPageView(isEntryPage: boolean = false) {
     const deviceInfo = this.getDeviceInfo();
     const utmParams = this.getUTMParameters();
+    const locationData = await this.getLocationData();
     const sessionDuration = Date.now() - this.sessionStartTime;
     const isBounce = this.pageViewCount === 1 && sessionDuration < 30000; // Less than 30 seconds
 
@@ -196,6 +245,8 @@ class AnalyticsTracker {
       page_title: document.title,
       referrer: document.referrer,
       user_agent: navigator.userAgent,
+      country_code: locationData.country_code,
+      city: locationData.city,
       entry_page: isEntryPage,
       session_duration: Math.floor(sessionDuration / 1000),
       page_views_in_session: this.pageViewCount,
