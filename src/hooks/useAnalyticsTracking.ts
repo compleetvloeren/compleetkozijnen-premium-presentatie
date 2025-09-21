@@ -10,6 +10,7 @@ interface AnalyticsData {
   user_agent?: string;
   country_code?: string;
   city?: string;
+  ip_address?: string;
   device_type?: string;
   browser?: string;
   os?: string;
@@ -30,6 +31,18 @@ interface AnalyticsData {
   utm_content?: string;
 }
 
+interface DetailedLocationData {
+  ip_address: string;
+  country_code: string;
+  country_name: string;
+  region: string;
+  city: string;
+  latitude: number;
+  longitude: number;
+  timezone: string;
+  isp: string;
+}
+
 interface PerformanceData {
   session_id: string;
   page_path: string;
@@ -42,13 +55,15 @@ interface PerformanceData {
   total_blocking_time?: number;
 }
 
-class AnalyticsTracker {
+class AdvancedAnalyticsTracker {
   private sessionId: string;
   private visitorId: string;
   private pageStartTime: number;
   private sessionStartTime: number;
   private pageViewCount: number;
   private performanceObserver?: PerformanceObserver;
+  private locationData: DetailedLocationData | null = null;
+  private isTrackingInitialized = false;
 
   constructor() {
     this.sessionId = this.getSessionId();
@@ -56,6 +71,14 @@ class AnalyticsTracker {
     this.pageStartTime = Date.now();
     this.sessionStartTime = this.getSessionStartTime();
     this.pageViewCount = this.getPageViewCount();
+    this.initializeTracking();
+  }
+
+  private async initializeTracking() {
+    if (this.isTrackingInitialized) return;
+    
+    this.locationData = await this.getDetailedLocationData();
+    this.isTrackingInitialized = true;
     this.setupPerformanceTracking();
   }
 
@@ -102,14 +125,15 @@ class AnalyticsTracker {
     const isDesktop = !isMobile && !isTablet;
 
     let browser = 'Unknown';
-    if (ua.includes('Chrome')) browser = 'Chrome';
+    if (ua.includes('Chrome') && !ua.includes('Edg')) browser = 'Chrome';
     else if (ua.includes('Firefox')) browser = 'Firefox';
-    else if (ua.includes('Safari')) browser = 'Safari';
-    else if (ua.includes('Edge')) browser = 'Edge';
+    else if (ua.includes('Safari') && !ua.includes('Chrome')) browser = 'Safari';
+    else if (ua.includes('Edg')) browser = 'Edge';
+    else if (ua.includes('Opera')) browser = 'Opera';
 
     let os = 'Unknown';
-    if (ua.includes('Windows')) os = 'Windows';
-    else if (ua.includes('Mac')) os = 'macOS';
+    if (ua.includes('Windows NT')) os = 'Windows';
+    else if (ua.includes('Mac OS X')) os = 'macOS';
     else if (ua.includes('Linux')) os = 'Linux';
     else if (ua.includes('Android')) os = 'Android';
     else if (ua.includes('iOS')) os = 'iOS';
@@ -126,39 +150,92 @@ class AnalyticsTracker {
     };
   }
 
-  private async getLocationData() {
-    try {
-      // Use reliable IP-based geolocation service
-      const response = await fetch('https://ipapi.co/json/');
-      if (response.ok) {
-        const data = await response.json();
-        return {
+  private async getDetailedLocationData(): Promise<DetailedLocationData> {
+    const services = [
+      {
+        url: 'https://ipapi.co/json/',
+        parser: (data: any) => ({
+          ip_address: data.ip || 'unknown',
           country_code: data.country_code || 'NL',
-          city: data.city || 'Amsterdam'
-        };
-      }
-    } catch (error) {
-      console.warn('Primary IP geolocation failed, trying fallback');
-    }
-
-    // Fallback service
-    try {
-      const response = await fetch('https://api.bigdatacloud.net/data/client-ip');
-      if (response.ok) {
-        const data = await response.json();
-        return {
+          country_name: data.country_name || 'Netherlands',
+          region: data.region || 'North Holland',
+          city: data.city || 'Amsterdam',
+          latitude: parseFloat(data.latitude) || 52.3676,
+          longitude: parseFloat(data.longitude) || 4.9041,
+          timezone: data.timezone || 'Europe/Amsterdam',
+          isp: data.org || 'Unknown'
+        })
+      },
+      {
+        url: 'https://api.bigdatacloud.net/data/client-ip',
+        parser: (data: any) => ({
+          ip_address: data.ipString || 'unknown',
           country_code: data.countryCode || 'NL',
-          city: data.city || data.locality || 'Amsterdam'
+          country_name: data.countryName || 'Netherlands',
+          region: data.principalSubdivision || 'North Holland',
+          city: data.city || data.locality || 'Amsterdam',
+          latitude: parseFloat(data.location?.latitude) || 52.3676,
+          longitude: parseFloat(data.location?.longitude) || 4.9041,
+          timezone: data.location?.timeZone?.name || 'Europe/Amsterdam',
+          isp: data.network?.organisation || 'Unknown'
+        })
+      }
+    ];
+
+    for (const service of services) {
+      try {
+        console.log(`🌍 Fetching location from: ${service.url}`);
+        const response = await fetch(service.url);
+        if (response.ok) {
+          const data = await response.json();
+          const locationData = service.parser(data);
+          
+          if (locationData.ip_address && locationData.ip_address !== 'unknown') {
+            console.log(`✅ Got location data:`, locationData);
+            return locationData;
+          }
+        }
+      } catch (error) {
+        console.warn(`❌ Location service failed: ${service.url}`, error);
+      }
+    }
+
+    // Browser geolocation fallback
+    try {
+      if (navigator.geolocation) {
+        const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 3000 });
+        });
+        
+        console.log('📍 Using browser geolocation');
+        return {
+          ip_address: 'browser-location',
+          country_code: 'NL',
+          country_name: 'Netherlands',
+          region: 'Unknown',
+          city: 'Unknown',
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          isp: 'Browser Location'
         };
       }
     } catch (error) {
-      console.warn('All geolocation services failed');
+      console.warn('Browser geolocation failed:', error);
     }
 
-    // Default fallback for Netherlands
+    // Final fallback
+    console.log('🏠 Using default Netherlands location');
     return {
+      ip_address: 'default-location',
       country_code: 'NL',
-      city: 'Amsterdam'
+      country_name: 'Netherlands',
+      region: 'North Holland',
+      city: 'Amsterdam',
+      latitude: 52.3676,
+      longitude: 4.9041,
+      timezone: 'Europe/Amsterdam',
+      isp: 'Unknown'
     };
   }
 
@@ -175,7 +252,6 @@ class AnalyticsTracker {
 
   private setupPerformanceTracking() {
     if ('PerformanceObserver' in window) {
-      // Track Core Web Vitals
       this.performanceObserver = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
           if (entry.entryType === 'largest-contentful-paint') {
@@ -196,10 +272,11 @@ class AnalyticsTracker {
         }
       });
 
-      this.performanceObserver.observe({ entryTypes: ['largest-contentful-paint', 'first-input', 'layout-shift'] });
+      this.performanceObserver.observe({ 
+        entryTypes: ['largest-contentful-paint', 'first-input', 'layout-shift'] 
+      });
     }
 
-    // Track load times
     window.addEventListener('load', () => {
       setTimeout(() => {
         const perfData = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
@@ -220,12 +297,27 @@ class AnalyticsTracker {
   }
 
   async trackPageView(isEntryPage: boolean = false) {
+    if (!this.isTrackingInitialized) {
+      await this.initializeTracking();
+    }
+
     const deviceInfo = this.getDeviceInfo();
     const utmParams = this.getUTMParameters();
-    const locationData = await this.getLocationData();
     const sessionDuration = Date.now() - this.sessionStartTime;
-    const isBounce = this.pageViewCount === 1 && sessionDuration < 30000; // Less than 30 seconds
+    const isBounce = this.pageViewCount === 1 && sessionDuration < 30000;
+    const locationData = this.locationData || await this.getDetailedLocationData();
 
+    console.log('📊 Tracking enhanced page view:', {
+      page: window.location.pathname,
+      visitor: this.visitorId.substring(0, 8),
+      session: this.sessionId.substring(0, 8),
+      location: `${locationData.city}, ${locationData.country_code}`,
+      ip: locationData.ip_address,
+      device: deviceInfo.device_type,
+      browser: deviceInfo.browser
+    });
+
+    // Enhanced analytics data with all available information
     const analyticsData: AnalyticsData = {
       session_id: this.sessionId,
       visitor_id: this.visitorId,
@@ -233,21 +325,63 @@ class AnalyticsTracker {
       page_title: document.title,
       referrer: document.referrer,
       user_agent: navigator.userAgent,
+      
+      // Enhanced location data
       country_code: locationData.country_code,
       city: locationData.city,
+      ip_address: locationData.ip_address,
+      
+      // Device and browser info
+      device_type: deviceInfo.device_type,
+      browser: deviceInfo.browser,
+      os: deviceInfo.os,
+      screen_resolution: deviceInfo.screen_resolution,
+      viewport_size: deviceInfo.viewport_size,
+      is_mobile: deviceInfo.is_mobile,
+      is_tablet: deviceInfo.is_tablet,
+      is_desktop: deviceInfo.is_desktop,
+      
+      // Session data
       entry_page: isEntryPage,
       session_duration: Math.floor(sessionDuration / 1000),
       page_views_in_session: this.pageViewCount,
       is_bounce: isBounce,
-      ...deviceInfo,
+      
+      // UTM parameters
       ...utmParams
     };
 
     try {
       await supabase.from('website_analytics').insert(analyticsData);
+      console.log('✅ Analytics tracked successfully');
     } catch (error) {
-      console.error('Failed to track page view:', error);
+      console.error('❌ Failed to track analytics:', error);
     }
+
+    // Store enhanced session data for future visitor sessions implementation
+    const sessionStorageData = {
+      visitor_id: this.visitorId,
+      session_id: this.sessionId,
+      ip_address: locationData.ip_address,
+      country_code: locationData.country_code,
+      country_name: locationData.country_name,
+      region: locationData.region,
+      city: locationData.city,
+      latitude: locationData.latitude,
+      longitude: locationData.longitude,
+      timezone: locationData.timezone,
+      isp: locationData.isp,
+      device_type: deviceInfo.device_type,
+      browser: deviceInfo.browser,
+      os: deviceInfo.os,
+      page_views: this.pageViewCount,
+      session_duration: Math.floor(sessionDuration / 1000),
+      is_bounce: isBounce,
+      last_activity: new Date().toISOString()
+    };
+
+    // Store in session storage for potential future use
+    sessionStorage.setItem('enhanced_session_data', JSON.stringify(sessionStorageData));
   }
 
   async trackPerformance(performanceData: Partial<PerformanceData>) {
@@ -259,6 +393,7 @@ class AnalyticsTracker {
 
     try {
       await supabase.from('page_performance').insert(data);
+      console.log('⚡ Performance tracked:', performanceData);
     } catch (error) {
       console.error('Failed to track performance:', error);
     }
@@ -276,6 +411,7 @@ class AnalyticsTracker {
 
     try {
       await supabase.from('form_conversions').insert(data);
+      console.log('🎯 Form conversion tracked:', formType);
     } catch (error) {
       console.error('Failed to track form conversion:', error);
     }
@@ -283,7 +419,10 @@ class AnalyticsTracker {
 
   trackPageExit() {
     const sessionDuration = Date.now() - this.pageStartTime;
-    // Update exit page info
+    console.log('👋 Page exit tracked:', { 
+      duration: Math.floor(sessionDuration / 1000) + 's',
+      page: window.location.pathname 
+    });
     this.trackPageView();
   }
 
@@ -294,14 +433,15 @@ class AnalyticsTracker {
   }
 }
 
-let tracker: AnalyticsTracker | null = null;
+let tracker: AdvancedAnalyticsTracker | null = null;
 
 export const useAnalyticsTracking = () => {
   const isInitialized = useRef(false);
 
   useEffect(() => {
     if (!isInitialized.current) {
-      tracker = new AnalyticsTracker();
+      console.log('🚀 Initializing Advanced Analytics Tracker');
+      tracker = new AdvancedAnalyticsTracker();
       tracker.trackPageView(true);
       isInitialized.current = true;
     }
