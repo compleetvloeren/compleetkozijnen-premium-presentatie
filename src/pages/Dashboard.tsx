@@ -655,7 +655,7 @@ const Dashboard: React.FC = () => {
           </TabsList>
 
           <TabsContent value="analytics" className="space-y-4 sm:space-y-6">
-            <AnalyticsSection />
+            <AnalyticsSection leads={leads} />
           </TabsContent>
 
           <TabsContent value="leads" className="space-y-4 sm:space-y-6">
