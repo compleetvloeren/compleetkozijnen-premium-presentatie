@@ -10,6 +10,7 @@ interface AnalyticsData {
   user_agent?: string;
   country_code?: string;
   city?: string;
+  ip_address?: string;
   device_type?: string;
   browser?: string;
   os?: string;
@@ -126,29 +127,51 @@ class AnalyticsTracker {
     };
   }
 
-  private async getLocationData() {
+  private async getDetailedLocationData() {
     try {
-      // Use reliable IP-based geolocation service
+      // Use ipapi.co for detailed location data
       const response = await fetch('https://ipapi.co/json/');
       if (response.ok) {
         const data = await response.json();
         return {
+          ip_address: data.ip,
           country_code: data.country_code || 'NL',
-          city: data.city || 'Amsterdam'
+          country_name: data.country_name || 'Netherlands',
+          region: data.region || 'North Holland',
+          region_code: data.region_code || 'NH',
+          city: data.city || 'Amsterdam',
+          postal_code: data.postal || '',
+          latitude: data.latitude || 52.3676,
+          longitude: data.longitude || 4.9041,
+          timezone: data.timezone || 'Europe/Amsterdam',
+          isp: data.org || '',
+          organization: data.org || '',
+          asn: data.asn || ''
         };
       }
     } catch (error) {
       console.warn('Primary IP geolocation failed, trying fallback');
     }
 
-    // Fallback service
+    // Fallback service with less detail
     try {
       const response = await fetch('https://api.bigdatacloud.net/data/client-ip');
       if (response.ok) {
         const data = await response.json();
         return {
+          ip_address: data.ipString || '',
           country_code: data.countryCode || 'NL',
-          city: data.city || data.locality || 'Amsterdam'
+          country_name: data.countryName || 'Netherlands',
+          region: data.principalSubdivision || 'North Holland',
+          region_code: data.principalSubdivisionCode || 'NH',
+          city: data.city || data.locality || 'Amsterdam',
+          postal_code: data.postcode || '',
+          latitude: data.location?.latitude || 52.3676,
+          longitude: data.location?.longitude || 4.9041,
+          timezone: data.location?.timeZone?.name || 'Europe/Amsterdam',
+          isp: data.network?.organisation || '',
+          organization: data.network?.organisation || '',
+          asn: data.network?.registeredCountryGeoId || ''
         };
       }
     } catch (error) {
@@ -157,8 +180,19 @@ class AnalyticsTracker {
 
     // Default fallback for Netherlands
     return {
+      ip_address: '',
       country_code: 'NL',
-      city: 'Amsterdam'
+      country_name: 'Netherlands',
+      region: 'North Holland',
+      region_code: 'NH',
+      city: 'Amsterdam',
+      postal_code: '1012',
+      latitude: 52.3676,
+      longitude: 4.9041,
+      timezone: 'Europe/Amsterdam',
+      isp: 'Unknown',
+      organization: 'Unknown',
+      asn: 'Unknown'
     };
   }
 
@@ -222,10 +256,18 @@ class AnalyticsTracker {
   async trackPageView(isEntryPage: boolean = false) {
     const deviceInfo = this.getDeviceInfo();
     const utmParams = this.getUTMParameters();
-    const locationData = await this.getLocationData();
+    const locationData = await this.getDetailedLocationData();
     const sessionDuration = Date.now() - this.sessionStartTime;
-    const isBounce = this.pageViewCount === 1 && sessionDuration < 30000; // Less than 30 seconds
+    const isBounce = this.pageViewCount === 1 && sessionDuration < 30000;
 
+    // Track detailed visitor session
+    try {
+      await this.trackVisitorSession(locationData, deviceInfo, sessionDuration, isBounce);
+    } catch (error) {
+      console.error('Failed to track visitor session:', error);
+    }
+
+    // Track page view analytics
     const analyticsData: AnalyticsData = {
       session_id: this.sessionId,
       visitor_id: this.visitorId,
@@ -235,6 +277,7 @@ class AnalyticsTracker {
       user_agent: navigator.userAgent,
       country_code: locationData.country_code,
       city: locationData.city,
+      ip_address: locationData.ip_address,
       entry_page: isEntryPage,
       session_duration: Math.floor(sessionDuration / 1000),
       page_views_in_session: this.pageViewCount,
@@ -247,6 +290,59 @@ class AnalyticsTracker {
       await supabase.from('website_analytics').insert(analyticsData);
     } catch (error) {
       console.error('Failed to track page view:', error);
+    }
+  }
+
+  private async trackVisitorSession(locationData: any, deviceInfo: any, sessionDuration: number, isBounce: boolean) {
+    const sessionData = {
+      visitor_id: this.visitorId,
+      session_id: this.sessionId,
+      ip_address: locationData.ip_address,
+      last_activity_at: new Date().toISOString(),
+      
+      // Detailed location
+      country_code: locationData.country_code,
+      country_name: locationData.country_name,
+      region: locationData.region,
+      region_code: locationData.region_code,
+      city: locationData.city,
+      postal_code: locationData.postal_code,
+      latitude: locationData.latitude,
+      longitude: locationData.longitude,
+      timezone: locationData.timezone,
+      
+      // ISP and network
+      isp: locationData.isp,
+      organization: locationData.organization,
+      asn: locationData.asn,
+      
+      // Device info
+      user_agent: navigator.userAgent,
+      browser: deviceInfo.browser,
+      os: deviceInfo.os,
+      device_type: deviceInfo.device_type,
+      screen_resolution: deviceInfo.screen_resolution,
+      viewport_size: deviceInfo.viewport_size,
+      
+      // Session stats
+      page_views: this.pageViewCount,
+      session_duration: Math.floor(sessionDuration / 1000),
+      is_bounce: isBounce
+    };
+
+    // Try to update existing session first, if not exists then insert
+    const { error: updateError } = await supabase
+      .from('visitor_sessions')
+      .update(sessionData)
+      .eq('visitor_id', this.visitorId)
+      .eq('session_id', this.sessionId);
+
+    if (updateError) {
+      // Session doesn't exist, insert new one
+      await supabase.from('visitor_sessions').insert({
+        ...sessionData,
+        first_visit_at: new Date().toISOString()
+      });
     }
   }
 
