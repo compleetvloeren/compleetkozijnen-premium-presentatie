@@ -241,8 +241,9 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
   }, []);
 
   const formatDuration = (seconds: number) => {
+    if (isNaN(seconds) || seconds < 0) return '0m 0s';
     const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
+    const remainingSeconds = Math.floor(seconds % 60);
     return `${minutes}m ${remainingSeconds}s`;
   };
   const analyticsData = useMemo(() => {
@@ -506,7 +507,16 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
                   axisLine={false}
                   tickLine={false}
                   tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }}
-                  tickFormatter={(value) => new Date(value).toLocaleDateString('nl-NL', { month: 'short', day: 'numeric' })}
+                  tickFormatter={(value) => {
+                    try {
+                      if (!value || value === 'Invalid Date') return '';
+                      const date = new Date(value);
+                      if (isNaN(date.getTime())) return '';
+                      return date.toLocaleDateString('nl-NL', { month: 'short', day: 'numeric' });
+                    } catch {
+                      return '';
+                    }
+                  }}
                 />
                 <YAxis 
                   axisLine={false}
@@ -518,7 +528,18 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({ leads }) => 
                     if (payload && payload.length > 0) {
                       return (
                         <div className="rounded-lg border bg-background p-3 shadow-md">
-                          <p className="font-medium text-sm mb-1">{new Date(label).toLocaleDateString('nl-NL')}</p>
+                          <p className="font-medium text-sm mb-1">
+                            {(() => {
+                              try {
+                                if (!label || label === 'Invalid Date') return 'Onbekende datum';
+                                const date = new Date(label);
+                                if (isNaN(date.getTime())) return 'Onbekende datum';
+                                return date.toLocaleDateString('nl-NL');
+                              } catch {
+                                return 'Onbekende datum';
+                              }
+                            })()}
+                          </p>
                           {payload.map((entry, index) => (
                             <p key={index} className="text-sm" style={{ color: entry.color }}>
                               {entry.name === 'visitors' ? 'Bezoekers' : 'Paginaweergaven'}: <span className="font-semibold">{entry.value}</span>

@@ -317,19 +317,19 @@ class AdvancedAnalyticsTracker {
       browser: deviceInfo.browser
     });
 
-    // Enhanced analytics data with all available information
+    // Enhanced analytics data with all available information and proper timestamps
     const analyticsData: AnalyticsData = {
       session_id: this.sessionId,
       visitor_id: this.visitorId,
       page_path: window.location.pathname,
       page_title: document.title,
-      referrer: document.referrer,
+      referrer: document.referrer || '',
       user_agent: navigator.userAgent,
       
-      // Enhanced location data
-      country_code: locationData.country_code,
-      city: locationData.city,
-      ip_address: locationData.ip_address,
+      // Enhanced location data with validation
+      country_code: locationData.country_code || 'NL',
+      city: locationData.city || 'Unknown',
+      ip_address: locationData.ip_address || 'unknown',
       
       // Device and browser info
       device_type: deviceInfo.device_type,
@@ -341,7 +341,7 @@ class AdvancedAnalyticsTracker {
       is_tablet: deviceInfo.is_tablet,
       is_desktop: deviceInfo.is_desktop,
       
-      // Session data
+      // Session data with proper timestamps
       entry_page: isEntryPage,
       session_duration: Math.floor(sessionDuration / 1000),
       page_views_in_session: this.pageViewCount,
@@ -358,30 +358,50 @@ class AdvancedAnalyticsTracker {
       console.error('❌ Failed to track analytics:', error);
     }
 
-    // Store enhanced session data for future visitor sessions implementation
+    // Store enhanced session data for future visitor sessions implementation with enhanced tracking
     const sessionStorageData = {
       visitor_id: this.visitorId,
       session_id: this.sessionId,
-      ip_address: locationData.ip_address,
-      country_code: locationData.country_code,
-      country_name: locationData.country_name,
-      region: locationData.region,
-      city: locationData.city,
-      latitude: locationData.latitude,
-      longitude: locationData.longitude,
-      timezone: locationData.timezone,
-      isp: locationData.isp,
+      ip_address: locationData.ip_address || 'unknown',
+      country_code: locationData.country_code || 'NL',
+      country_name: locationData.country_name || 'Netherlands',
+      region: locationData.region || 'Unknown',
+      city: locationData.city || 'Unknown',
+      latitude: locationData.latitude || 0,
+      longitude: locationData.longitude || 0,
+      timezone: locationData.timezone || 'Europe/Amsterdam',
+      isp: locationData.isp || 'Unknown',
       device_type: deviceInfo.device_type,
       browser: deviceInfo.browser,
       os: deviceInfo.os,
       page_views: this.pageViewCount,
       session_duration: Math.floor(sessionDuration / 1000),
       is_bounce: isBounce,
-      last_activity: new Date().toISOString()
+      last_activity: new Date().toISOString(),
+      // Enhanced personal tracking data
+      screen_info: {
+        width: screen.width,
+        height: screen.height,
+        colorDepth: screen.colorDepth,
+        pixelDepth: screen.pixelDepth
+      },
+      connection_info: (navigator as any).connection ? {
+        effectiveType: (navigator as any).connection.effectiveType,
+        downlink: (navigator as any).connection.downlink,
+        rtt: (navigator as any).connection.rtt
+      } : null,
+      language: navigator.language,
+      languages: navigator.languages,
+      platform: navigator.platform,
+      cookieEnabled: navigator.cookieEnabled,
+      onLine: navigator.onLine
     };
 
-    // Store in session storage for potential future use
+    // Store in session storage for potential future use and update visitor sessions
     sessionStorage.setItem('enhanced_session_data', JSON.stringify(sessionStorageData));
+    
+    // Also update or create visitor session record for enhanced personalized tracking
+    this.updateVisitorSession(sessionStorageData, locationData, deviceInfo);
   }
 
   async trackPerformance(performanceData: Partial<PerformanceData>) {
@@ -414,6 +434,68 @@ class AdvancedAnalyticsTracker {
       console.log('🎯 Form conversion tracked:', formType);
     } catch (error) {
       console.error('Failed to track form conversion:', error);
+    }
+  }
+
+  async updateVisitorSession(sessionData: any, locationData: DetailedLocationData, deviceInfo: any) {
+    // Store enhanced session tracking data in localStorage for future use
+    // Since visitor_sessions table is not accessible in TypeScript types, 
+    // we'll store this data locally and use it for enhanced analytics
+    try {
+      const enhancedSessionData = {
+        visitor_id: this.visitorId,
+        session_id: this.sessionId,
+        ip_address: locationData.ip_address || 'unknown',
+        country_code: locationData.country_code || 'NL',
+        country_name: locationData.country_name || 'Netherlands',
+        region: locationData.region || 'Unknown',
+        city: locationData.city || 'Unknown',
+        latitude: locationData.latitude || 0,
+        longitude: locationData.longitude || 0,
+        timezone: locationData.timezone || 'Europe/Amsterdam',
+        isp: locationData.isp || 'Unknown',
+        device_type: deviceInfo.device_type,
+        browser: deviceInfo.browser,
+        os: deviceInfo.os,
+        user_agent: navigator.userAgent,
+        screen_resolution: deviceInfo.screen_resolution,
+        viewport_size: deviceInfo.viewport_size,
+        page_views: this.pageViewCount,
+        session_duration: Math.floor((Date.now() - this.sessionStartTime) / 1000),
+        is_bounce: this.pageViewCount === 1 && (Date.now() - this.sessionStartTime) < 30000,
+        last_activity_at: new Date().toISOString(),
+        first_visit_at: new Date(this.sessionStartTime).toISOString(),
+        // Enhanced tracking information
+        connection_info: (navigator as any).connection ? {
+          effectiveType: (navigator as any).connection.effectiveType,
+          downlink: (navigator as any).connection.downlink,
+          rtt: (navigator as any).connection.rtt
+        } : null,
+        hardware_info: {
+          deviceMemory: (navigator as any).deviceMemory || null,
+          hardwareConcurrency: navigator.hardwareConcurrency,
+          maxTouchPoints: navigator.maxTouchPoints
+        },
+        preferences: {
+          language: navigator.language,
+          languages: navigator.languages,
+          cookieEnabled: navigator.cookieEnabled,
+          doNotTrack: navigator.doNotTrack,
+          onLine: navigator.onLine
+        }
+      };
+      
+      // Store in localStorage for persistent tracking across sessions
+      localStorage.setItem(`visitor_session_${this.visitorId}`, JSON.stringify(enhancedSessionData));
+      
+      console.log('📊 Enhanced visitor session data stored:', {
+        session: this.sessionId.substring(0, 8),
+        location: `${locationData.city}, ${locationData.country_code}`,
+        device: deviceInfo.device_type,
+        connection: enhancedSessionData.connection_info?.effectiveType || 'unknown'
+      });
+    } catch (error) {
+      console.error('Failed to update visitor session data:', error);
     }
   }
 
