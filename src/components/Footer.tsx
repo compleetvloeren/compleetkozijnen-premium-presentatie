@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 import logo from '@/assets/compleet-kozijnen-logo.png';
+import afbouwWaarborg from '@/assets/afbouw-waarborg.jpg';
 import { LoginDialog } from './LoginDialog';
 
 const Footer = () => {
@@ -138,7 +139,12 @@ const Footer = () => {
 
           {/* Trust Badges */}
           <div className="mt-8 pt-8 border-t border-slate-700">
-            <div className="flex flex-wrap justify-center items-center gap-6 text-xs text-slate-400">
+            <div className="flex flex-wrap justify-center items-center gap-8 text-xs text-slate-400">
+              <img 
+                src={afbouwWaarborg} 
+                alt="Afbouw Waarborg Certificering" 
+                className="h-12 object-contain"
+              />
               <div className="flex items-center space-x-2">
                 <div className="w-2 h-2 bg-primary rounded-full" />
                 <span>GEALAN Gecertificeerd Partner</span>
