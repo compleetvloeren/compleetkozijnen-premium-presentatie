@@ -513,7 +513,7 @@ const SchuecoDeuren = () => {
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
-              <Link to="/producten/schueco">
+              <Link to="/producten/schuco">
                 <Button variant="outline" className="min-w-[200px]">
                   <ArrowLeft className="mr-2 h-4 w-4" />
                   Terug naar SCHÜCO Overzicht

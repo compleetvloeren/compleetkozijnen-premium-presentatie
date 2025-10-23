@@ -48,7 +48,7 @@ const ResponsiveBreadcrumb: React.FC<ResponsiveBreadcrumbProps> = ({
         case 'gealan':
           label = 'GEALAN';
           break;
-        case 'schueco':
+        case 'schuco':
           label = 'SCHÜCO';
           break;
         case 's9000-base':

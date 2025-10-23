@@ -104,7 +104,7 @@ const SchuecoProdukten = () => {
                         <span>Moderne designopties</span>
                       </li>
                     </ul>
-                    <Link to="/producten/schueco/ramen">
+                    <Link to="/producten/schuco/ramen">
                       <Button className="w-full bg-white text-black hover:bg-white/90">
                         Bekijk Raamsystemen
                         <ArrowRight className="ml-2 h-4 w-4" />
@@ -155,7 +155,7 @@ const SchuecoProdukten = () => {
                         <span>Brede designkeuzes</span>
                       </li>
                     </ul>
-                    <Link to="/producten/schueco/deuren">
+                    <Link to="/producten/schuco/deuren">
                       <Button className="w-full bg-white text-black hover:bg-white/90">
                         Bekijk Deursystemen
                         <ArrowRight className="ml-2 h-4 w-4" />
@@ -206,7 +206,7 @@ const SchuecoProdukten = () => {
                         <span>Maximale ruimte-opening</span>
                       </li>
                     </ul>
-                    <Link to="/producten/schueco/schuifdeuren">
+                    <Link to="/producten/schuco/schuifdeuren">
                       <Button className="w-full bg-white text-black hover:bg-white/90">
                         Bekijk Schuifdeuren
                         <ArrowRight className="ml-2 h-4 w-4" />

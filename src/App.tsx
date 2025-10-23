@@ -47,7 +47,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/producten" element={<Producten />} />
             <Route path="/producten/gealan" element={<GealanProducten />} />
-            <Route path="/producten/schueco" element={<SchuecoProdukten />} />
+            <Route path="/producten/schuco" element={<SchuecoProdukten />} />
             <Route path="/producten/s9000-base" element={<GealanS9000Base />} />
             <Route path="/producten/gealan/s9000-base" element={<GealanS9000Base />} />
             <Route path="/producten/s9000-haax" element={<GealanS9000Haax />} />
@@ -56,9 +56,9 @@ const App = () => (
             <Route path="/producten/gealan/s9000-styl" element={<GealanS9000Styl />} />
             <Route path="/producten/s9000-slim" element={<GealanS9000Slim />} />
             <Route path="/producten/gealan/s9000-slim" element={<GealanS9000Slim />} />
-            <Route path="/producten/schueco/ramen" element={<SchuecoRamen />} />
-            <Route path="/producten/schueco/deuren" element={<SchuecoDeuren />} />
-            <Route path="/producten/schueco/schuifdeuren" element={<SchuecoSchuifdeuren />} />
+            <Route path="/producten/schuco/ramen" element={<SchuecoRamen />} />
+            <Route path="/producten/schuco/deuren" element={<SchuecoDeuren />} />
+            <Route path="/producten/schuco/schuifdeuren" element={<SchuecoSchuifdeuren />} />
             <Route path="/over-ons" element={<OverOns />} />
             <Route path="/service" element={<Service />} />
             <Route path="/contact" element={<Contact />} />

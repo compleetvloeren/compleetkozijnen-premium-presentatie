@@ -44,7 +44,7 @@ const BrandShowcase = () => {
         dichtheid: 'Klasse 4 luchtdichtheid',
         windbelasting: 'Premium windbestendigheid'
       },
-      route: '/producten/schueco',
+      route: '/producten/schuco',
       status: 'Beschikbaar',
       image: schuecoImage,
       material: 'Aluminium'

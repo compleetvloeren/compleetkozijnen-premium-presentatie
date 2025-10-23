@@ -36,7 +36,7 @@ const OverOns = () => {
         'Hydraulische schuifsystemen',
         'Passief huis geschikt'
       ],
-      route: '/producten/schueco'
+      route: '/producten/schuco'
     }
   ];
 

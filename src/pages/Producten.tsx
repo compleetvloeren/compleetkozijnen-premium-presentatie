@@ -52,7 +52,7 @@ const Producten = () => {
         dichtheid: 'Klasse 4 luchtdichtheid',
         windbelasting: 'Premium windbestendigheid'
       },
-      route: '/producten/schueco',
+      route: '/producten/schuco',
       status: 'Beschikbaar',
       color: 'from-slate-600 to-slate-700',
       image: schuecoImage,
