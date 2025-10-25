@@ -1,5 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Helmet } from 'react-helmet-async';
 import Navigation from '@/components/Navigation';
 import ResponsiveBreadcrumb from '@/components/ResponsiveBreadcrumb';
 import Footer from '@/components/Footer';
@@ -63,6 +64,9 @@ De 5-kamer technologie in combinatie met het 3-dichting systeem zorgt voor uitst
 
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <link rel="canonical" href="https://compleetkozijnen.nl/producten/s9000-base" />
+      </Helmet>
       <Navigation />
       <ResponsiveBreadcrumb />
       
