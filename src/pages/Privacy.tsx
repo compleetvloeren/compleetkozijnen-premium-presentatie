@@ -8,6 +8,7 @@ const Privacy = () => {
       <Helmet>
         <title>Privacybeleid - Compleet Kozijnen</title>
         <meta name="description" content="Privacybeleid van Compleet Kozijnen. Lees hoe wij omgaan met uw persoonlijke gegevens." />
+        <link rel="canonical" href="https://compleetkozijnen.nl/privacy" />
       </Helmet>
       
       <div className="min-h-screen bg-gradient-to-br from-background to-muted/30">

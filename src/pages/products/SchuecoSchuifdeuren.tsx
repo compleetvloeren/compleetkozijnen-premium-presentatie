@@ -1,5 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Helmet } from 'react-helmet-async';
 import Navigation from '@/components/Navigation';
 import ResponsiveBreadcrumb from '@/components/ResponsiveBreadcrumb';
 import Footer from '@/components/Footer';
@@ -43,6 +44,9 @@ const SchuecoSchuifdeuren = () => {
 
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <link rel="canonical" href="https://compleetkozijnen.nl/producten/schuco/schuifdeuren" />
+      </Helmet>
       <Navigation />
       <ResponsiveBreadcrumb />
       

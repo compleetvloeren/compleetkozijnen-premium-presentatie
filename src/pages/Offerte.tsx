@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAnalytics } from '@/components/AnalyticsProvider';
+import { Helmet } from 'react-helmet-async';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -225,6 +226,9 @@ const Offerte = () => {
 
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <link rel="canonical" href="https://compleetkozijnen.nl/offerte" />
+      </Helmet>
       <Navigation />
       <ResponsiveBreadcrumb />
       

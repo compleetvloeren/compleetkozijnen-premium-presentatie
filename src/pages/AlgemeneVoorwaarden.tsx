@@ -8,6 +8,7 @@ const AlgemeneVoorwaarden = () => {
       <Helmet>
         <title>Algemene Voorwaarden - Compleet Kozijnen</title>
         <meta name="description" content="Algemene voorwaarden van Compleet Kozijnen. Lees de voorwaarden voor onze dienstverlening." />
+        <link rel="canonical" href="https://compleetkozijnen.nl/algemene-voorwaarden" />
       </Helmet>
       
       <div className="min-h-screen bg-gradient-to-br from-background to-muted/30">

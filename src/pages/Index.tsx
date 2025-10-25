@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import Navigation from '@/components/Navigation';
 import ResponsiveBreadcrumb from '@/components/ResponsiveBreadcrumb';
 import Hero from '@/components/Hero';
@@ -28,6 +29,9 @@ const Index = () => {
   }, [location.state, toast]);
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <link rel="canonical" href="https://compleetkozijnen.nl/" />
+      </Helmet>
       <Navigation />
       <ResponsiveBreadcrumb />
       <main>

@@ -1,6 +1,7 @@
 import { CheckCircle, Clock, Shield, Wrench, MapPin, Phone, Mail } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Helmet } from 'react-helmet-async';
 import Navigation from '@/components/Navigation';
 import ResponsiveBreadcrumb from '@/components/ResponsiveBreadcrumb';
 import Footer from '@/components/Footer';
@@ -65,6 +66,9 @@ const Service = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <link rel="canonical" href="https://compleetkozijnen.nl/service" />
+      </Helmet>
       <Navigation />
       <ResponsiveBreadcrumb />
       

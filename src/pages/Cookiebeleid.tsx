@@ -8,6 +8,7 @@ const Cookiebeleid = () => {
       <Helmet>
         <title>Cookiebeleid - Compleet Kozijnen</title>
         <meta name="description" content="Cookiebeleid van Compleet Kozijnen. Lees hoe wij cookies gebruiken op onze website." />
+        <link rel="canonical" href="https://compleetkozijnen.nl/cookies" />
       </Helmet>
       
       <div className="min-h-screen bg-gradient-to-br from-background to-muted/30">

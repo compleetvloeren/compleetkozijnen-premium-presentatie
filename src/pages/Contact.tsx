@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAnalytics } from '@/components/AnalyticsProvider';
+import { Helmet } from 'react-helmet-async';
 import { Mail, Phone, MapPin, Clock, MessageCircle, Calendar, Loader2 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -167,6 +168,9 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <link rel="canonical" href="https://compleetkozijnen.nl/contact" />
+      </Helmet>
       <Navigation />
       <ResponsiveBreadcrumb />
       

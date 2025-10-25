@@ -1,6 +1,7 @@
 import { Mail, Phone, MapPin, Award, Users, Clock, Star, Home, Building, Wrench, CheckCircle, Shield, Eye, Target, Heart, Lightbulb, Settings, Search, FileText, Truck } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Helmet } from 'react-helmet-async';
 import Navigation from '@/components/Navigation';
 import ResponsiveBreadcrumb from '@/components/ResponsiveBreadcrumb';
 import Footer from '@/components/Footer';
@@ -98,6 +99,9 @@ const OverOns = () => {
 
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <link rel="canonical" href="https://compleetkozijnen.nl/over-ons" />
+      </Helmet>
       <Navigation />
       <ResponsiveBreadcrumb />
       
